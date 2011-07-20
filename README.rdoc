@@ -1,5 +1,7 @@
 === Welcome to Fat Free CRM!
 
+This is the Rails 2.3.8 branch of Fat Free CRM.
+
 Fat Free CRM is next generation open source CRM platform. Active development
 has started in November 2008; new features, enhancements, and updates appear
 on daily basis.
@@ -111,3 +113,4 @@ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 FOR A PARTICULAR PURPOSE.
 
 See LICENSE file for more details.
+
