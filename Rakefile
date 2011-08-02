@@ -19,7 +19,7 @@ begin
                      "{config}/**/*",
                      "{db}/**/*",
                      "{public}/**/*",
-                     "{vendor}/plugins/*"]
+                     "{vendor}/plugins/**/*"]
   end
 rescue
   puts "Jeweler or one of its dependencies is not installed."
