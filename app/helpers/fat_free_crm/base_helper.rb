@@ -15,15 +15,14 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-module ApplicationHelper
-
+module FatFreeCrm::BaseHelper
   def tabs(tabs = nil)
-    tabs ||= controller_path =~ /admin/ ? FatFreeCRM::Tabs.admin : FatFreeCRM::Tabs.main
+    tabs ||= controller_path =~ /admin/ ? FatFreeCrm::Tabs.admin : FatFreeCrm::Tabs.main
     if tabs
       @current_tab ||= tabs.first[:text] # Select first tab by default.
       tabs.each { |tab| tab[:active] = (@current_tab == tab[:text] || @current_tab == tab[:url][:controller]) }
   else
-      raise FatFreeCRM::MissingSettings, "Tab settings are missing, please run <b>rake crm:setup</b> command."
+      raise FatFreeCrm::MissingSettings, "Tab settings are missing, please run <b>rake crm:setup</b> command."
     end
   end
 

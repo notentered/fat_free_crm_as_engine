@@ -15,7 +15,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-class ApplicationController < ActionController::Base
+class FatFreeCrm::BaseController < ActionController::Base
+
+  layout 'ffcrm_application'
 
   # helper :all gets called authomagically in Rails3.
   helper_method :current_user_session, :current_user, :can_signup?
@@ -89,7 +91,7 @@ private
     # Check if the latest settings have been loaded. Display error message in English
     # the actual locale might be unknown.
     if !Setting.locale || !Setting.account_category
-      raise FatFreeCRM::ObsoleteSettings, <<-OBSOLETE
+      raise FatFreeCrm::ObsoleteSettings, <<-OBSOLETE
         It looks like you are upgrading from the older version of Fat Free CRM.
         Please review <b>config/settings.yml</b> file and re-run<br><br><b>$ rake
         crm:settings:load</b><br><br> command in Rails development and production

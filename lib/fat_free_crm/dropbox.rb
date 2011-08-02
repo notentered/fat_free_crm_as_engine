@@ -18,7 +18,7 @@ require "net/imap"
 require "mail"
 include Rails.application.routes.url_helpers
 
-module FatFreeCRM
+module FatFreeCrm
   class Dropbox
 
     ASSETS   = [ Account, Contact, Lead ].freeze
@@ -422,5 +422,5 @@ module FatFreeCRM
     end
 
   end # class Dropbox
-end # module FatFreeCRM
+end # module FatFreeCrm
 

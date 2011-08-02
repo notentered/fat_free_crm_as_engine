@@ -15,6 +15,8 @@
 # along with this program.  If not, see <http:#www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
+require 'fat_free_crm/engine'
+
 require "fat_free_crm/version"
 require "fat_free_crm/core_ext"
 require "fat_free_crm/exceptions"
@@ -26,18 +28,18 @@ require "fat_free_crm/sortable"
 require "fat_free_crm/tabs"
 require "fat_free_crm/callback"
 
-ActionView::Base.send(:include, FatFreeCRM::I18n)
-ActionController::Base.send(:include, FatFreeCRM::I18n)
-ActiveModel::Errors.send(:include, FatFreeCRM::ActiveModel::Errors)
+ActionView::Base.send(:include, FatFreeCrm::I18n)
+ActionController::Base.send(:include, FatFreeCrm::I18n)
+ActiveModel::Errors.send(:include, FatFreeCrm::ActiveModel::Errors)
 
-ActionView::Base.send(:include, FatFreeCRM::Callback::Helper)
-ActionController::Base.send(:include, FatFreeCRM::Callback::Helper)
+ActionView::Base.send(:include, FatFreeCrm::Callback::Helper)
+ActionController::Base.send(:include, FatFreeCrm::Callback::Helper)
 
-ActiveRecord::Base.send(:include, FatFreeCRM::Permissions)
-ActiveRecord::Base.send(:include, FatFreeCRM::Exportable)
-ActiveRecord::Base.send(:include, FatFreeCRM::Sortable)
+ActiveRecord::Base.send(:include, FatFreeCrm::Permissions)
+ActiveRecord::Base.send(:include, FatFreeCrm::Exportable)
+ActiveRecord::Base.send(:include, FatFreeCrm::Sortable)
 
-require "fat_free_crm/dropbox" if defined?(::Rake)
+# require "fat_free_crm/dropbox" if defined?(::Rake)
 
 # Require plugins after everything else.
 require "fat_free_crm/plugin"

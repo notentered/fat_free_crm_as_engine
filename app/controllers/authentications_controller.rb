@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-class AuthenticationsController < ApplicationController
+class AuthenticationsController < FatFreeCrm::BaseController
 
   before_filter :require_no_user, :only => [ :new, :create, :show ]
   before_filter :require_user, :only => :destroy

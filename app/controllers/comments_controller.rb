@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-class CommentsController < ApplicationController
+class CommentsController < FatFreeCrm::BaseController
   before_filter :require_user
   COMMENTABLE = %w(account_id campaign_id contact_id lead_id opportunity_id task_id).freeze
 

@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-class HomeController < ApplicationController
+class HomeController < FatFreeCrm::BaseController
   before_filter :require_user, :except => [ :toggle, :timezone ]
   before_filter :set_current_tab, :only => :index
   before_filter "hook(:home_before_filter, self, :amazing => true)"

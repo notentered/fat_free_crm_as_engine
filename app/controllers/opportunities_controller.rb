@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-class OpportunitiesController < ApplicationController
+class OpportunitiesController < FatFreeCrm::BaseController
   before_filter :require_user
   before_filter :set_current_tab, :only => [ :index, :show ]
   before_filter :load_settings

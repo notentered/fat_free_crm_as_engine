@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-class PasswordsController < ApplicationController
+class PasswordsController < FatFreeCrm::BaseController
 
   before_filter :load_user_using_perishable_token, :only => [ :edit, :update ]
   before_filter :require_no_user

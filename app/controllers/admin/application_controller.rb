@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-class Admin::ApplicationController < ApplicationController
+class Admin::ApplicationController < FatFreeCrm::BaseController
   layout "admin/application"
   before_filter :require_admin_user
 

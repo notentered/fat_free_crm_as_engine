@@ -22,4 +22,5 @@ tmp
 features/screengrabs
 features/reports
 config/crowd_settings.yml
+pkg
 

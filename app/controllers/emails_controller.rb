@@ -1,4 +1,4 @@
-class EmailsController < ApplicationController
+class EmailsController < FatFreeCrm::BaseController
   before_filter :require_user
   
   # GET /email

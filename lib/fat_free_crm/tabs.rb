@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http:#www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-module FatFreeCRM
+module FatFreeCrm
   class Tabs
     cattr_accessor :main
     cattr_accessor :admin

@@ -5,7 +5,7 @@ require "fat_free_crm/dropbox"
 
 describe "IMAP Dropbox" do
   before(:each) do
-    @crawler = FatFreeCRM::Dropbox.new
+    @crawler = FatFreeCrm::Dropbox.new
   end
 
   def mock_imap

@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http:#www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-module FatFreeCRM
+module FatFreeCrm
   module Permissions
 
     def self.included(base)
@@ -51,8 +51,8 @@ module FatFreeCRM
             order(options[:order] || "#{quoted_table_name}.id DESC").
             limit(options[:limit]) # nil selects all records
           }
-          include FatFreeCRM::Permissions::InstanceMethods
-          extend  FatFreeCRM::Permissions::SingletonMethods
+          include FatFreeCrm::Permissions::InstanceMethods
+          extend  FatFreeCrm::Permissions::SingletonMethods
         end
       end
 
@@ -104,5 +104,5 @@ module FatFreeCRM
     end
 
   end # Permissions
-end # FatFreeCRM
+end # FatFreeCrm
 
