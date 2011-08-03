@@ -14,6 +14,11 @@ gem 'will_paginate',       '>= 3.0.pre2'
 
 gem 'jeweler',             '>= 1.6.4'
 
+gem 'gravatar_image_tag',   '1.0.0'
+gem 'calendar_date_select', '1.16.1'
+gem 'dynamic_form',         '1.0.0'
+
+
 group :development, :test do
   if RUBY_VERSION.to_f >= 1.9
     gem 'ruby-debug19'

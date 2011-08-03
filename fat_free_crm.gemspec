@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Michael Dvorkin"]
-  s.date = %q{2011-08-02}
+  s.date = %q{2011-08-03}
   s.description = %q{Fat Free CRM Engine for Rails 3.}
   s.email = %q{mike@fatfreecrm.com}
   s.extra_rdoc_files = [
@@ -314,6 +314,7 @@ Gem::Specification.new do |s|
     "config/locales/en-GB.yml",
     "config/locales/en-GB_fat_free_crm.yml",
     "config/locales/en-US.yml",
+    "config/locales/en-US_dynamic_form.yml",
     "config/locales/en-US_fat_free_crm.yml",
     "config/locales/es.yml",
     "config/locales/es_fat_free_crm.yml",
@@ -476,93 +477,12 @@ Gem::Specification.new do |s|
     "public/stylesheets/rails.css",
     "public/stylesheets/safari.css",
     "public/stylesheets/screen.css",
-    "vendor/plugins/authlogic_api/LICENSE",
-    "vendor/plugins/authlogic_api/README.rdoc",
-    "vendor/plugins/authlogic_api/init.rb",
-    "vendor/plugins/authlogic_api/lib/authlogic_api.rb",
-    "vendor/plugins/authlogic_api/lib/authlogic_api/acts_as_authentic.rb",
-    "vendor/plugins/authlogic_api/lib/authlogic_api/session.rb",
-    "vendor/plugins/calendar_date_select/History.txt",
-    "vendor/plugins/calendar_date_select/MIT-LICENSE",
-    "vendor/plugins/calendar_date_select/Manifest.txt",
-    "vendor/plugins/calendar_date_select/README.txt",
-    "vendor/plugins/calendar_date_select/Rakefile",
-    "vendor/plugins/calendar_date_select/VERSION",
-    "vendor/plugins/calendar_date_select/calendar_date_select.gemspec",
-    "vendor/plugins/calendar_date_select/init.rb",
-    "vendor/plugins/calendar_date_select/js_test/functional/cds_test.html",
-    "vendor/plugins/calendar_date_select/js_test/functional/format_iso_date_test.html",
-    "vendor/plugins/calendar_date_select/js_test/prototype.js",
-    "vendor/plugins/calendar_date_select/js_test/test.css",
-    "vendor/plugins/calendar_date_select/js_test/unit/cds_helper_methods.html",
-    "vendor/plugins/calendar_date_select/js_test/unittest.js",
-    "vendor/plugins/calendar_date_select/lib/calendar_date_select.rb",
-    "vendor/plugins/calendar_date_select/lib/calendar_date_select/calendar_date_select.rb",
-    "vendor/plugins/calendar_date_select/lib/calendar_date_select/form_helpers.rb",
-    "vendor/plugins/calendar_date_select/lib/calendar_date_select/includes_helper.rb",
-    "vendor/plugins/calendar_date_select/public/blank_iframe.html",
-    "vendor/plugins/calendar_date_select/public/images/calendar_date_select/calendar.gif",
-    "vendor/plugins/calendar_date_select/public/javascripts/calendar_date_select/calendar_date_select.js",
-    "vendor/plugins/calendar_date_select/public/javascripts/calendar_date_select/format_american.js",
-    "vendor/plugins/calendar_date_select/public/javascripts/calendar_date_select/format_danish.js",
-    "vendor/plugins/calendar_date_select/public/javascripts/calendar_date_select/format_db.js",
-    "vendor/plugins/calendar_date_select/public/javascripts/calendar_date_select/format_euro_24hr.js",
-    "vendor/plugins/calendar_date_select/public/javascripts/calendar_date_select/format_euro_24hr_ymd.js",
-    "vendor/plugins/calendar_date_select/public/javascripts/calendar_date_select/format_finnish.js",
-    "vendor/plugins/calendar_date_select/public/javascripts/calendar_date_select/format_hyphen_ampm.js",
-    "vendor/plugins/calendar_date_select/public/javascripts/calendar_date_select/format_iso_date.js",
-    "vendor/plugins/calendar_date_select/public/javascripts/calendar_date_select/format_italian.js",
-    "vendor/plugins/calendar_date_select/public/javascripts/calendar_date_select/locale/ar.js",
-    "vendor/plugins/calendar_date_select/public/javascripts/calendar_date_select/locale/da.js",
-    "vendor/plugins/calendar_date_select/public/javascripts/calendar_date_select/locale/de.js",
-    "vendor/plugins/calendar_date_select/public/javascripts/calendar_date_select/locale/es.js",
-    "vendor/plugins/calendar_date_select/public/javascripts/calendar_date_select/locale/fi.js",
-    "vendor/plugins/calendar_date_select/public/javascripts/calendar_date_select/locale/fr.js",
-    "vendor/plugins/calendar_date_select/public/javascripts/calendar_date_select/locale/it.js",
-    "vendor/plugins/calendar_date_select/public/javascripts/calendar_date_select/locale/ja.js",
-    "vendor/plugins/calendar_date_select/public/javascripts/calendar_date_select/locale/nl.js",
-    "vendor/plugins/calendar_date_select/public/javascripts/calendar_date_select/locale/pl.js",
-    "vendor/plugins/calendar_date_select/public/javascripts/calendar_date_select/locale/pt.js",
-    "vendor/plugins/calendar_date_select/public/javascripts/calendar_date_select/locale/ru.js",
-    "vendor/plugins/calendar_date_select/public/javascripts/calendar_date_select/locale/sl.js",
-    "vendor/plugins/calendar_date_select/public/javascripts/calendar_date_select/locale/sv.js",
-    "vendor/plugins/calendar_date_select/public/stylesheets/calendar_date_select/blue.css",
-    "vendor/plugins/calendar_date_select/public/stylesheets/calendar_date_select/default.css",
-    "vendor/plugins/calendar_date_select/public/stylesheets/calendar_date_select/green.css",
-    "vendor/plugins/calendar_date_select/public/stylesheets/calendar_date_select/plain.css",
-    "vendor/plugins/calendar_date_select/public/stylesheets/calendar_date_select/red.css",
-    "vendor/plugins/calendar_date_select/public/stylesheets/calendar_date_select/silver.css",
-    "vendor/plugins/calendar_date_select/spec/calendar_date_select/calendar_date_select_spec.rb",
-    "vendor/plugins/calendar_date_select/spec/calendar_date_select/form_helpers_spec.rb",
-    "vendor/plugins/calendar_date_select/spec/calendar_date_select/includes_helper_spec.rb",
-    "vendor/plugins/calendar_date_select/spec/spec_helper.rb",
     "vendor/plugins/country_select/MIT-LICENSE",
     "vendor/plugins/country_select/README",
     "vendor/plugins/country_select/init.rb",
     "vendor/plugins/country_select/install.rb",
     "vendor/plugins/country_select/lib/country_select.rb",
     "vendor/plugins/country_select/uninstall.rb",
-    "vendor/plugins/dynamic_form/MIT-LICENSE",
-    "vendor/plugins/dynamic_form/README",
-    "vendor/plugins/dynamic_form/Rakefile",
-    "vendor/plugins/dynamic_form/dynamic_form.gemspec",
-    "vendor/plugins/dynamic_form/init.rb",
-    "vendor/plugins/dynamic_form/lib/action_view/helpers/dynamic_form.rb",
-    "vendor/plugins/dynamic_form/lib/action_view/locale/en-US.yml",
-    "vendor/plugins/dynamic_form/lib/dynamic_form.rb",
-    "vendor/plugins/dynamic_form/test/dynamic_form_i18n_test.rb",
-    "vendor/plugins/dynamic_form/test/dynamic_form_test.rb",
-    "vendor/plugins/dynamic_form/test/test_helper.rb",
-    "vendor/plugins/gravatar_image_tag/Gemfile",
-    "vendor/plugins/gravatar_image_tag/README.textile",
-    "vendor/plugins/gravatar_image_tag/ROADMAP.textile",
-    "vendor/plugins/gravatar_image_tag/Rakefile",
-    "vendor/plugins/gravatar_image_tag/VERSION",
-    "vendor/plugins/gravatar_image_tag/gravatar_image_tag.gemspec",
-    "vendor/plugins/gravatar_image_tag/init.rb",
-    "vendor/plugins/gravatar_image_tag/lib/gravatar_image_tag.rb",
-    "vendor/plugins/gravatar_image_tag/spec/gravatar_image_tag_spec.rb",
-    "vendor/plugins/gravatar_image_tag/spec/test_helper.rb",
     "vendor/plugins/prototype_legacy_helper/README.rdoc",
     "vendor/plugins/prototype_legacy_helper/Rakefile",
     "vendor/plugins/prototype_legacy_helper/init.rb",
@@ -597,6 +517,9 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<paperclip>, [">= 0"])
       s.add_runtime_dependency(%q<will_paginate>, [">= 3.0.pre2"])
       s.add_runtime_dependency(%q<jeweler>, [">= 1.6.4"])
+      s.add_runtime_dependency(%q<gravatar_image_tag>, ["= 1.0.0"])
+      s.add_runtime_dependency(%q<calendar_date_select>, ["= 1.16.1"])
+      s.add_runtime_dependency(%q<dynamic_form>, ["= 1.0.0"])
       s.add_development_dependency(%q<ruby-debug19>, [">= 0"])
       s.add_development_dependency(%q<annotate>, [">= 2.4.0"])
       s.add_development_dependency(%q<awesome_print>, [">= 0.3.1"])
@@ -615,6 +538,9 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<paperclip>, [">= 0"])
       s.add_dependency(%q<will_paginate>, [">= 3.0.pre2"])
       s.add_dependency(%q<jeweler>, [">= 1.6.4"])
+      s.add_dependency(%q<gravatar_image_tag>, ["= 1.0.0"])
+      s.add_dependency(%q<calendar_date_select>, ["= 1.16.1"])
+      s.add_dependency(%q<dynamic_form>, ["= 1.0.0"])
       s.add_dependency(%q<ruby-debug19>, [">= 0"])
       s.add_dependency(%q<annotate>, [">= 2.4.0"])
       s.add_dependency(%q<awesome_print>, [">= 0.3.1"])
@@ -634,6 +560,9 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<paperclip>, [">= 0"])
     s.add_dependency(%q<will_paginate>, [">= 3.0.pre2"])
     s.add_dependency(%q<jeweler>, [">= 1.6.4"])
+    s.add_dependency(%q<gravatar_image_tag>, ["= 1.0.0"])
+    s.add_dependency(%q<calendar_date_select>, ["= 1.16.1"])
+    s.add_dependency(%q<dynamic_form>, ["= 1.0.0"])
     s.add_dependency(%q<ruby-debug19>, [">= 0"])
     s.add_dependency(%q<annotate>, [">= 2.4.0"])
     s.add_dependency(%q<awesome_print>, [">= 0.3.1"])
