@@ -1,3 +1,3 @@
-require File.join(File.dirname(__FILE__), 'lib', 'prototype_helper')
+require 'prototype_helper'
 ActionController::Base.helper PrototypeHelper
 

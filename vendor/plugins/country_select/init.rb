@@ -1,2 +1,2 @@
-require File.join(File.dirname(__FILE__), 'lib', 'country_select')
+require 'country_select'
 
