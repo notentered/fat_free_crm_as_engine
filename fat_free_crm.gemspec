@@ -32,7 +32,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency(%q<authlogic>, [">= 0"])
   s.add_runtime_dependency(%q<haml>, [">= 3.1.1"])
   s.add_runtime_dependency(%q<sass>, [">= 3.1.1"])
-  s.add_runtime_dependency(%q<paperclip>, [">= 0"])
+  s.add_runtime_dependency(%q<paperclip>, [">= 2.3.3"])
   s.add_runtime_dependency(%q<will_paginate>, [">= 3.0.pre2"])
   s.add_runtime_dependency(%q<jeweler>, [">= 1.6.4"])
   s.add_runtime_dependency(%q<gravatar_image_tag>, ["= 1.0.0"])
