@@ -3,14 +3,6 @@
     %table
       %tr
         %td
-          .label.top #{t :salutation}:
-          = f.text_field :salutation
-        %td= spacer
-        %td
-          .label.top #{t :chinese_name}:
-          = f.text_field :chinese_name
-      %tr
-        %td
           .label.top.req #{t :first_name}:
           = f.text_field :first_name
         %td= spacer
@@ -59,3 +51,4 @@
               = f.text_area :background_info, :style =>"width:500px", :rows => 3
 
         = hook(:contact_top_section_bottom, self, :f => f)
+
