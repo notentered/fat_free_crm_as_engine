@@ -29,7 +29,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency(%q<rails>, ["= 3.0.7"])
   s.add_runtime_dependency(%q<rake>, ["= 0.8.7"])
   s.add_runtime_dependency(%q<acts_as_commentable>, [">= 3.0.1"])
-  s.add_runtime_dependency(%q<authlogic>, [">= 0"])
   s.add_runtime_dependency(%q<haml>, [">= 3.1.1"])
   s.add_runtime_dependency(%q<sass>, [">= 3.1.1"])
   s.add_runtime_dependency(%q<paperclip>, [">= 2.3.3"])
