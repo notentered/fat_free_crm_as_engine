@@ -32,7 +32,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency(%q<haml>, [">= 3.1.1"])
   s.add_runtime_dependency(%q<sass>, [">= 3.1.1"])
   s.add_runtime_dependency(%q<paperclip>, [">= 2.3.3"])
-  s.add_runtime_dependency(%q<will_paginate>, ["= 3.0.pre2"])
+  s.add_runtime_dependency(%q<will_paginate>, [">= 3.0.pre4"])
   s.add_runtime_dependency(%q<jeweler>, [">= 1.6.4"])
   s.add_runtime_dependency(%q<calendar_date_select>, ["= 1.16.1"])
   s.add_runtime_dependency(%q<dynamic_form>, ["= 1.0.0"])
