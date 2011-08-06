@@ -26,14 +26,13 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_runtime_dependency(%q<rails>, ["= 3.0.7"])
+  s.add_runtime_dependency(%q<rails>, ["= 3.0.8"])
   s.add_runtime_dependency(%q<rake>, ["= 0.8.7"])
   s.add_runtime_dependency(%q<acts_as_commentable>, [">= 3.0.1"])
   s.add_runtime_dependency(%q<haml>, [">= 3.1.1"])
   s.add_runtime_dependency(%q<sass>, [">= 3.1.1"])
   s.add_runtime_dependency(%q<paperclip>, [">= 2.3.3"])
-  s.add_runtime_dependency(%q<will_paginate>, [">= 3.0.pre4"])
-  s.add_runtime_dependency(%q<jeweler>, [">= 1.6.4"])
+  s.add_runtime_dependency(%q<will_paginate>, [">= 3.0.pre2"])
   s.add_runtime_dependency(%q<calendar_date_select>, ["= 1.16.1"])
   s.add_runtime_dependency(%q<dynamic_form>, ["= 1.0.0"])
   s.add_development_dependency(%q<ruby-debug19>, [">= 0"])
