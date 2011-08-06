@@ -1,4 +1,15 @@
-require "rails"
+require 'yaml'
+YAML::ENGINE.yamler = 'syck'
+
+require "rails/all"
+
+require 'acts_as_commentable'
+require 'haml'
+require 'sass'
+require 'paperclip'
+require 'will_paginate'
+require 'calendar_date_select'
+require 'dynamic_form'
 
 module FatFreeCrm
   class Engine < Rails::Engine
