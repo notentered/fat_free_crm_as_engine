@@ -21,6 +21,7 @@ class FatFreeCrm::BaseController < ActionController::Base
 
   helper :addresses
   helper :leads
+  helper :tasks
   helper :users
 
   helper_method :current_user_session, :current_user, :can_signup?
