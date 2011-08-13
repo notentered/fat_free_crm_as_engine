@@ -1,3 +1,9 @@
+== NOTE: This branch is currently a proof of concept.
+
+We are entirely sure about the merits of Fat Free CRM as a Rails Engine.
+Any suggestions or contributions would be gladly welcomed.
+
+
 === Welcome to Fat Free CRM!
 
 Fat Free CRM is next generation open source CRM platform. Active development
