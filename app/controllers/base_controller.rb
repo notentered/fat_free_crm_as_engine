@@ -103,12 +103,6 @@ class BaseController < ApplicationController
     end
   end
 
-  protected
-
-  def responder
-    FFCrmResponder
-  end
-
   private
 
   # Get list of records for a given model class.
