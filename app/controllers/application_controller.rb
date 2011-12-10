@@ -31,81 +31,6 @@ class ApplicationController < ActionController::Base
   # Uncomment the :secret if you're not using the cookie session store
   # protect_from_forgery # :secret => '165eb65bfdacf95923dad9aea10cc64a'
 
-  # Common auto_complete handler for all core controllers.
-  #----------------------------------------------------------------------------
-  def auto_complete
-    @query = params[:auto_complete_query]
-    @auto_complete = hook(:auto_complete, self, :query => @query, :user => @current_user)
-    if @auto_complete.empty?
-      @auto_complete = controller_name.classify.constantize.my.search(@query).limit(10)
-    else
-      @auto_complete = @auto_complete.last
-    end
-    session[:auto_complete] = controller_name.to_sym
-    render "shared/auto_complete", :layout => nil
-  end
-
-  # Common attach handler for all core controllers.
-  #----------------------------------------------------------------------------
-  def attach
-    model = controller_name.classify.constantize.my.find(params[:id])
-    @attachment = params[:assets].classify.constantize.find(params[:asset_id])
-    @attached = model.attach!(@attachment)
-    @account  = model.reload if model.is_a?(Account)
-    @campaign = model.reload if model.is_a?(Campaign)
-
-    respond_to do |format|
-      format.js   { render "shared/attach" }
-      format.json { render :json => model.reload }
-      format.xml  { render :xml => model.reload }
-    end
-
-  rescue ActiveRecord::RecordNotFound
-    respond_to_not_found(:html, :js, :json, :xml)
-  end
-
-  # Common discard handler for all core controllers.
-  #----------------------------------------------------------------------------
-  def discard
-    model = controller_name.classify.constantize.my.find(params[:id])
-    @attachment = params[:attachment].constantize.find(params[:attachment_id])
-    model.discard!(@attachment)
-    @account  = model.reload if model.is_a?(Account)
-    @campaign = model.reload if model.is_a?(Campaign)
-
-    respond_to do |format|
-      format.js   { render "shared/discard" }
-      format.json { render :json => model.reload }
-      format.xml  { render :xml => model.reload }
-    end
-
-  rescue ActiveRecord::RecordNotFound
-    respond_to_not_found(:html, :js, :json, :xml)
-  end
-
-  def timeline(asset)
-    (asset.comments + asset.emails).sort { |x, y| y.created_at <=> x.created_at }
-  end
-
-  # Controller instance method that responds to /controlled/tagged/tag request.
-  # It stores given tag as current query and redirect to index to display all
-  # records tagged with the tag.
-  #----------------------------------------------------------------------------
-  def tagged
-    self.send(:current_query=, "#" << params[:id]) unless params[:id].blank?
-    redirect_to :action => "index"
-  end
-
-  def field_group
-    if @tag = ActsAsTaggableOn::Tag.find_by_name(params[:tag].strip)
-      klass = controller_name.classify.constantize
-      if @field_group = FieldGroup.find_by_klass_name_and_tag_id(klass.name, @tag.id)
-        @asset = klass.find_by_id(params[:asset_id]) || klass.new
-        render 'fields/group' and return
-      end
-    end
-    render :text => ''
-  end
 private
   #----------------------------------------------------------------------------
   def set_context
@@ -245,43 +170,6 @@ private
       format.json { render :text => flash[:warning], :status => :not_found } if types.include?(:json)
       format.xml  { render :text => flash[:warning], :status => :not_found } if types.include?(:xml)
     end
-  end
-
-  # Get list of records for a given model class.
-  #----------------------------------------------------------------------------
-  def get_list_of_records(klass, options = {})
-    items = klass.name.tableize
-    options[:query] ||= params[:query]                        if params[:query]
-    self.current_page = options[:page]                        if options[:page]
-    query, tags       = parse_query_and_tags(options[:query]) if options[:query]
-    self.current_query = query
-
-    records = {
-      :user  => @current_user,
-      :order => @current_user.pref[:"#{items}_sort_by"] || klass.sort_by
-    }
-    pages = {
-      :page     => current_page,
-      :per_page => @current_user.pref[:"#{items}_per_page"]
-    }
-
-    # Call the hook and return its output if any.
-    assets = hook(:"get_#{items}", self, :records => records, :pages => pages)
-    return assets.last unless assets.empty?
-
-    # Use default processing if no hooks are present. Note that comma-delimited
-    # export includes deleted records, and the pagination is enabled only for
-    # plain HTTP, Ajax and XML API requests.
-    wants = request.format
-    filter = session[options[:filter]].to_s.split(',') if options[:filter]
-
-    scope = klass.my(records)
-    scope = scope.state(filter)                   if filter.present?
-    scope = scope.search(query)                   if query.present?
-    scope = scope.tagged_with(tags, :on => :tags) if tags.present?
-    scope = scope.unscoped                        if wants.csv?
-    scope = scope.paginate(pages)                 if wants.html? || wants.js? || wants.xml?
-    scope
   end
 
   # Proxy current page for any of the controllers by storing it in a session.

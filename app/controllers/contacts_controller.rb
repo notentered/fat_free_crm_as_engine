@@ -15,46 +15,26 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-class ContactsController < ApplicationController
-  before_filter :require_user
-  before_filter :set_current_tab, :only => [ :index, :show ]
-  after_filter  :update_recently_viewed, :only => :show
+class ContactsController < BaseController
 
   # GET /contacts
-  # GET /contacts.json
-  # GET /contacts.xml                                             AJAX and HTML
   #----------------------------------------------------------------------------
   def index
     @contacts = get_contacts(:page => params[:page])
-
-    respond_to do |format|
-      format.html # index.html.haml
-      format.js   # index.js.rjs
-      format.json { render :json => @contacts }
-      format.xml  { render :xml => @contacts }
-      format.xls  { send_data @contacts.to_xls, :type => :xls }
-      format.csv  { send_data @contacts.to_csv, :type => :csv }
-      format.rss  { render "shared/index.rss.builder" }
-      format.atom { render "shared/index.atom.builder" }
-    end
+    respond_with(@contacts)
   end
 
   # GET /contacts/1
-  # GET /contacts/1.json
-  # GET /contacts/1.xml                                                    HTML
   #----------------------------------------------------------------------------
   def show
     @contact = Contact.my.find(params[:id])
 
-    respond_to do |format|
+    respond_with(@contact) do |format|
       format.html do
         @stage = Setting.unroll(:opportunity_stage)
         @comment = Comment.new
-
         @timeline = timeline(@contact)
       end
-      format.json { render :json => @contact }
-      format.xml  { render :xml => @contact }
     end
 
   rescue ActiveRecord::RecordNotFound
@@ -62,8 +42,6 @@ class ContactsController < ApplicationController
   end
 
   # GET /contacts/new
-  # GET /contacts/new.json
-  # GET /contacts/new.xml                                                  AJAX
   #----------------------------------------------------------------------------
   def new
     @contact  = Contact.new(:user => @current_user, :access => Setting.default_access)
@@ -74,12 +52,7 @@ class ContactsController < ApplicationController
       model, id = params[:related].split("_")
       instance_variable_set("@#{model}", model.classify.constantize.my.find(id))
     end
-
-    respond_to do |format|
-      format.js   # new.js.rjs
-      format.json { render :json => @contact }
-      format.xml  { render :xml => @contact }
-    end
+    respond_with(@contact)
 
   rescue ActiveRecord::RecordNotFound # Kicks in if related asset was not found.
     respond_to_related_not_found(model, :js) if model
@@ -95,6 +68,7 @@ class ContactsController < ApplicationController
     if params[:previous].to_s =~ /(\d+)\z/
       @previous = Contact.my.find($1)
     end
+    respond_with(@contact)
 
   rescue ActiveRecord::RecordNotFound
     @previous ||= $1.to_i
@@ -102,18 +76,13 @@ class ContactsController < ApplicationController
   end
 
   # POST /contacts
-  # POST /contacts.json
-  # POST /contacts.xml                                                     AJAX
   #----------------------------------------------------------------------------
   def create
     @contact = Contact.new(params[:contact])
 
-    respond_to do |format|
+    respond_with(@contact) do |format|
       if @contact.save_with_account_and_permissions(params)
         @contacts = get_contacts if called_from_index_page?
-        format.js   # create.js.rjs
-        format.json { render :json => @contact, :status => :created, :location => @contact }
-        format.xml  { render :xml => @contact, :status => :created, :location => @contact }
       else
         @users = User.except(@current_user)
         @accounts = Account.my.order("name")
@@ -127,26 +96,17 @@ class ContactsController < ApplicationController
           end
         end
         @opportunity = Opportunity.find(params[:opportunity]) unless params[:opportunity].blank?
-        format.js   # create.js.rjs
-        format.json { render :json => @contact.errors, :status => :unprocessable_entity }
-        format.xml  { render :xml => @contact.errors, :status => :unprocessable_entity }
       end
     end
   end
 
   # PUT /contacts/1
-  # PUT /contacts/1.json
-  # PUT /contacts/1.xml                                                    AJAX
   #----------------------------------------------------------------------------
   def update
     @contact = Contact.my.find(params[:id])
 
-    respond_to do |format|
-      if @contact.update_with_account_and_permissions(params)
-        format.js
-        format.json { head :ok }
-        format.xml  { head :ok }
-      else
+    respond_with(@contact) do |format|
+      unless @contact.update_with_account_and_permissions(params)
         @users = User.except(@current_user)
         @accounts = Account.my.order("name")
         if @contact.account
@@ -154,9 +114,6 @@ class ContactsController < ApplicationController
         else
           @account = Account.new(:user => @current_user)
         end
-        format.js
-        format.json { render :json => @contact.errors, :status => :unprocessable_entity }
-        format.xml  { render :xml => @contact.errors, :status => :unprocessable_entity }
       end
     end
 
@@ -165,18 +122,14 @@ class ContactsController < ApplicationController
   end
 
   # DELETE /contacts/1
-  # DELETE /contacts/1.json
-  # DELETE /contacts/1.xml                                        HTML and AJAX
   #----------------------------------------------------------------------------
   def destroy
     @contact = Contact.my.find(params[:id])
     @contact.destroy if @contact
 
-    respond_to do |format|
+    respond_with(@contact) do |format|
       format.html { respond_to_destroy(:html) }
       format.js   { respond_to_destroy(:ajax) }
-      format.json { head :ok }
-      format.xml  { head :ok }
     end
 
   rescue ActiveRecord::RecordNotFound
@@ -184,12 +137,10 @@ class ContactsController < ApplicationController
   end
 
   # PUT /contacts/1/attach
-  # PUT /contacts/1/attach.xml                                             AJAX
   #----------------------------------------------------------------------------
   # Handled by ApplicationController :attach
 
   # POST /contacts/1/discard
-  # POST /contacts/1/discard.xml                                           AJAX
   #----------------------------------------------------------------------------
   # Handled by ApplicationController :discard
 
@@ -261,6 +212,4 @@ class ContactsController < ApplicationController
       redirect_to contacts_path
     end
   end
-
 end
-
