@@ -38,6 +38,8 @@ group :development, :test do
   gem 'rspec-rails',        '>= 2.5.0'
   gem 'ffaker',             '>= 1.5.0'
   gem 'factory_girl',       '>= 1.3.3'
+  gem 'steak',              '~> 2.0.0'
+  gem 'headless',           '~> 0.2.2'    
 end
 
 group :test do
