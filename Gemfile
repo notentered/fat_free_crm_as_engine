@@ -19,6 +19,7 @@ gem 'simple_form',         '~> 1.5.2'
 gem 'prototype-rails',     '>= 3.1.0'
 gem 'ffaker',              '>= 1.5.0' # For demo data
 gem 'uglifier'
+gem 'ransack'
 
 # Gems used only for assets and not required
 # in production environments by default.

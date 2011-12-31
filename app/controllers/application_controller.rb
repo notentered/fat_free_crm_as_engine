@@ -251,9 +251,9 @@ private
   #----------------------------------------------------------------------------
   def get_list_of_records(klass, options = {})
     items = klass.name.tableize
-    options[:query] ||= params[:query]                        if params[:query]
-    self.current_page = options[:page]                        if options[:page]
-    query, tags       = parse_query_and_tags(options[:query]) if options[:query]
+    options[:query]  ||= params[:query]                        if params[:query]
+    self.current_page  = options[:page]                        if options[:page]
+    query, tags        = parse_query_and_tags(options[:query]) if options[:query]
     self.current_query = query
 
     records = {
@@ -277,7 +277,8 @@ private
 
     scope = klass.my(records)
     scope = scope.state(filter)                   if filter.present?
-    scope = scope.search(query)                   if query.present?
+    scope = scope.search(params[:q])              if params[:q].present?
+    scope = scope.text_search(query)              if query.present?
     scope = scope.tagged_with(tags, :on => :tags) if tags.present?
     scope = scope.unscoped                        if wants.csv?
     scope = scope.paginate(pages)                 if wants.html? || wants.js? || wants.xml?
