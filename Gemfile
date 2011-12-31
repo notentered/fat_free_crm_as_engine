@@ -39,13 +39,14 @@ group :development, :test do
   gem 'ffaker',             '>= 1.5.0'
   gem 'factory_girl',       '>= 1.3.3'
   gem 'steak',              '~> 2.0.0'
-  gem 'headless',           '~> 0.2.2'    
+  gem 'headless',           '~> 0.2.2'
 end
 
 group :test do
   gem 'factory_girl_rails', '~> 1.4.0'
   gem 'simplecov', :platform => :mri_19
   gem 'fuubar'
+  gem 'database_cleaner'
 end
 
 group :heroku do
