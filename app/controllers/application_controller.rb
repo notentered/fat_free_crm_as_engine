@@ -31,6 +31,7 @@ class ApplicationController < ActionController::Base
   # Uncomment the :secret if you're not using the cookie session store
   # protect_from_forgery # :secret => '165eb65bfdacf95923dad9aea10cc64a'
 
+<<<<<<< HEAD
   def klass
     @klass ||= controller_name.classify.constantize
   end
@@ -109,6 +110,8 @@ class ApplicationController < ActionController::Base
     end
     render :text => ''
   end
+=======
+>>>>>>> dry_controllers
 private
   #----------------------------------------------------------------------------
   def set_context
@@ -248,44 +251,6 @@ private
       format.json { render :text => flash[:warning], :status => :not_found } if types.include?(:json)
       format.xml  { render :text => flash[:warning], :status => :not_found } if types.include?(:xml)
     end
-  end
-
-  # Get list of records for a given model class.
-  #----------------------------------------------------------------------------
-  def get_list_of_records(klass, options = {})
-    items = klass.name.tableize
-    options[:query]  ||= params[:query]                        if params[:query]
-    self.current_page  = options[:page]                        if options[:page]
-    query, tags        = parse_query_and_tags(options[:query]) if options[:query]
-    self.current_query = query
-
-    records = {
-      :user  => @current_user,
-      :order => @current_user.pref[:"#{items}_sort_by"] || klass.sort_by
-    }
-    pages = {
-      :page     => current_page,
-      :per_page => @current_user.pref[:"#{items}_per_page"]
-    }
-
-    # Call the hook and return its output if any.
-    assets = hook(:"get_#{items}", self, :records => records, :pages => pages)
-    return assets.last unless assets.empty?
-
-    # Use default processing if no hooks are present. Note that comma-delimited
-    # export includes deleted records, and the pagination is enabled only for
-    # plain HTTP, Ajax and XML API requests.
-    wants = request.format
-    filter = session[options[:filter]].to_s.split(',') if options[:filter]
-
-    scope = klass.my(records)
-    scope = scope.state(filter)                   if filter.present?
-    scope = scope.search(params[:q]).result       if params[:q].present?
-    scope = scope.text_search(query)              if query.present?
-    scope = scope.tagged_with(tags, :on => :tags) if tags.present?
-    scope = scope.unscoped                        if wants.csv?
-    scope = scope.paginate(pages)                 if wants.html? || wants.js? || wants.xml?
-    scope
   end
 
   # Proxy current page for any of the controllers by storing it in a session.
