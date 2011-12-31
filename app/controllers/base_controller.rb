@@ -135,7 +135,7 @@ class BaseController < ApplicationController
 
     scope = klass.my(records)
     scope = scope.state(filter)                   if filter.present?
-    scope = scope.search(params[:q])              if params[:q].present?
+    scope = scope.search(params[:q]).result       if params[:q].present?
     scope = scope.text_search(query)              if query.present?
     scope = scope.tagged_with(tags, :on => :tags) if tags.present?
     scope = scope.unscoped                        if wants.csv?
