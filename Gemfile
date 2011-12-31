@@ -50,6 +50,7 @@ group :test do
   gem 'factory_girl_rails', '~> 1.4.0'
   gem 'simplecov', :platform => :mri_19 unless ENV["CI"]  # Until Travis supports build artifacts
   gem 'fuubar'
+  gem 'database_cleaner'
 end
 
 # For annotating models with Schema information
