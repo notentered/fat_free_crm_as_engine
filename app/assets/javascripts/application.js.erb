@@ -23,10 +23,19 @@
 //= require modalbox
 //= require facebooklist
 //= require facebooklist.simulate
+//= require crm_classes
+//= require crm_loginout
+//= require crm_fields
+//= require calendar_date_select/calendar_date_select
 //= require jquery
 //= require search
-
 jQuery.noConflict();
+
+<%
+FatFreeCRM::Plugin.list_ids.each do |plugin|
+  require_asset(plugin.to_s) rescue Sprockets::FileNotFound
+end
+%>
 
 var fbtaglist = null;
 
