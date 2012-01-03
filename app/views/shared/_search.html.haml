@@ -12,7 +12,7 @@
 
 %h4 Advanced search
 
-- @search ||= @klass.search(params[:q])
+- @search ||= klass.search(params[:q])
 = search_form_for @search, :url => url_for(:action => :index), :html => {:method => :get} do |f|
 
   :javascript
