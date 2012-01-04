@@ -18,7 +18,7 @@
     (function($) {
       $(document).ready(function() {
         var search = new Search({
-          grouping: "#{escape_javascript(template_fields(f, :grouping))}"
+          grouping: "#{j template_fields(f, :grouping)}"
         });
         $('button.add_fields').live('click', function() {
           search.add_fields(this, $(this).data('fieldType'), $(this).data('content'));
@@ -34,13 +34,6 @@
         });
       });
     })(jQuery);
-
-  %fieldset
-    %legend Sorting
-    = f.sort_fields do |s|
-      = render 'sort_fields', :f => s
-
-    = button_to_add_fields "Add Sort", f, :sort
 
   %fieldset
     %legend Condition Groups
