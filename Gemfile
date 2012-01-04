@@ -20,6 +20,7 @@ gem 'prototype-rails',     '>= 3.1.0'
 gem 'ffaker',              '>= 1.5.0' # For demo data
 gem 'uglifier'
 gem 'ransack'
+gem 'jquery-rails'
 
 # Gems used only for assets and not required
 # in production environments by default.

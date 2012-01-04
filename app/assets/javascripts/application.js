@@ -23,6 +23,10 @@
 //= require modalbox
 //= require facebooklist
 //= require facebooklist.simulate
+//= require jquery
+//= require search
+
+jQuery.noConflict();
 
 var fbtaglist = null;
 
