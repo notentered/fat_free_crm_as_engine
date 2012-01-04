@@ -20,6 +20,7 @@ gem 'simple_form',         '~> 1.5.2'
 gem 'ffaker',              '~> 1.11.0' # For loading demo data
 gem 'uglifier'
 gem 'ransack'
+gem 'jquery-rails'
 
 group :heroku do
   gem 'unicorn', :platform => :ruby

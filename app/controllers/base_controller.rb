@@ -86,7 +86,7 @@ class BaseController < ApplicationController
   # records tagged with the tag.
   #----------------------------------------------------------------------------
   def tagged
-    self.send(:current_query=, "#" << params[:id]) unless params[:id].blank?
+    self.current_query = "##{params[:id]}" unless params[:id].blank?
     redirect_to :action => "index"
   end
 
@@ -114,6 +114,9 @@ class BaseController < ApplicationController
     query, tags        = parse_query_and_tags(options[:query]) if options[:query]
     self.current_query = query
 
+    @search = klass.search(params[:q])
+    @search.build_grouping unless @search.groupings.any?
+
     records = {
       :user  => @current_user,
       :order => @current_user.pref[:"#{items}_sort_by"] || klass.sort_by
@@ -134,8 +137,8 @@ class BaseController < ApplicationController
     filter = session[options[:filter]].to_s.split(',') if options[:filter]
 
     scope = klass.my(records)
+    scope = scope.merge(@search.result)
     scope = scope.state(filter)                   if filter.present?
-    scope = scope.search(params[:q]).result       if params[:q].present?
     scope = scope.text_search(query)              if query.present?
     scope = scope.tagged_with(tags, :on => :tags) if tags.present?
     scope = scope.unscoped                        if wants.csv?

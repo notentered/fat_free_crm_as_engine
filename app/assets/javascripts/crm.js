@@ -483,5 +483,3 @@ document.on("click", "*[data-tab-class]", function(event, element) {
   $(klass + "_section").show();
   element.addClassName('selected');
 });
-
-
