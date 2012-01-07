@@ -42,7 +42,7 @@ class BaseController < ApplicationController
   # Common attach handler for all core controllers.
   #----------------------------------------------------------------------------
   def attach
-    model = controller_name.classify.constantize.my.find(params[:id])
+    model = klass.my.find(params[:id])
     @attachment = params[:assets].classify.constantize.find(params[:asset_id])
     @attached = model.attach!(@attachment)
     @account  = model.reload if model.is_a?(Account)
@@ -61,7 +61,7 @@ class BaseController < ApplicationController
   # Common discard handler for all core controllers.
   #----------------------------------------------------------------------------
   def discard
-    model = controller_name.classify.constantize.my.find(params[:id])
+    model = klass.my.find(params[:id])
     @attachment = params[:attachment].constantize.find(params[:attachment_id])
     model.discard!(@attachment)
     @account  = model.reload if model.is_a?(Account)
@@ -94,7 +94,6 @@ class BaseController < ApplicationController
     if @tag = ActsAsTaggableOn::Tag.find_by_name(params[:tag].strip) and
        @field_group = FieldGroup.find_by_tag_id(@tag.id)
 
-      klass = controller_name.classify.constantize
       @asset = klass.find_by_id(params[:asset_id]) || klass.new
 
       render 'fields/group'
