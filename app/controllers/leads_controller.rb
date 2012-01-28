@@ -203,7 +203,7 @@ class LeadsController < BaseController
   #----------------------------------------------------------------------------
   def get_data_for_sidebar(related = false)
     if related
-      instance_variable_set("@#{related}", @lead.send(related)) if called_from_landing_page?(related.to_s.pluralize)
+      instance_variable_set("@#{related}", @asset.send(related)) if called_from_landing_page?(related.to_s.pluralize)
     else
       @lead_status_total = { :all => Lead.my.count, :other => 0 }
       Setting.lead_status.each do |key|

@@ -156,7 +156,7 @@ class OpportunitiesController < BaseController
   #----------------------------------------------------------------------------
   def get_data_for_sidebar(related = false)
     if related
-      instance_variable_set("@#{related}", @opportunity.send(related)) if called_from_landing_page?(related.to_s.pluralize)
+      instance_variable_set("@#{related}", @asset.send(related)) if called_from_landing_page?(related.to_s.pluralize)
     else
       @opportunity_stage_total = { :all => Opportunity.my.count, :other => 0 }
       @stage.each do |value, key|
