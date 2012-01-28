@@ -1,12 +1,12 @@
-id = called_from_landing_page? ? "edit_contact" : dom_id(@contact)
+id = called_from_landing_page? ? "edit_contact" : dom_id(@asset)
 
-if @contact.errors.empty?
+if @asset.errors.empty?
   if called_from_landing_page?
     page.call "crm.flip_form", :edit_contact
-    page.call "crm.set_title", :edit_contact, @contact.full_name
+    page.call "crm.set_title", :edit_contact, @asset.full_name
     page << refresh_sidebar(:show, :summary)
   else
-    page[id].replace :partial => "contact", :collection => [ @contact ]
+    page[id].replace :partial => "contact", :collection => [ @asset ]
     page[id].visual_effect :highlight, :duration => 1.0
     if called_from_index_page?
       page << refresh_sidebar(:index)

@@ -1,41 +1,41 @@
 .panel#summary
-  %span{:style => "float:right"}= gravatar_for(@contact, :size => "50x50")
-  %h4= h(@contact.full_name)
-  - if !@contact.title.blank? && @contact.account
+  %span{:style => "float:right"}= gravatar_for(@asset, :size => "50x50")
+  %h4= h(@asset.full_name)
+  - if !@asset.title.blank? && @asset.account
     -# works_at: "{{h(job_title)}} at {{h(company)}}"
-    %div= t(:works_at, :job_title => h(@contact.title), :company => link_to(h(@contact.account.name), account_path(@contact.account))).html_safe
-  - elsif !@contact.title.blank?
-    %div= h(@contact.title)
-  - elsif @contact.account
-    %div= link_to(h(@contact.account.name), account_path(@contact.account))
-  - unless @contact.department.blank?
-    = t(:department_small, h(@contact.department))
+    %div= t(:works_at, :job_title => h(@asset.title), :company => link_to(h(@asset.account.name), account_path(@asset.account))).html_safe
+  - elsif !@asset.title.blank?
+    %div= h(@asset.title)
+  - elsif @asset.account
+    %div= link_to(h(@asset.account.name), account_path(@asset.account))
+  - unless @asset.department.blank?
+    = t(:department_small, h(@asset.department))
 
-  %div= render "shared/address_show", :asset => @contact, :type => 'business', :title => :address
+  %div= render "shared/address_show", :asset => @asset, :type => 'business', :title => :address
 
   %div
-    - unless @contact.phone.blank?
-      == #{t :phone}: <b>#{@contact.do_not_call ? content_tag(:strike, h(@contact.phone)) : h(@contact.phone)}</b><br />
-    - unless @contact.mobile.blank?
-      == #{t :mobile}: <b>#{@contact.do_not_call ? content_tag(:strike, h(@contact.mobile)) : h(@contact.mobile)}</b><br />
-    - unless @contact.fax.blank?
-      == #{t :fax}: <b>#{@contact.do_not_call ? content_tag(:strike, h(@contact.fax)) : h(@contact.fax)}</b><br />
+    - unless @asset.phone.blank?
+      == #{t :phone}: <b>#{@asset.do_not_call ? content_tag(:strike, h(@asset.phone)) : h(@asset.phone)}</b><br />
+    - unless @asset.mobile.blank?
+      == #{t :mobile}: <b>#{@asset.do_not_call ? content_tag(:strike, h(@asset.mobile)) : h(@asset.mobile)}</b><br />
+    - unless @asset.fax.blank?
+      == #{t :fax}: <b>#{@asset.do_not_call ? content_tag(:strike, h(@asset.fax)) : h(@asset.fax)}</b><br />
   %div
-    - unless @contact.email.blank?
-      == #{t :email}: <b>#{link_to_email(@contact.email)}</b><br />
-    - unless @contact.alt_email.blank?
-      == #{t :alt_email_small}: <b>#{link_to_email(@contact.alt_email)}</b><br />
+    - unless @asset.email.blank?
+      == #{t :email}: <b>#{link_to_email(@asset.email)}</b><br />
+    - unless @asset.alt_email.blank?
+      == #{t :alt_email_small}: <b>#{link_to_email(@asset.alt_email)}</b><br />
 
-  = web_presence_icons(@contact)
+  = web_presence_icons(@asset)
 
-  - unless @contact.background_info.blank?
+  - unless @asset.background_info.blank?
     .caption #{t :background_info}
-    = auto_link(simple_format @contact.background_info).html_safe
+    = auto_link(simple_format @asset.background_info).html_safe
 
-  = render "fields/sidebar_show", :asset => @contact
+  = render "fields/sidebar_show", :asset => @asset
 
-  - if @contact.tag_list.present?
+  - if @asset.tag_list.present?
     %dt
-      .tags= tags_for_index(@contact) 
+      .tags= tags_for_index(@asset) 
 
-  = hook(:show_contact_sidebar_bottom, self, :contact => @contact)
+  = hook(:show_contact_sidebar_bottom, self, :contact => @asset)

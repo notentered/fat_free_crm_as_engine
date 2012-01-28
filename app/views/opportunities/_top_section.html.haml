@@ -8,7 +8,7 @@
         %td= spacer
         %td
           .label.req.top #{t :stage}:
-          = f.select :stage, @stage, { :selected => @opportunity.stage ? @opportunity.stage.to_sym : nil }, { :style => "width:160px" }
+          = f.select :stage, @stage, { :selected => @asset.stage ? @asset.stage.to_sym : nil }, { :style => "width:160px" }
 
     %table{ :border => 0, :width => 500, :cellpadding => 0, :cellspacing => 0 }
       %tr
@@ -45,7 +45,7 @@
 
             -# Add [-- None --] account choice when editing existing opportunity that has an account.
             - options = { :selected => @account.id || 0 }
-            - options[:include_blank] = true #t(:select_none) unless @opportunity.new_record? || @opportunity.account.blank?
+            - options[:include_blank] = true #t(:select_none) unless @asset.new_record? || @asset.account.blank?
 
             = collection_select :account, :id, @accounts, :id, :name, options, { :style => "width:330px; display:none;" }
             = a.text_field :name, :style => "width:324px; display:none;"

@@ -1,6 +1,6 @@
 .remote
-  = simple_form_for(@campaign, :html => one_submit_only(:campaign), :remote => true) do |f|
-    = link_to_close edit_campaign_path(@campaign)
+  = simple_form_for(@asset, :html => one_submit_only(:campaign), :remote => true) do |f|
+    = link_to_close edit_campaign_path(@asset)
     = f.hidden_field :user_id
 
     = f.error_messages :object_name => t('campaign')
@@ -13,4 +13,4 @@
     .buttonbar
       = f.submit t(:save_campaign)
       #{t :or}
-      = link_to_cancel edit_campaign_path(@campaign)
+      = link_to_cancel edit_campaign_path(@asset)

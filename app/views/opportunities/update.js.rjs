@@ -1,12 +1,12 @@
-id = called_from_landing_page? ? "edit_opportunity" : dom_id(@opportunity)
+id = called_from_landing_page? ? "edit_opportunity" : dom_id(@asset)
 
-if @opportunity.errors.empty?
+if @asset.errors.empty?
   if called_from_landing_page?
     page.call "crm.flip_form", :edit_opportunity
-    page.call "crm.set_title", :edit_opportunity, @opportunity.name
+    page.call "crm.set_title", :edit_opportunity, @asset.name
     page << refresh_sidebar(:show, :summary)
   else
-    page[id].replace :partial => "opportunity", :collection => [ @opportunity ]
+    page[id].replace :partial => "opportunity", :collection => [ @asset ]
     page[id].visual_effect :highlight, :duration => 1.0
     if called_from_index_page?
       page << refresh_sidebar(:index, :filters)

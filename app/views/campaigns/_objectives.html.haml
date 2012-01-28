@@ -1,5 +1,5 @@
 - edit ||= false
-- collapsed = session[:campaign_objectives].nil? # && @campaign.errors.empty?
+- collapsed = session[:campaign_objectives].nil? # && @asset.errors.empty?
 = subtitle :campaign_objectives, collapsed, t(:objectives)
 .section
   %small#campaign_objectives_intro{ hidden_if(!collapsed) }
@@ -19,11 +19,11 @@
         %td= spacer
         %td
           .label #{t :revenue_label}:
-          = f.text_field :target_revenue, :value => @campaign.target_revenue ? @campaign.target_revenue.to_i : "", :style => "width:110px; text-align:right;"
+          = f.text_field :target_revenue, :value => @asset.target_revenue ? @asset.target_revenue.to_i : "", :style => "width:110px; text-align:right;"
         %td= spacer
         %td
           .label #{t :budget_label}:
-          = f.text_field :budget, :value => @campaign.budget ? @campaign.budget.to_i : "", :style => "width:110px; text-align:right;"
+          = f.text_field :budget, :value => @asset.budget ? @asset.budget.to_i : "", :style => "width:110px; text-align:right;"
       %tr
         %td{ :colspan => 7 }
           .label #{t :objectives}:

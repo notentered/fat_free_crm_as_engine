@@ -1,58 +1,58 @@
 .panel#summary
-  %span{:style => "float:right"}= gravatar_for(@lead, :size => "50x50")
-  %h4= h(@lead.full_name)
-  - if !@lead.title.blank? && !@lead.company.blank?
+  %span{:style => "float:right"}= gravatar_for(@asset, :size => "50x50")
+  %h4= h(@asset.full_name)
+  - if !@asset.title.blank? && !@asset.company.blank?
     -# works_at: "{{job_title}} at {{company}}"
-    %div= t(:works_at, :job_title => @lead.title, :company => @lead.company)
+    %div= t(:works_at, :job_title => @asset.title, :company => @asset.company)
   - else
-    %div= @lead.title unless @lead.title.blank?
-    %div= @lead.company unless @lead.company.blank?
+    %div= @asset.title unless @asset.title.blank?
+    %div= @asset.company unless @asset.company.blank?
 
-  %div= render "shared/address_show", :asset => @lead, :type => 'business', :title => :address
+  %div= render "shared/address_show", :asset => @asset, :type => 'business', :title => :address
 
   %div
-    - if @lead.phone.present?
-      == #{t :phone}: <b>#{@lead.do_not_call ? content_tag(:strike, @lead.phone) : @lead.phone}</b><br />
-    - if @lead.mobile.present?
-      == #{t :mobile}: <b>#{@lead.do_not_call ? content_tag(:strike, @lead.mobile) : @lead.mobile}</b><br />
-    - if @lead.email.present?
-      == #{t :email}: <b>#{link_to_email(@lead.email)}</b><br />
-    - if @lead.alt_email.present?
-      == #{t :other}: <b>#{link_to_email(@lead.alt_email)}</b><br />
-  = web_presence_icons(@lead)
+    - if @asset.phone.present?
+      == #{t :phone}: <b>#{@asset.do_not_call ? content_tag(:strike, @asset.phone) : @asset.phone}</b><br />
+    - if @asset.mobile.present?
+      == #{t :mobile}: <b>#{@asset.do_not_call ? content_tag(:strike, @asset.mobile) : @asset.mobile}</b><br />
+    - if @asset.email.present?
+      == #{t :email}: <b>#{link_to_email(@asset.email)}</b><br />
+    - if @asset.alt_email.present?
+      == #{t :other}: <b>#{link_to_email(@asset.alt_email)}</b><br />
+  = web_presence_icons(@asset)
 
   .caption #{t :lead_summary}
   %li
-    %dt= t(@lead.status, :default => :n_a)
+    %dt= t(@asset.status, :default => :n_a)
     %tt #{t :status}:
   %li
-    %dt= t(@lead.source, :default => :n_a)
+    %dt= t(@asset.source, :default => :n_a)
     %tt #{t :source}:
   %li
-    %span{:style => "float:right;"}= stars_for(@lead)
+    %span{:style => "float:right;"}= stars_for(@asset)
     %tt #{t :rating}:
   %li
-    %dt= @lead.referred_by ? truncate(@lead.referred_by, :length => 16) : t(:n_a)
+    %dt= @asset.referred_by ? truncate(@asset.referred_by, :length => 16) : t(:n_a)
     %tt #{t :referred_by}:
   %li
-    %dt= truncate((@lead.assigned_to ? @lead.assignee.full_name : @lead.user.full_name), :length => 16)
+    %dt= truncate((@asset.assigned_to ? @asset.assignee.full_name : @asset.user.full_name), :length => 16)
     %tt #{t :assigned_to}:
   %li.last
     %dt
-      - if @lead.campaign
-        = link_to(truncate(@lead.campaign.name, :length => 16), @lead.campaign, :title => @lead.campaign.name)
+      - if @asset.campaign
+        = link_to(truncate(@asset.campaign.name, :length => 16), @asset.campaign, :title => @asset.campaign.name)
       - else
         #{t :n_a}
     %tt #{t :campaign}:
 
-  - unless @lead.background_info.blank?
+  - unless @asset.background_info.blank?
     .caption #{t :background_info}
-    = auto_link(simple_format @lead.background_info).html_safe
+    = auto_link(simple_format @asset.background_info).html_safe
 
-  = render "fields/sidebar_show", :asset => @lead
+  = render "fields/sidebar_show", :asset => @asset
   
-  - if @lead.tag_list.present?
+  - if @asset.tag_list.present?
     %dt
-      .tags= tags_for_index(@lead)
+      .tags= tags_for_index(@asset)
 
-  = hook(:show_lead_sidebar_bottom, self, :lead => @lead)
+  = hook(:show_lead_sidebar_bottom, self, :lead => @asset)

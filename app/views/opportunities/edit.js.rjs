@@ -1,12 +1,12 @@
-id = dom_id(@opportunity)
+id = dom_id(@asset)
 
 if params[:cancel].true?     # <----------------- Hide [Edit Opportunity]
 
   if called_from_landing_page?
     page.call "crm.flip_form", :edit_opportunity
-    page.call "crm.set_title", :edit_opportunity, @opportunity.name
+    page.call "crm.set_title", :edit_opportunity, @asset.name
   else                                            # Called from opportunities list item...
-    page[id].replace :partial => "opportunity", :collection => [ @opportunity ]
+    page[id].replace :partial => "opportunity", :collection => [ @asset ]
   end
 
 else # <----------------------------------------- Show requested [Edit Opportunity] form.
@@ -26,7 +26,7 @@ else # <----------------------------------------- Show requested [Edit Opportuni
   elsif params[:cancel].false?                    # Called from title of the opportunity landing page...
     page[:edit_opportunity].replace_html :partial => "edit"
     page.call "crm.flip_form", :edit_opportunity
-    page.call "crm.set_title", :edit_opportunity, "#{t :edit} #{@opportunity.name}"
+    page.call "crm.set_title", :edit_opportunity, "#{t :edit} #{@asset.name}"
   end
 
   page.call "crm.create_or_select_account", request.referer =~ /\/accounts\// || @account.id.blank?

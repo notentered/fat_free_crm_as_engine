@@ -2,26 +2,26 @@
 
 #confirm{ hidden }
 .title_tools#menu
-  = link_to_inline(:edit_opportunity, edit_opportunity_path(@opportunity), :text => t(:edit)) + " | "
-  = link_to_function(t(:delete) + '?', confirm_delete(@opportunity))
-.title#edit_opportunity_title= h(@opportunity.name)
+  = link_to_inline(:edit_opportunity, edit_opportunity_path(@asset), :text => t(:edit)) + " | "
+  = link_to_function(t(:delete) + '?', confirm_delete(@asset))
+.title#edit_opportunity_title= h(@asset.name)
 
 %div#edit_opportunity{ hidden }
 
-= render "comments/new", :commentable => @opportunity
+= render "comments/new", :commentable => @asset
 = render :partial => "shared/timeline", :collection => @timeline
 
 = hook(:show_opportunity_bottom, self) do
 
-  = section(@opportunity, :tasks)
+  = section(@asset, :tasks)
   .log#tasks
     = render "shared/tasks"
 
-  = section(@opportunity, :contacts)
+  = section(@asset, :contacts)
   .list#contacts
-    - @contacts = @opportunity.contacts.paginate(:page => 1, :per_page => 20)
-    = render :partial => "contacts/contact", :collection => @opportunity.contacts.paginate(:page => 1, :per_page => 20)
+    - @contacts = @asset.contacts.paginate(:page => 1, :per_page => 20)
+    = render :partial => "contacts/contact", :collection => @asset.contacts.paginate(:page => 1, :per_page => 20)
   = will_paginate @contacts, :id => true, :params => {:action => :contacts}
 
-  = load_select_popups_for(@opportunity, :tasks, :contacts)
+  = load_select_popups_for(@asset, :tasks, :contacts)
 

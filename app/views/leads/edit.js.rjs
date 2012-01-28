@@ -1,12 +1,12 @@
-id = dom_id(@lead)
+id = dom_id(@asset)
 
 if params[:cancel].true?     # <----------------- Hide [Edit Campaign]
 
   if called_from_landing_page?
     page.call "crm.flip_form", :edit_lead
-    page.call "crm.set_title", :edit_lead, @lead.full_name
+    page.call "crm.set_title", :edit_lead, @asset.full_name
   else                                            # Called from leads list item...
-    page[id].replace :partial => "lead", :collection => [ @lead ]
+    page[id].replace :partial => "lead", :collection => [ @asset ]
   end
 
 else # <----------------------------------------  Show [Edit Campaign] form.
@@ -25,11 +25,11 @@ else # <----------------------------------------  Show [Edit Campaign] form.
 
   elsif params[:cancel].false?                    # Called from title of the lead landing page...
     page[:edit_lead].replace_html :partial => "edit"
-    unless %w(converted rejected).include? @lead.status
+    unless %w(converted rejected).include? @asset.status
       page.call "crm.hide_form", :convert_lead
     end
     page.call "crm.flip_form", :edit_lead
-    page.call "crm.set_title", :edit_lead, "#{t :edit} #{@lead.full_name}"
+    page.call "crm.set_title", :edit_lead, "#{t :edit} #{@asset.full_name}"
   end
   page[:lead_first_name].focus
 

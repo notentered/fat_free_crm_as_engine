@@ -1,5 +1,5 @@
 - edit ||= false
-- collapsed = session[:contact_extra].nil? # && @contact.errors.empty?
+- collapsed = session[:contact_extra].nil? # && @asset.errors.empty?
 = subtitle :contact_extra, collapsed, t(:extra_info)
 .section
   %small#contact_extra_intro{ hidden_if(!collapsed) }
@@ -25,7 +25,7 @@
             = f.text_field :mobile
         %tr
           %td
-            = render "shared/address", :f => f, :asset => @contact, :type => 'business', :title => :address
+            = render "shared/address", :f => f, :asset => @asset, :type => 'business', :title => :address
           %td= spacer
           %td
             .label #{t :fax}:

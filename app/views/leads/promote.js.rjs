@@ -1,12 +1,12 @@
-id = called_from_landing_page? ? "convert_lead" : dom_id(@lead)
+id = called_from_landing_page? ? "convert_lead" : dom_id(@asset)
 
-if @lead.status == "converted"
+if @asset.status == "converted"
   if called_from_landing_page?
     page.call "crm.flip_form", :convert_lead
-    page.call "crm.set_title", :convert_lead, @lead.full_name
+    page.call "crm.set_title", :convert_lead, @asset.full_name
     page << refresh_sidebar(:show, :summary)
   else
-    page[id].replace :partial => "lead", :collection => [ @lead ]
+    page[id].replace :partial => "lead", :collection => [ @asset ]
     page[id].visual_effect :highlight, :duration => 1.0
     if called_from_index_page?
       page << refresh_sidebar(:index, :filters)

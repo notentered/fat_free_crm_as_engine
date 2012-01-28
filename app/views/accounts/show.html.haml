@@ -2,34 +2,34 @@
 
 #confirm{ hidden }
 .title_tools#menu
-  = link_to_inline(:edit_account, edit_account_path(@account), :text => t(:edit)) + " | "
-  = link_to_function(t(:delete) + '?', confirm_delete(@account))
-.title#edit_account_title= h(@account.name)
+  = link_to_inline(:edit_account, edit_account_path(@asset), :text => t(:edit)) + " | "
+  = link_to_function(t(:delete) + '?', confirm_delete(@asset))
+.title#edit_account_title= h(@asset.name)
 
 %div#edit_account{ hidden }
 
-= render "comments/new", :commentable => @account
+= render "comments/new", :commentable => @asset
 = render :partial => "shared/timeline", :collection => @timeline
 
 = hook(:show_account_bottom, self) do
 
-  = section(@account, :tasks)
+  = section(@asset, :tasks)
   .log#tasks
     = render "shared/tasks"
 
-  = section(@account, :contacts)
+  = section(@asset, :contacts)
   .list#contacts
-    - @contacts = @account.contacts.paginate(:page => 1, :per_page => 20)
+    - @contacts = @asset.contacts.paginate(:page => 1, :per_page => 20)
     = render :partial => "contacts/contact", :collection => @contacts
   = will_paginate @contacts, :id => true, :params => {:action => :contacts}
 
   %br( style="clear:both" )
 
-  = section(@account, :opportunities)
+  = section(@asset, :opportunities)
   .list#opportunities
-    - @opportunities = @account.opportunities.paginate(:page => 1, :per_page => 20)
+    - @opportunities = @asset.opportunities.paginate(:page => 1, :per_page => 20)
     = render :partial => "opportunities/opportunity", :collection => @opportunities
   = will_paginate @opportunities, :id => true, :params => {:action => :opportunities}
 
-  = load_select_popups_for(@account, :tasks, :contacts, :opportunities)
+  = load_select_popups_for(@asset, :tasks, :contacts, :opportunities)
 

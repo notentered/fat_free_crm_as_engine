@@ -1,6 +1,6 @@
 .remote
-  = form_for(@lead, :url => promote_lead_path(@lead), :html => one_submit_only(:lead), :remote => true) do |f|
-    = link_to_close convert_lead_path(@lead)
+  = form_for(@asset, :url => promote_lead_path(@asset), :html => one_submit_only(:lead), :remote => true) do |f|
+    = link_to_close convert_lead_path(@asset)
     = fields_for(@account) do |a|
       = a.hidden_field :user_id
       = a.hidden_field :access
@@ -9,7 +9,7 @@
 
       .section
         %small
-          #{t(:convert_lead_text, @lead.full_name)}
+          #{t(:convert_lead_text, @asset.full_name)}
         %table
           %tr
             %td
@@ -32,5 +32,5 @@
     .buttonbar
       = f.submit t(:convert_lead)
       #{t :or}
-      = link_to_cancel convert_lead_path(@lead)
+      = link_to_cancel convert_lead_path(@asset)
 

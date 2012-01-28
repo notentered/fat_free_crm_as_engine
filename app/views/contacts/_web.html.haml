@@ -1,5 +1,5 @@
 - edit ||= false
-- collapsed = session[:contact_presence].nil? # && @contact.errors.empty?
+- collapsed = session[:contact_presence].nil? # && @asset.errors.empty?
 = subtitle :contact_presence, collapsed, t(:web_presence)
 .section
   %small#contact_presence_intro{ hidden_if(!collapsed) }
