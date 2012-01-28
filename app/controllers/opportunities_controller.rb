@@ -99,9 +99,9 @@ class OpportunitiesController < BaseController
     super  # BaseController :destroy
 
     if called_from_landing_page?(:accounts)
-      @account = @opportunity.account   # Reload related account if any.
+      @account = @asset.account   # Reload related account if any.
     elsif called_from_landing_page?(:campaigns)
-      @campaign = @opportunity.campaign # Reload related campaign if any.
+      @campaign = @asset.campaign # Reload related campaign if any.
     end
   end
 
