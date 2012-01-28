@@ -30,7 +30,7 @@ else # <----------------------------------------  Show [Convert Lead] form.
     page.call "crm.set_title", :convert_lead, "#{t :convert} #{@asset.full_name}"
   end
 
-  page.call "crm.create_or_select_account", request.referer =~ /\/accounts\// || @account.id.blank?
+  page.call "crm.create_or_select_account", request.referer =~ /\/accounts\// || @account.new_record?
   page.call "crm.date_select_popup", "opportunity_closes_on"
   page[:account_name].focus
 

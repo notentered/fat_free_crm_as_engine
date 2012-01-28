@@ -105,7 +105,7 @@ class Opportunity < ActiveRecord::Base
     # Quick sanitization, makes sure Account will not search for blank id.
     params[:account].delete(:id) if params[:account][:id].blank?
     account = Account.create_or_select_for(self, params[:account], params[:users])
-    self.account_opportunity = AccountOpportunity.new(:account => account, :opportunity => self) unless account.id.blank?
+    self.account_opportunity = AccountOpportunity.new(:account => account, :opportunity => self) unless account.new_record?
     self.account = account
     self.contacts << Contact.find(params[:contact]) unless params[:contact].blank?
     self.campaign = Campaign.find(params[:campaign]) unless params[:campaign].blank?
@@ -153,7 +153,7 @@ class Opportunity < ActiveRecord::Base
     # Save the opportunity if its name was specified and account has no errors.
     if opportunity.name? && account.errors.empty?
       # Note: opportunity.account = account doesn't seem to work here.
-      opportunity.account_opportunity = AccountOpportunity.new(:account => account, :opportunity => opportunity) unless account.id.blank?
+      opportunity.account_opportunity = AccountOpportunity.new(:account => account, :opportunity => opportunity) unless account.new_record?
       if opportunity.access != "Lead" || model.nil?
         opportunity.save_with_permissions(users)
       else

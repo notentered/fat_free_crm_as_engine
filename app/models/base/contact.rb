@@ -112,7 +112,7 @@ class Contact < ActiveRecord::Base
   #----------------------------------------------------------------------------
   def save_with_account_and_permissions(params)
     account = Account.create_or_select_for(self, params[:account], params[:users])
-    self.account_contact = AccountContact.new(:account => account, :contact => self) unless account.id.blank?
+    self.account_contact = AccountContact.new(:account => account, :contact => self) unless account.new_record?
     self.opportunities << Opportunity.find(params[:opportunity]) unless params[:opportunity].blank?
     self.save_with_permissions(params[:users])
   end
@@ -169,8 +169,8 @@ class Contact < ActiveRecord::Base
     # Save the contact only if the account and the opportunity have no errors.
     if account.errors.empty? && opportunity.errors.empty?
       # Note: contact.account = account doesn't seem to work here.
-      contact.account_contact = AccountContact.new(:account => account, :contact => contact) unless account.id.blank?
-      contact.opportunities << opportunity unless opportunity.id.blank?
+      contact.account_contact = AccountContact.new(:account => account, :contact => contact) unless account.new_record?
+      contact.opportunities << opportunity unless opportunity.new_record?
       if contact.access != "Lead" || model.nil?
         contact.save_with_permissions(params[:users])
       else
