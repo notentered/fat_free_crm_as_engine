@@ -19,13 +19,6 @@ class ContactsController < BaseController
   before_filter :get_users, :only => [ :new, :create, :edit, :update ]
   before_filter :get_accounts, :only => [ :new, :create, :edit, :update ]
 
-  # GET /contacts
-  #----------------------------------------------------------------------------
-  def index
-    @contacts = get_contacts(:page => params[:page])
-    respond_with(@contacts)
-  end
-
   # GET /contacts/1
   #----------------------------------------------------------------------------
   def show
@@ -33,7 +26,6 @@ class ContactsController < BaseController
 
     respond_with(@contact) do |format|
       format.html do
-        @stage = Setting.unroll(:opportunity_stage)
         @comment = Comment.new
         @timeline = timeline(@contact)
       end
@@ -118,30 +110,19 @@ class ContactsController < BaseController
 
   # DELETE /contacts/1
   #----------------------------------------------------------------------------
-  def destroy
-    @contact = Contact.my.find(params[:id])
-    @contact.destroy if @contact
-
-    respond_with(@contact) do |format|
-      format.html { respond_to_destroy(:html) }
-      format.js   { respond_to_destroy(:ajax) }
-    end
-
-  rescue ActiveRecord::RecordNotFound
-    respond_to_not_found(:html, :js, :json, :xml)
-  end
+  # Handled by BaseController :destroy
 
   # PUT /contacts/1/attach
   #----------------------------------------------------------------------------
-  # Handled by ApplicationController :attach
+  # Handled by BaseController :attach
 
   # POST /contacts/1/discard
   #----------------------------------------------------------------------------
-  # Handled by ApplicationController :discard
+  # Handled by BaseController :discard
 
   # POST /contacts/auto_complete/query                                     AJAX
   #----------------------------------------------------------------------------
-  # Handled by ApplicationController :auto_complete
+  # Handled by BaseController :auto_complete
 
   # GET /contacts/options                                                  AJAX
   #----------------------------------------------------------------------------
@@ -182,33 +163,10 @@ class ContactsController < BaseController
     render :index
   end
 
-  private
+  protected
   #----------------------------------------------------------------------------
-  def get_contacts(options = {})
-    get_list_of_records(Contact, options)
-  end
 
   def get_accounts
     @accounts = Account.my.order("name")
-  end
-
-  #----------------------------------------------------------------------------
-  def respond_to_destroy(method)
-    if method == :ajax
-      if called_from_index_page?
-        @contacts = get_contacts
-        if @contacts.blank?
-          @contacts = get_contacts(:page => current_page - 1) if current_page > 1
-          render :index and return
-        end
-      else
-        self.current_page = 1
-      end
-      # At this point render destroy.js.rjs
-    else
-      self.current_page = 1
-      flash[:notice] = t(:msg_asset_deleted, @contact.full_name)
-      redirect_to contacts_path
-    end
   end
 end

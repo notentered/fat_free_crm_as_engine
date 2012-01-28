@@ -18,13 +18,6 @@
 class CampaignsController < BaseController
   before_filter :get_data_for_sidebar, :only => :index
 
-  # GET /campaigns
-  #----------------------------------------------------------------------------
-  def index
-    @campaigns = get_campaigns(:page => params[:page])
-    respond_with(@campaigns)
-  end
-
   # GET /campaigns/1
   #----------------------------------------------------------------------------
   def show
@@ -32,7 +25,6 @@ class CampaignsController < BaseController
 
     respond_with(@campaign) do |format|
       format.html do
-        @stage = Setting.unroll(:opportunity_stage)
         @comment = Comment.new
         @timeline = timeline(@campaign)
       end
@@ -105,30 +97,19 @@ class CampaignsController < BaseController
 
   # DELETE /campaigns/1
   #----------------------------------------------------------------------------
-  def destroy
-    @campaign = Campaign.my.find(params[:id])
-    @campaign.destroy if @campaign
-
-    respond_with(@campaign) do |format|
-      format.html { respond_to_destroy(:html) }
-      format.js   { respond_to_destroy(:ajax) }
-    end
-
-  rescue ActiveRecord::RecordNotFound
-    respond_to_not_found(:html, :js, :json, :xml)
-  end
+  # Handled by BaseController :destroy
 
   # PUT /campaigns/1/attach
   #----------------------------------------------------------------------------
-  # Handled by ApplicationController :attach
+  # Handled by BaseController :attach
 
   # PUT /campaigns/1/discard
   #----------------------------------------------------------------------------
-  # Handled by ApplicationController :discard
+  # Handled by BaseController :discard
 
   # POST /campaigns/auto_complete/query                                    AJAX
   #----------------------------------------------------------------------------
-  # Handled by ApplicationController :auto_complete
+  # Handled by BaseController :auto_complete
 
   # GET /campaigns/options                                                 AJAX
   #----------------------------------------------------------------------------
@@ -170,27 +151,10 @@ class CampaignsController < BaseController
     render :index
   end
 
-  private
+  protected
   #----------------------------------------------------------------------------
-  def get_campaigns(options = {})
-    get_list_of_records(Campaign, options.merge!(:filter => :filter_by_campaign_status))
-  end
-
-  #----------------------------------------------------------------------------
-  def respond_to_destroy(method)
-    if method == :ajax
-      get_data_for_sidebar
-      @campaigns = get_campaigns
-      if @campaigns.blank?
-        @campaigns = get_campaigns(:page => current_page - 1) if current_page > 1
-        render :index and return
-      end
-      # At this point render destroy.js.rjs
-    else # :html request
-      self.current_page = 1
-      flash[:notice] = t(:msg_asset_deleted, @campaign.name)
-      redirect_to campaigns_path
-    end
+  def get_list_of_records(options = {})
+    super(options.merge(:filter => :filter_by_campaign_status))
   end
 
   #----------------------------------------------------------------------------

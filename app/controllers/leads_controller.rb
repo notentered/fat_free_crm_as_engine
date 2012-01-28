@@ -18,13 +18,6 @@
 class LeadsController < BaseController
   before_filter :get_data_for_sidebar, :only => :index
 
-  # GET /leads
-  #----------------------------------------------------------------------------
-  def index
-    @leads = get_leads(:page => params[:page])
-    respond_with(@leads)
-  end
-
   # GET /leads/1
   #----------------------------------------------------------------------------
   def show
@@ -112,18 +105,7 @@ class LeadsController < BaseController
 
   # DELETE /leads/1
   #----------------------------------------------------------------------------
-  def destroy
-    @lead = Lead.my.find(params[:id])
-    @lead.destroy if @lead
-
-    respond_with(@lead) do |format|
-      format.html { respond_to_destroy(:html) }
-      format.js   { respond_to_destroy(:ajax) }
-    end
-
-  rescue ActiveRecord::RecordNotFound
-    respond_to_not_found(:html, :js, :json, :xml)
-  end
+  # Handled by BaseController :destroy
 
   # GET /leads/1/convert
   #----------------------------------------------------------------------------
@@ -181,17 +163,27 @@ class LeadsController < BaseController
     respond_to_not_found(:html, :js, :json, :xml)
   end
 
+  # DELETE /leads/1
+  #----------------------------------------------------------------------------
+  def destroy
+    super  # BaseController :destroy
+
+    if called_from_landing_page?(:campaigns)
+      @campaign = @lead.campaign # Reload lead's campaign if any.
+    end
+  end
+
   # PUT /leads/1/attach
   #----------------------------------------------------------------------------
-  # Handled by ApplicationController :attach
+  # Handled by BaseController :attach
 
   # POST /leads/1/discard
   #----------------------------------------------------------------------------
-  # Handled by ApplicationController :discard
+  # Handled by BaseController :discard
 
   # POST /leads/auto_complete/query                                        AJAX
   #----------------------------------------------------------------------------
-  # Handled by ApplicationController :auto_complete
+  # Handled by BaseController :auto_complete
 
   # GET /leads/options                                                     AJAX
   #----------------------------------------------------------------------------
@@ -234,31 +226,10 @@ class LeadsController < BaseController
     render :index
   end
 
-  private
+  protected
   #----------------------------------------------------------------------------
-  def get_leads(options = {})
-    get_list_of_records(Lead, options.merge!(:filter => :filter_by_lead_status))
-  end
-
-  #----------------------------------------------------------------------------
-  def respond_to_destroy(method)
-    if method == :ajax
-      if called_from_index_page?                  # Called from Leads index.
-        get_data_for_sidebar                      # Get data for the sidebar.
-        @leads = get_leads                        # Get leads for current page.
-        if @leads.blank?                          # If no lead on this page then try the previous one.
-          @leads = get_leads(:page => current_page - 1) if current_page > 1
-          render :index and return                # And reload the whole list even if it's empty.
-        end
-      else                                        # Called from related asset.
-        self.current_page = 1                     # Reset current page to 1 to make sure it stays valid.
-        @campaign = @lead.campaign                # Reload lead's campaign if any.
-      end                                         # Render destroy.js.rjs
-    else # :html destroy
-      self.current_page = 1
-      flash[:notice] = t(:msg_asset_deleted, @lead.full_name)
-      redirect_to leads_path
-    end
+  def get_list_of_records(options = {})
+    super(options.merge(:filter => :filter_by_lead_status))
   end
 
   #----------------------------------------------------------------------------

@@ -18,13 +18,6 @@
 class AccountsController < BaseController
   before_filter :get_data_for_sidebar, :only => :index
 
-  # GET /accounts
-  #----------------------------------------------------------------------------
-  def index
-    @accounts = get_accounts(:page => params[:page])
-    respond_with(@accounts)
-  end
-
   # GET /accounts/1
   #----------------------------------------------------------------------------
   def show
@@ -32,7 +25,6 @@ class AccountsController < BaseController
 
     respond_with(@account) do |format|
       format.html do
-        @stage = Setting.unroll(:opportunity_stage)
         @comment = Comment.new
         @timeline = timeline(@account)
       end
@@ -105,30 +97,19 @@ class AccountsController < BaseController
 
   # DELETE /accounts/1
   #----------------------------------------------------------------------------
-  def destroy
-    @account = Account.my.find(params[:id])
-    @account.destroy if @account
-
-    respond_with(@account) do |format|
-      format.html { respond_to_destroy(:html) }
-      format.js   { respond_to_destroy(:ajax) }
-    end
-
-  rescue ActiveRecord::RecordNotFound
-    respond_to_not_found(:html, :js, :json, :xml)
-  end
+  # Handled by BaseController :destroy
 
   # PUT /accounts/1/attach
   #----------------------------------------------------------------------------
-  # Handled by ApplicationController :attach
+  # Handled by BaseController :attach
 
   # PUT /accounts/1/discard
   #----------------------------------------------------------------------------
-  # Handled by ApplicationController :discard
+  # Handled by BaseController :discard
 
   # POST /accounts/auto_complete/query                                     AJAX
   #----------------------------------------------------------------------------
-  # Handled by ApplicationController :auto_complete
+  # Handled by BaseController :auto_complete
 
   # GET /accounts/options                                                  AJAX
   #----------------------------------------------------------------------------
@@ -170,27 +151,10 @@ class AccountsController < BaseController
     render :index
   end
 
-  private
+  protected
   #----------------------------------------------------------------------------
-  def get_accounts(options = {})
-    get_list_of_records(Account, options.merge!(:filter => :filter_by_account_category))
-  end
-
-  #----------------------------------------------------------------------------
-  def respond_to_destroy(method)
-    if method == :ajax
-      @accounts = get_accounts
-      get_data_for_sidebar
-      if @accounts.blank?
-        @accounts = get_accounts(:page => current_page - 1) if current_page > 1
-        render :index and return
-      end
-      # At this point render default destroy.js.rjs template.
-    else # :html request
-      self.current_page = 1 # Reset current page to 1 to make sure it stays valid.
-      flash[:notice] = t(:msg_asset_deleted, @account.name)
-      redirect_to accounts_path
-    end
+  def get_list_of_records(options = {})
+    super(options.merge(:filter => :filter_by_account_category))
   end
 
   #----------------------------------------------------------------------------

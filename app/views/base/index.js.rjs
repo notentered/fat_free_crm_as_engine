@@ -1,0 +1,9 @@
+assets = controller_name
+asset = assets.singularize
+
+unless @assets.blank?
+  page[assets].replace_html render(:partial => asset, :collection => @assets)
+else
+  page[assets].replace_html render(:partial => "shared/empty")
+end
+page[:paginate].replace_html will_paginate(@assets, :params => {:action => :index})

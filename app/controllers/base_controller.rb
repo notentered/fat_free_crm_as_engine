@@ -15,7 +15,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
+# This controller handles logic for the five base models:
+# => Contact, Lead, Account, Campaign, Opportunity
+
 class BaseController < ApplicationController
+  inherit_resources
+
   before_filter :require_user
   before_filter :set_current_tab, :only => [ :index, :show ]
   after_filter  :update_recently_viewed, :only => :show
@@ -24,6 +29,43 @@ class BaseController < ApplicationController
   respond_to :js
   respond_to :json, :xml, :except => :edit
   respond_to :atom, :csv, :rss, :xls, :only => :index
+
+  # Common controller actions
+  #----------------------------------------------------------------------------
+
+  def destroy
+    if @asset = klass.my.find(params[:id])
+      @asset.destroy
+    end
+
+    respond_with(@asset) do |format|
+      format.js do
+        if called_from_index_page?                  # Called from index.
+          # Get data for the sidebar, if available
+          get_data_for_sidebar if respond_to?(:get_data_for_sidebar)
+          @assets = get_list_of_records             # Get assets for current page.
+          if @assets.blank?                         # If no asset on this page then try the previous one.
+            @assets =  get_list_of_records(:page => current_page - 1) if current_page > 1
+            render :index                           # And reload the whole list even if it's empty.
+          end
+        else                                        # Called from related asset.
+          self.current_page = 1                     # Reset current page to 1 to make sure it stays valid.
+          # Render destroy.js.rjs
+        end
+      end
+
+      format.html do
+        self.current_page = 1
+        asset_name = @asset.respond_to?(:full_name) ? @asset.full_name : @asset.name
+        flash[:notice] = t(:msg_asset_deleted, asset_name)
+        redirect_to url_for
+      end
+    end
+
+  rescue ActiveRecord::RecordNotFound
+    respond_to_not_found(:html, :js, :json, :xml)
+  end
+
 
   # Common auto_complete handler for all core controllers.
   #----------------------------------------------------------------------------
@@ -102,11 +144,15 @@ class BaseController < ApplicationController
     end
   end
 
-  private
+  protected
+  #----------------------------------------------------------------------------
+  def collection
+    @assets ||= get_list_of_records(:page => params[:page])
+  end
 
   # Get list of records for a given model class.
   #----------------------------------------------------------------------------
-  def get_list_of_records(klass, options = {})
+  def get_list_of_records(options = {})
     items = klass.name.tableize
     options[:query] ||= params[:query]                        if params[:query]
     self.current_page = options[:page]                        if options[:page]

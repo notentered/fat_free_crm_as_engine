@@ -20,13 +20,6 @@ class OpportunitiesController < BaseController
   before_filter :get_data_for_sidebar, :only => :index
   before_filter :set_params, :only => [:index, :redraw, :filter]
 
-  # GET /opportunities
-  #----------------------------------------------------------------------------
-  def index
-    @opportunities = get_opportunities(:page => params[:page])
-    respond_with(@opportunities)
-  end
-
   # GET /opportunities/1
   #----------------------------------------------------------------------------
   def show
@@ -142,34 +135,26 @@ class OpportunitiesController < BaseController
   # DELETE /opportunities/1
   #----------------------------------------------------------------------------
   def destroy
-    @opportunity = Opportunity.my.find(params[:id])
+    super  # BaseController :destroy
+
     if called_from_landing_page?(:accounts)
       @account = @opportunity.account   # Reload related account if any.
     elsif called_from_landing_page?(:campaigns)
       @campaign = @opportunity.campaign # Reload related campaign if any.
     end
-    @opportunity.destroy if @opportunity
-
-    respond_with(@opportunity) do |format|
-      format.html { respond_to_destroy(:html) }
-      format.js   { respond_to_destroy(:ajax) }
-    end
-
-  rescue ActiveRecord::RecordNotFound
-    respond_to_not_found(:html, :js, :json, :xml)
   end
 
   # PUT /opportunities/1/attach
   #----------------------------------------------------------------------------
-  # Handled by ApplicationController :attach
+  # Handled by BaseController :attach
 
   # POST /opportunities/1/discard
   #----------------------------------------------------------------------------
-  # Handled by ApplicationController :discard
+  # Handled by BaseController :discard
 
   # POST /opportunities/auto_complete/query                                AJAX
   #----------------------------------------------------------------------------
-  # Handled by ApplicationController :auto_complete
+  # Handled by BaseController :auto_complete
 
   # GET /opportunities/options                                             AJAX
   #----------------------------------------------------------------------------
@@ -201,31 +186,10 @@ class OpportunitiesController < BaseController
     render :index
   end
 
-  private
+  protected
   #----------------------------------------------------------------------------
-  def get_opportunities(options = {})
-    get_list_of_records(Opportunity, options.merge!(:filter => :filter_by_opportunity_stage))
-  end
-
-  #----------------------------------------------------------------------------
-  def respond_to_destroy(method)
-    if method == :ajax
-      if called_from_index_page?
-        get_data_for_sidebar
-        @opportunities = get_opportunities
-        if @opportunities.blank?
-          @opportunities = get_opportunities(:page => current_page - 1) if current_page > 1
-          render :index and return
-        end
-      else # Called from related asset.
-        self.current_page = 1
-      end
-      # At this point render destroy.js.rjs
-    else
-      self.current_page = 1
-      flash[:notice] = t(:msg_asset_deleted, @opportunity.name)
-      redirect_to opportunities_path
-    end
+  def get_list_of_records(options = {})
+    super(options.merge(:filter => :filter_by_opportunity_stage))
   end
 
   #----------------------------------------------------------------------------

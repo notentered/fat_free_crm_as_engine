@@ -2,6 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.1.3'
 gem 'prototype-rails'
+gem 'inherited_resources'
 
 # Uncomment the database that you have configured in config/database.yml
 # ----------------------------------------------------------------------
