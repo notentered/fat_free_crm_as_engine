@@ -38,7 +38,7 @@ class BaseController < ApplicationController
   def show
     @asset = klass.my.find(params[:id])
     @comment = Comment.new
-    @timeline = timeline(@contact)
+    @timeline = timeline(@asset)
   rescue ActiveRecord::RecordNotFound
     respond_to_not_found(:html, :json, :xml)
   end
@@ -143,11 +143,10 @@ class BaseController < ApplicationController
   # Common attach handler for all core controllers.
   #----------------------------------------------------------------------------
   def attach
-    model = klass.my.find(params[:id])
+    @asset = klass.my.find(params[:id])
     @attachment = params[:assets].classify.constantize.find(params[:asset_id])
-    @attached = model.attach!(@attachment)
-    @account  = model.reload if model.is_a?(Account)
-    @campaign = model.reload if model.is_a?(Campaign)
+    @attached = @asset.attach!(@attachment)
+    @asset = @asset.reload
 
     respond_to do |format|
       format.js   { render "shared/attach" }
@@ -162,11 +161,10 @@ class BaseController < ApplicationController
   # Common discard handler for all core controllers.
   #----------------------------------------------------------------------------
   def discard
-    model = klass.my.find(params[:id])
+    @asset = klass.my.find(params[:id])
     @attachment = params[:attachment].constantize.find(params[:attachment_id])
-    model.discard!(@attachment)
-    @account  = model.reload if model.is_a?(Account)
-    @campaign = model.reload if model.is_a?(Campaign)
+    @asset.discard!(@attachment)
+    @asset = @asset.reload
 
     respond_to do |format|
       format.js   { render "shared/discard" }
