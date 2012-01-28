@@ -23,7 +23,7 @@ class ContactsController < BaseController
   #----------------------------------------------------------------------------
   def new
     super
-    @account  = @asset.account || Account.new(:user => current_user)
+    @account ||= @asset.account || Account.new(:user => current_user)
   end
 
   # GET /contacts/1/edit                                                   AJAX

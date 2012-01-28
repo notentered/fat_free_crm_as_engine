@@ -25,9 +25,9 @@ class OpportunitiesController < BaseController
   def new
     super
     @asset = Opportunity.new(:user => @current_user, :stage => "prospecting", :access => Setting.default_access)
-    @users       = User.except(@current_user)
-    @account     ||= @asset.account || Account.new(:user => @current_user)
-    @accounts    = Account.my.order("name")
+    @users    = User.except(@current_user)
+    @account  ||= @asset.account || Account.new(:user => @current_user)
+    @accounts = Account.my.order("name")
   end
 
   # GET /opportunities/1/edit                                              AJAX
