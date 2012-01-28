@@ -7,22 +7,22 @@ if @asset.valid?
   if called_from_index_page?
     page << refresh_sidebar(:index, :filters)
     page[:paginate].replace_html :partial => "shared/paginate"
-  
+
   elsif called_from_landing_page?("accounts") # Opportunity created on Account landing page: refresh Account summary.
-    @account.reload
+    @account.reload unless @account.new_record?
     page << refresh_sidebar_for(:accounts, :show, :summary)
 
   elsif called_from_landing_page?("campaigns") # Opportunity created on Campaign landing page: refresh Campaign summary.
-    @campaign.reload
+    @campaign.reload unless @campaign.new_record?
     page << refresh_sidebar_for(:campaigns, :show, :summary)
-  
-  else # Opportunity created on Contact landing page: refresh recent items list.  
+
+  else # Opportunity created on Contact landing page: refresh recent items list.
     page[:recently].replace :partial => "shared/recently"
   end
   page.call "crm.flick", :empty, :remove
 else
   page[:create_opportunity].replace_html :partial => "new"
-  page.call "crm.create_or_select_account", request.referer =~ /\/accounts\// || @account.id.blank?
+  page.call "crm.create_or_select_account", request.referer =~ /\/accounts\// || @account.new_record?
   page.call "crm.date_select_popup", "opportunity_closes_on"
   hook(:new_opportunity_rjs, self, :page => page)
   page[:create_opportunity].visual_effect :shake, :duration => 0.25, :distance => 6

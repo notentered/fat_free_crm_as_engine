@@ -1,10 +1,13 @@
 - view   ||= controller.controller_name
+- asset_name = view.to_s.singularize
+-# Fetch instance variable from either asset_name, or @asset
+- asset = instance_variable_get("@#{asset_name}") || @asset
 - action ||= controller.action_name
 - sidebar = "#{view}/sidebar_#{action}"
 - sidebar = "admin/#{sidebar}" if controller.class.to_s.starts_with?("Admin::")
 
 = content_for :sidebar
 - begin
-  = render sidebar
+  = render sidebar, asset_name.to_sym => asset
   - rescue MissingTemplate
 = render "shared/recently"

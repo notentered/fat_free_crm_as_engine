@@ -1,28 +1,28 @@
-- won = @asset.opportunities.won.map(&:amount).compact.sum
-- lost = @asset.opportunities.lost.map(&:amount).compact.sum
-- pipeline = @asset.opportunities.pipeline.map(&:weighted_amount).compact.sum
+- won = account.opportunities.won.map(&:amount).compact.sum
+- lost = account.opportunities.lost.map(&:amount).compact.sum
+- pipeline = account.opportunities.pipeline.map(&:weighted_amount).compact.sum
 
 .panel#summary
-  %h4= h(@asset.name)
-  - if @asset.website
+  %h4= h(account.name)
+  - if account.website
     %div
-      %b= link_to(truncate(@asset.website, :length => 30), @asset.website.to_url, :"data-popup" => true, :title => t(:open_in_window, @asset.website))
-  - if @asset.email.present?
+      %b= link_to(truncate(account.website, :length => 30), account.website.to_url, :"data-popup" => true, :title => t(:open_in_window, account.website))
+  - if account.email.present?
     %div
-      %b= link_to_email(@asset.email, 30)
+      %b= link_to_email(account.email, 30)
 
   %div
-    - if @asset.toll_free_phone
-      #{t :phone_toll_free}: <b>#{@asset.toll_free_phone}</b><br />
+    - if account.toll_free_phone
+      #{t :phone_toll_free}: <b>#{account.toll_free_phone}</b><br />
 
-    - if @asset.phone
-      #{t :phone}: <b>#{@asset.phone}</b><br />
+    - if account.phone
+      #{t :phone}: <b>#{account.phone}</b><br />
 
-    - if @asset.fax
-      #{t :fax}: <b>#{@asset.fax}</b><br />
+    - if account.fax
+      #{t :fax}: <b>#{account.fax}</b><br />
 
-  %div= render "shared/address_show", :asset => @asset, :type => 'billing', :title => :billing_address
-  %div= render "shared/address_show", :asset => @asset, :type => 'shipping', :title => :shipping_address
+  %div= render "shared/address_show", :asset => account, :type => 'billing', :title => :billing_address
+  %div= render "shared/address_show", :asset => account, :type => 'shipping', :title => :shipping_address
 
   .caption #{t :account_summary}
   %li
@@ -35,23 +35,23 @@
     %dt= lost != 0.0 ? number_to_currency(lost, :precision => 0) : t(:n_a)
     %tt #{t :lost}:
   %li
-    %dt= @asset.category ? t(@asset.category) : t(:other)
+    %dt= account.category ? t(account.category) : t(:other)
     %tt #{t :category}:
   %li
-    %span{:style => "float:right;"}= stars_for(@asset)
+    %span{:style => "float:right;"}= stars_for(account)
     %tt #{t :rating}:
   %li.last
-    %dt= truncate((@asset.assigned_to ? @asset.assignee.full_name : @asset.user.full_name), :length => 16)
+    %dt= truncate((account.assigned_to ? account.assignee.full_name : account.user.full_name), :length => 16)
     %tt #{t :assigned_to}:
 
-  - unless @asset.background_info.blank?
+  - unless account.background_info.blank?
     .caption #{t :background_info}
-    = auto_link(simple_format @asset.background_info).html_safe
+    = auto_link(simple_format account.background_info).html_safe
 
-  = render "fields/sidebar_show", :asset => @asset
+  = render "fields/sidebar_show", :asset => account
 
-  - if @asset.tag_list.present?
+  - if account.tag_list.present?
     %dt
-      .tags= tags_for_index(@asset)
+      .tags= tags_for_index(account)
 
-  = hook(:show_account_sidebar_bottom, self, :account => @asset)
+  = hook(:show_account_sidebar_bottom, self, :account => account)

@@ -26,7 +26,7 @@ class OpportunitiesController < BaseController
     super
     @asset = Opportunity.new(:user => @current_user, :stage => "prospecting", :access => Setting.default_access)
     @users       = User.except(@current_user)
-    @account     = @asset.account || Account.new(:user => @current_user)
+    @account     ||= @asset.account || Account.new(:user => @current_user)
     @accounts    = Account.my.order("name")
   end
 
@@ -56,7 +56,7 @@ class OpportunitiesController < BaseController
     else
       @users = User.except(@current_user)
       @accounts = Account.my.order("name")
-      unless params[:account][:id].blank?
+      if params[:account][:id].present?
         @account = Account.find(params[:account][:id])
       else
         if request.referer =~ /\/accounts\/(.+)$/
@@ -95,15 +95,7 @@ class OpportunitiesController < BaseController
 
   # DELETE /opportunities/1
   #----------------------------------------------------------------------------
-  def destroy
-    super  # BaseController :destroy
-
-    if called_from_landing_page?(:accounts)
-      @account = @asset.account   # Reload related account if any.
-    elsif called_from_landing_page?(:campaigns)
-      @campaign = @asset.campaign # Reload related campaign if any.
-    end
-  end
+  # Handled by BaseController :destroy
 
   # PUT /opportunities/1/attach
   #----------------------------------------------------------------------------

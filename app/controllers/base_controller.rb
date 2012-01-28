@@ -48,8 +48,13 @@ class BaseController < ApplicationController
   def new
     @asset ||= klass.new(:user => current_user, :access => Setting.default_access)
     if params[:related]
+      # If creating new record from a different controllers landing page,
+      # assign the related record to the new asset.
       model, id = params[:related].split("_")
-      instance_variable_set("@#{model}", model.classify.constantize.my.find(id))
+      related = model.classify.constantize.my.find(id)
+      instance_variable_set("@#{model}", related)
+      # Set the related association
+      @asset.send("#{model}=", related)
     end
   rescue ActiveRecord::RecordNotFound # Kicks in if related asset was not found.
     respond_to_related_not_found(model, :js) if model
@@ -99,9 +104,11 @@ class BaseController < ApplicationController
 
     respond_with(@asset) do |format|
       format.js do
-        if called_from_landing_page?(:campaigns)
-          @campaign = @asset.campaign               # Reload asset's campaign if any.
-        elsif called_from_index_page?                  # Called from index.
+        if called_from_landing_page?(:accounts)
+          @account = @asset.account                 # Reload related account if any.
+        elsif called_from_landing_page?(:campaigns)
+          @campaign = @asset.campaign               # Reload related campaign if any.
+        elsif called_from_index_page?               # Called from index.
           # Get data for the sidebar, if available
           get_data_for_sidebar if respond_to?(:get_data_for_sidebar)
           @assets = get_list_of_records             # Get assets for current page.
