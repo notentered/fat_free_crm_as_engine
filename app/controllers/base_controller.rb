@@ -99,7 +99,9 @@ class BaseController < ApplicationController
 
     respond_with(@asset) do |format|
       format.js do
-        if called_from_index_page?                  # Called from index.
+        if called_from_landing_page?(:campaigns)
+          @campaign = @asset.campaign               # Reload asset's campaign if any.
+        elsif called_from_index_page?                  # Called from index.
           # Get data for the sidebar, if available
           get_data_for_sidebar if respond_to?(:get_data_for_sidebar)
           @assets = get_list_of_records             # Get assets for current page.

@@ -133,13 +133,7 @@ class LeadsController < BaseController
 
   # DELETE /leads/1
   #----------------------------------------------------------------------------
-  def destroy
-    super  # BaseController :destroy
-
-    if called_from_landing_page?(:campaigns)
-      @campaign = @lead.campaign # Reload lead's campaign if any.
-    end
-  end
+  # Handled by BaseController :destroy
 
   # PUT /leads/1/attach
   #----------------------------------------------------------------------------
