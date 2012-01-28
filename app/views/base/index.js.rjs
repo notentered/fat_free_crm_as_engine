@@ -6,4 +6,4 @@ unless @assets.blank?
 else
   page[assets].replace_html render(:partial => "shared/empty")
 end
-page[:paginate].replace_html will_paginate(@assets, :params => {:action => :index})
+page[:paginate].replace_html :partial => "shared/paginate"

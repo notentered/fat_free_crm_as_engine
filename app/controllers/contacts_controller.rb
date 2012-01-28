@@ -19,89 +19,49 @@ class ContactsController < BaseController
   before_filter :get_users, :only => [ :new, :create, :edit, :update ]
   before_filter :get_accounts, :only => [ :new, :create, :edit, :update ]
 
-  # GET /contacts/1
-  #----------------------------------------------------------------------------
-  def show
-    @contact = Contact.my.find(params[:id])
-
-    respond_with(@contact) do |format|
-      format.html do
-        @comment = Comment.new
-        @timeline = timeline(@contact)
-      end
-    end
-
-  rescue ActiveRecord::RecordNotFound
-    respond_to_not_found(:html, :json, :xml)
-  end
-
   # GET /contacts/new
   #----------------------------------------------------------------------------
   def new
-    @contact  = Contact.new(:user => current_user, :access => Setting.default_access)
-    @account  = Account.new(:user => current_user)
-    if params[:related]
-      model, id = params[:related].split("_")
-      instance_variable_set("@#{model}", model.classify.constantize.my.find(id))
-    end
-    respond_with(@contact)
-
-  rescue ActiveRecord::RecordNotFound # Kicks in if related asset was not found.
-    respond_to_related_not_found(model, :js) if model
+    super
+    @account  = @asset.account || Account.new(:user => current_user)
   end
 
   # GET /contacts/1/edit                                                   AJAX
   #----------------------------------------------------------------------------
   def edit
-    @contact  = Contact.my.find(params[:id])
-    @account  = @contact.account || Account.new(:user => current_user)
-    if params[:previous].to_s =~ /(\d+)\z/
-      @previous = Contact.my.find($1)
-    end
-    respond_with(@contact)
-
-  rescue ActiveRecord::RecordNotFound
-    @previous ||= $1.to_i
-    respond_to_not_found(:js) unless @contact
+    super
+    @account  = @asset.account || Account.new(:user => current_user)
   end
 
   # POST /contacts
   #----------------------------------------------------------------------------
   def create
-    @contact = Contact.new(params[:contact])
+    @asset = klass.new(params[asset_key])
 
-    respond_with(@contact) do |format|
-      if @contact.save_with_account_and_permissions(params)
-        @contacts = get_contacts if called_from_index_page?
+    if @asset.save_with_account_and_permissions(params)
+      @assets = get_list_of_records
+    else
+      unless params[:account][:id].blank?
+        @account = Account.find(params[:account][:id])
       else
-        unless params[:account][:id].blank?
-          @account = Account.find(params[:account][:id])
+        if request.referer =~ /\/accounts\/(.+)$/
+          @account = Account.find($1) # related account
         else
-          if request.referer =~ /\/accounts\/(.+)$/
-            @account = Account.find($1) # related account
-          else
-            @account = Account.new(:user => current_user)
-          end
+          @account = Account.new(:user => current_user)
         end
-        @opportunity = Opportunity.find(params[:opportunity]) unless params[:opportunity].blank?
       end
+      @opportunity = Opportunity.find(params[:opportunity]) unless params[:opportunity].blank?
     end
   end
 
   # PUT /contacts/1
   #----------------------------------------------------------------------------
   def update
-    @contact = Contact.my.find(params[:id])
+    @asset = klass.my.find(params[:id])
 
-    respond_with(@contact) do |format|
-      unless @contact.update_with_account_and_permissions(params)
-        @users = User.except(current_user)
-        if @contact.account
-          @account = Account.find(@contact.account.id)
-        else
-          @account = Account.new(:user => current_user)
-        end
-      end
+    unless @asset.update_with_account_and_permissions(params)
+      @users = User.except(current_user)
+      @account = @asset.account || Account.new(:user => current_user)
     end
 
   rescue ActiveRecord::RecordNotFound

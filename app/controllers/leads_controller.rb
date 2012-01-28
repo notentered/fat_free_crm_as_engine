@@ -18,69 +18,35 @@
 class LeadsController < BaseController
   before_filter :get_data_for_sidebar, :only => :index
 
-  # GET /leads/1
-  #----------------------------------------------------------------------------
-  def show
-    @lead = Lead.my.find(params[:id])
-
-    respond_with(@lead) do |format|
-      format.html do
-        @comment = Comment.new
-        @timeline = timeline(@lead)
-      end
-    end
-
-  rescue ActiveRecord::RecordNotFound
-    respond_to_not_found(:html, :json, :xml)
-  end
-
   # GET /leads/new
   #----------------------------------------------------------------------------
   def new
-    @lead = Lead.new(:user => @current_user, :access => Setting.default_access)
+    super
     @users = User.except(@current_user)
     @campaigns = Campaign.my.order("name")
-    if params[:related]
-      model, id = params[:related].split("_")
-      instance_variable_set("@#{model}", model.classify.constantize.my.find(id))
-    end
-    respond_with(@lead)
-
-  rescue ActiveRecord::RecordNotFound # Kicks in if related asset was not found.
-    respond_to_related_not_found(model, :js) if model
   end
 
   # GET /leads/1/edit                                                      AJAX
   #----------------------------------------------------------------------------
   def edit
-    @lead = Lead.my.find(params[:id])
+    super
     @users = User.except(@current_user)
     @campaigns = Campaign.my.order("name")
-    if params[:previous].to_s =~ /(\d+)\z/
-      @previous = Lead.my.find($1)
-    end
-    respond_with(@lead)
-
-  rescue ActiveRecord::RecordNotFound
-    @previous ||= $1.to_i
-    respond_to_not_found(:js) unless @lead
   end
 
   # POST /leads
   #----------------------------------------------------------------------------
   def create
-    @lead = Lead.new(params[:lead])
+    @asset = klass.new(params[asset_key])
     @users = User.except(@current_user)
     @campaigns = Campaign.my.order("name")
 
-    respond_with(@lead) do |format|
-      if @lead.save_with_permissions(params)
-        if called_from_index_page?
-          @leads = get_leads
-          get_data_for_sidebar
-        else
-          get_data_for_sidebar(:campaign)
-        end
+    if @asset.save_with_permissions(params)
+      @assets = get_list_of_records
+      if called_from_index_page?
+        get_data_for_sidebar
+      else
+        get_data_for_sidebar(:campaign)
       end
     end
   end
@@ -88,15 +54,17 @@ class LeadsController < BaseController
   # PUT /leads/1
   #----------------------------------------------------------------------------
   def update
-    @lead = Lead.my.find(params[:id])
+    @asset = klass.my.find(params[:id])
 
-    respond_with(@lead) do |format|
-      if @lead.update_with_permissions(params[:lead], params[:users])
-        update_sidebar
+    if @asset.update_with_permissions(params[asset_key], params[:users])
+      if called_from_index_page?
+        get_data_for_sidebar
       else
-        @users = User.except(@current_user)
-        @campaigns = Campaign.my.order("name")
+        get_data_for_sidebar(:campaign)
       end
+    else
+      @users = User.except(@current_user)
+      @campaigns = Campaign.my.order("name")
     end
 
   rescue ActiveRecord::RecordNotFound
@@ -243,15 +211,6 @@ class LeadsController < BaseController
         @lead_status_total[:other] -= @lead_status_total[key]
       end
       @lead_status_total[:other] += @lead_status_total[:all]
-    end
-  end
-
-  #----------------------------------------------------------------------------
-  def update_sidebar
-    if called_from_index_page?
-      get_data_for_sidebar
-    else
-      get_data_for_sidebar(:campaign)
     end
   end
 end

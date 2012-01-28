@@ -1,5 +1,5 @@
 - edit ||= false
-- collapsed = (@account.errors.empty? && session[:account_contact].nil?)
+- collapsed = (@asset.errors.empty? && session[:account_contact].nil?)
 = subtitle :account_contact, collapsed, t(:contact_info)
 .section
   %small#account_contact_intro{ hidden_if(!collapsed) }
@@ -31,7 +31,7 @@
           = f.text_field :email
       %tr
         %td
-          = render "shared/address", :f => f, :asset => @account, :type => :billing, :title => :billing_address
+          = render "shared/address", :f => f, :asset => @asset, :type => :billing, :title => :billing_address
         %td= spacer
         %td
-          = render "shared/address", :f => f, :asset => @account, :type => :shipping, :title => :shipping_address, :same_as_billing => true
+          = render "shared/address", :f => f, :asset => @asset, :type => :shipping, :title => :shipping_address, :same_as_billing => true

@@ -33,8 +33,14 @@ class ApplicationController < ActionController::Base
   # Uncomment the :secret if you're not using the cookie session store
   # protect_from_forgery # :secret => '165eb65bfdacf95923dad9aea10cc64a'
 
+  # Returns model classes: Contact, Account
   def klass
     @klass ||= controller_name.classify.constantize
+  end
+
+  # Returns symbols: :contact, :account
+  def asset_key
+    @asset_key ||= controller_name.classify.downcase.to_sym
   end
 
 private

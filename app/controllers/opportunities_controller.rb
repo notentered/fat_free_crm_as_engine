@@ -20,112 +20,73 @@ class OpportunitiesController < BaseController
   before_filter :get_data_for_sidebar, :only => :index
   before_filter :set_params, :only => [:index, :redraw, :filter]
 
-  # GET /opportunities/1
-  #----------------------------------------------------------------------------
-  def show
-    @opportunity = Opportunity.my.find(params[:id])
-
-    respond_with(@opportunity) do |format|
-      format.html do
-        @comment = Comment.new
-        @timeline = timeline(@opportunity)
-      end
-    end
-
-  rescue ActiveRecord::RecordNotFound
-    respond_to_not_found(:html, :json, :xml)
-  end
-
   # GET /opportunities/new
   #----------------------------------------------------------------------------
   def new
-    @opportunity = Opportunity.new(:user => @current_user, :stage => "prospecting", :access => Setting.default_access)
+    super
+    @asset = Opportunity.new(:user => @current_user, :stage => "prospecting", :access => Setting.default_access)
     @users       = User.except(@current_user)
-    @account     = Account.new(:user => @current_user)
+    @account     = @asset.account || Account.new(:user => @current_user)
     @accounts    = Account.my.order("name")
-    if params[:related]
-      model, id = params[:related].split("_")
-      instance_variable_set("@#{model}", model.classify.constantize.my.find(id))
-    end
-    respond_with(@opportunity)
-
-  rescue ActiveRecord::RecordNotFound # Kicks in if related asset was not found.
-    respond_to_related_not_found(model, :js) if model
   end
 
   # GET /opportunities/1/edit                                              AJAX
   #----------------------------------------------------------------------------
   def edit
-    @opportunity = Opportunity.my.find(params[:id])
+    super
     @users = User.except(@current_user)
-    @account  = @opportunity.account || Account.new(:user => @current_user)
+    @account  = @asset.account || Account.new(:user => @current_user)
     @accounts = Account.my.order("name")
-    if params[:previous].to_s =~ /(\d+)\z/
-      @previous = Opportunity.my.find($1)
-    end
-    respond_with(@opportunity)
-
-  rescue ActiveRecord::RecordNotFound
-    @previous ||= $1.to_i
-    respond_to_not_found(:js) unless @opportunity
   end
 
   # POST /opportunities
   #----------------------------------------------------------------------------
   def create
-    @opportunity = Opportunity.new(params[:opportunity])
+    @asset = klass.new(params[asset_key])
 
-    respond_with(@opportunity) do |format|
-      if @opportunity.save_with_account_and_permissions(params)
-        if called_from_index_page?
-          @opportunities = get_opportunities
-          get_data_for_sidebar
-        elsif called_from_landing_page?(:accounts)
-          get_data_for_sidebar(:account)
-        elsif called_from_landing_page?(:campaigns)
-          get_data_for_sidebar(:campaign)
-        end
-      else
-        @users = User.except(@current_user)
-        @accounts = Account.my.order("name")
-        unless params[:account][:id].blank?
-          @account = Account.find(params[:account][:id])
-        else
-          if request.referer =~ /\/accounts\/(.+)$/
-            @account = Account.find($1) # related account
-          else
-            @account = Account.new(:user => @current_user)
-          end
-        end
-        @contact = Contact.find(params[:contact]) unless params[:contact].blank?
-        @campaign = Campaign.find(params[:campaign]) unless params[:campaign].blank?
+    if @asset.save_with_account_and_permissions(params)
+      @assets = get_list_of_records
+      if called_from_index_page?
+        get_data_for_sidebar
+      elsif called_from_landing_page?(:accounts)
+        get_data_for_sidebar(:account)
+      elsif called_from_landing_page?(:campaigns)
+        get_data_for_sidebar(:campaign)
       end
+    else
+      @users = User.except(@current_user)
+      @accounts = Account.my.order("name")
+      unless params[:account][:id].blank?
+        @account = Account.find(params[:account][:id])
+      else
+        if request.referer =~ /\/accounts\/(.+)$/
+          @account = Account.find($1) # related account
+        else
+          @account = Account.new(:user => @current_user)
+        end
+      end
+      @contact = Contact.find(params[:contact]) unless params[:contact].blank?
+      @campaign = Campaign.find(params[:campaign]) unless params[:campaign].blank?
     end
   end
 
   # PUT /opportunities/1
   #----------------------------------------------------------------------------
   def update
-    @opportunity = Opportunity.my.find(params[:id])
+    @asset = klass.my.find(params[:id])
 
-    respond_with(@opportunity) do |format|
-      if @opportunity.update_with_account_and_permissions(params)
-        if called_from_index_page?
-          get_data_for_sidebar
-        elsif called_from_landing_page?(:accounts)
-          get_data_for_sidebar(:account)
-        elsif called_from_landing_page?(:campaigns)
-          get_data_for_sidebar(:campaign)
-        end
-      else
-        @users = User.except(@current_user)
-        @accounts = Account.my.order("name")
-        if @opportunity.account
-          @account = Account.find(@opportunity.account.id)
-        else
-          @account = Account.new(:user => @current_user)
-        end
+    if @asset.update_with_account_and_permissions(params)
+      if called_from_index_page?
+        get_data_for_sidebar
+      elsif called_from_landing_page?(:accounts)
+        get_data_for_sidebar(:account)
+      elsif called_from_landing_page?(:campaigns)
+        get_data_for_sidebar(:campaign)
       end
+    else
+      @users = User.except(@current_user)
+      @accounts = Account.my.order("name")
+      @account = @asset.account || Account.new(:user => @current_user)
     end
 
   rescue ActiveRecord::RecordNotFound

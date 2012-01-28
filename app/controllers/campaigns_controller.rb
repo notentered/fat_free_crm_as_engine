@@ -18,82 +18,32 @@
 class CampaignsController < BaseController
   before_filter :get_data_for_sidebar, :only => :index
 
-  # GET /campaigns/1
-  #----------------------------------------------------------------------------
-  def show
-    @campaign = Campaign.my.find(params[:id])
-
-    respond_with(@campaign) do |format|
-      format.html do
-        @comment = Comment.new
-        @timeline = timeline(@campaign)
-      end
-    end
-
-  rescue ActiveRecord::RecordNotFound
-    respond_to_not_found(:html, :json, :xml)
-  end
-
   # GET /campaigns/new
   # GET /campaigns/new.json
   # GET /campaigns/new.xml                                                 AJAX
   #----------------------------------------------------------------------------
   def new
-    @campaign = Campaign.new(:user => @current_user, :access => Setting.default_access)
+    super
     @users = User.except(@current_user)
-    if params[:related]
-      model, id = params[:related].split("_")
-      instance_variable_set("@#{model}", model.classify.constantize.find(id))
-    end
-
-    respond_with(@campaign)
   end
 
   # GET /campaigns/1/edit                                                  AJAX
   #----------------------------------------------------------------------------
   def edit
-    @campaign = Campaign.my.find(params[:id])
+    super
     @users = User.except(@current_user)
-    if params[:previous].to_s =~ /(\d+)\z/
-      @previous = Campaign.my.find($1)
-    end
-    respond_with(@campaign)
-
-  rescue ActiveRecord::RecordNotFound
-    @previous ||= $1.to_i
-    respond_to_not_found(:js) unless @campaign
   end
 
-  # POST /campaigns
+  # POST /campaign                                                         AJAX
   #----------------------------------------------------------------------------
   def create
-    @campaign = Campaign.new(params[:campaign])
+    super
     @users = User.except(@current_user)
-
-    respond_with(@campaign) do |format|
-      if @campaign.save_with_permissions(params[:users])
-        @campaigns = get_campaigns
-        get_data_for_sidebar
-      end
-    end
   end
 
   # PUT /campaigns/1
   #----------------------------------------------------------------------------
-  def update
-    @campaign = Campaign.my.find(params[:id])
-
-    respond_with(@campaign) do |format|
-      if @campaign.update_with_permissions(params[:campaign], params[:users])
-        get_data_for_sidebar if called_from_index_page?
-      else
-        @users = User.except(@current_user) # Need it to redraw [Edit Campaign] form.
-      end
-    end
-
-  rescue ActiveRecord::RecordNotFound
-    respond_to_not_found(:js, :json, :xml)
-  end
+  # Handled by BaseController :update
 
   # DELETE /campaigns/1
   #----------------------------------------------------------------------------

@@ -20,5 +20,5 @@
   - else
     = render "shared/empty"
 
-#paginate= will_paginate @assets, :params => {:action => :index}
+#paginate= render "shared/paginate"
 #export= raw links_to_export

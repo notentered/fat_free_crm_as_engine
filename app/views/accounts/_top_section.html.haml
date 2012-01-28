@@ -12,11 +12,11 @@
         %td= spacer
         %td
           .label #{t :category}:
-          = f.select :category, Setting.unroll(:account_category), { :selected => (@account.category || "other").to_sym, :include_blank => t(:other) }, { :style => "width:160px" }
+          = f.select :category, Setting.unroll(:account_category), { :selected => (@asset.category || "other").to_sym, :include_blank => t(:other) }, { :style => "width:160px" }
         %td= spacer
         %td
           .label #{t :rating}:
-          = rating_select "account[rating]", { :id => :account_rating, :selected => @account.rating, :style => "width:160px" }
+          = rating_select "account[rating]", { :id => :account_rating, :selected => @asset.rating, :style => "width:160px" }
 
       - if Setting.background_info && Setting.background_info.include?(:account)
         %tr

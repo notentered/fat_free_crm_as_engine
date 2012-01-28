@@ -18,82 +18,30 @@
 class AccountsController < BaseController
   before_filter :get_data_for_sidebar, :only => :index
 
-  # GET /accounts/1
-  #----------------------------------------------------------------------------
-  def show
-    @account = Account.my.find(params[:id])
-
-    respond_with(@account) do |format|
-      format.html do
-        @comment = Comment.new
-        @timeline = timeline(@account)
-      end
-    end
-
-  rescue ActiveRecord::RecordNotFound
-    respond_to_not_found(:html, :json, :xml)
-  end
-
   # GET /accounts/new
   #----------------------------------------------------------------------------
   def new
-    @account = Account.new(:user => @current_user, :access => Setting.default_access)
+    super
     @users = User.except(@current_user)
-    if params[:related]
-      model, id = params[:related].split("_")
-      instance_variable_set("@#{model}", model.classify.constantize.find(id))
-    end
-
-    respond_with(@account)
   end
 
   # GET /accounts/1/edit                                                   AJAX
   #----------------------------------------------------------------------------
   def edit
-    @account = Account.my.find(params[:id])
+    super
     @users = User.except(@current_user)
-    if params[:previous].to_s =~ /(\d+)\z/
-      @previous = Account.my.find($1)
-    end
-    respond_with(@account)
-
-  rescue ActiveRecord::RecordNotFound
-    @previous ||= $1.to_i
-    respond_to_not_found(:js) unless @account
   end
 
-  # POST /accounts
+  # POST /accounts                                                         AJAX
   #----------------------------------------------------------------------------
   def create
-    @account = Account.new(params[:account])
+    super
     @users = User.except(@current_user)
-
-    respond_with(@account) do |format|
-      if @account.save_with_permissions(params[:users])
-        # None: account can only be created from the Accounts index page, so we
-        # don't have to check whether we're on the index page.
-        @accounts = get_accounts
-        get_data_for_sidebar
-      end
-    end
   end
 
   # PUT /accounts/1
   #----------------------------------------------------------------------------
-  def update
-    @account = Account.my.find(params[:id])
-
-    respond_with(@account) do |format|
-      if @account.update_with_permissions(params[:account], params[:users])
-        get_data_for_sidebar
-      else
-        @users = User.except(@current_user) # Need it to redraw [Edit Account] form.
-      end
-    end
-
-  rescue ActiveRecord::RecordNotFound
-    respond_to_not_found(:js, :json, :xml)
-  end
+  # Handled by BaseController :update
 
   # DELETE /accounts/1
   #----------------------------------------------------------------------------

@@ -33,6 +33,65 @@ class BaseController < ApplicationController
   # Common controller actions
   #----------------------------------------------------------------------------
 
+  # GET /*/1
+  #----------------------------------------------------------------------------
+  def show
+    @asset = klass.my.find(params[:id])
+    @comment = Comment.new
+    @timeline = timeline(@contact)
+  rescue ActiveRecord::RecordNotFound
+    respond_to_not_found(:html, :json, :xml)
+  end
+
+  # GET /*/new
+  #----------------------------------------------------------------------------
+  def new
+    @asset ||= klass.new(:user => current_user, :access => Setting.default_access)
+    if params[:related]
+      model, id = params[:related].split("_")
+      instance_variable_set("@#{model}", model.classify.constantize.my.find(id))
+    end
+  rescue ActiveRecord::RecordNotFound # Kicks in if related asset was not found.
+    respond_to_related_not_found(model, :js) if model
+  end
+
+  # GET /*/1/edit                                                          AJAX
+  #----------------------------------------------------------------------------
+  def edit
+    @asset = klass.my.find(params[:id])
+    if params[:previous].to_s =~ /(\d+)\z/
+      @previous = klass.my.find($1)
+    end
+  rescue ActiveRecord::RecordNotFound
+    @previous ||= $1.to_i
+    respond_to_not_found(:js) unless @asset
+  end
+
+  # POST /*
+  #----------------------------------------------------------------------------
+  def create
+    @asset = klass.new(params[asset_key])
+    if @asset.save_with_permissions(params[:users])
+      @assets = get_list_of_records
+      get_data_for_sidebar if respond_to?(:get_data_for_sidebar)
+    end
+  end
+
+  # PUT /*/1
+  #----------------------------------------------------------------------------
+  def update
+    @asset = klass.my.find(params[:id])
+    if @asset.update_with_permissions(params[asset_key], params[:users])
+      get_data_for_sidebar
+    else
+      @users = User.except(@current_user) # Need it to redraw edit form.
+    end
+  rescue ActiveRecord::RecordNotFound
+    respond_to_not_found(:js, :json, :xml)
+  end
+
+  # DELETE /*/1
+  #----------------------------------------------------------------------------
   def destroy
     if @asset = klass.my.find(params[:id])
       @asset.destroy
@@ -45,7 +104,7 @@ class BaseController < ApplicationController
           get_data_for_sidebar if respond_to?(:get_data_for_sidebar)
           @assets = get_list_of_records             # Get assets for current page.
           if @assets.blank?                         # If no asset on this page then try the previous one.
-            @assets =  get_list_of_records(:page => current_page - 1) if current_page > 1
+            @assets = get_list_of_records(:page => current_page - 1) if current_page > 1
             render :index                           # And reload the whole list even if it's empty.
           end
         else                                        # Called from related asset.
