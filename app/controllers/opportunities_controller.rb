@@ -128,14 +128,14 @@ class OpportunitiesController < BaseController
   # POST /opportunities/redraw                                             AJAX
   #----------------------------------------------------------------------------
   def redraw
-    @opportunities = get_opportunities(:page => 1)
+    @assets = get_list_of_records(:page => 1)
     render :index
   end
 
   # POST /opportunities/filter                                             AJAX
   #----------------------------------------------------------------------------
   def filter
-    @opportunities = get_opportunities(:page => 1)
+    @assets = get_list_of_records(:page => 1)
     render :index
   end
 

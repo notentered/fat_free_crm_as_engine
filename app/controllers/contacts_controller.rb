@@ -119,7 +119,7 @@ class ContactsController < BaseController
       current_user.pref[:leads_naming] ||= params[:naming]
     end
 
-    @contacts = get_contacts(:page => 1) # Start one the first page.
+    @assets = get_list_of_records(:page => 1) # Start on the first page.
     render :index
   end
 

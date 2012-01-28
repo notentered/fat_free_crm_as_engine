@@ -176,7 +176,7 @@ class LeadsController < BaseController
       @current_user.pref[:contacts_naming] ||= params[:naming]
     end
 
-    @leads = get_leads(:page => 1) # Start one the first page.
+    @assets = get_list_of_records(:page => 1) # Start on the first page.
     render :index
   end
 
@@ -184,7 +184,7 @@ class LeadsController < BaseController
   #----------------------------------------------------------------------------
   def filter
     session[:filter_by_lead_status] = params[:status]
-    @leads = get_leads(:page => 1) # Start one the first page.
+    @assets = get_list_of_records(:page => 1) # Start on the first page.
     render :index
   end
 
