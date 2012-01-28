@@ -53,8 +53,11 @@ class BaseController < ApplicationController
       model, id = params[:related].split("_")
       related = model.classify.constantize.my.find(id)
       instance_variable_set("@#{model}", related)
-      # Set the related association
-      @asset.send("#{model}=", related)
+      # Set the related association (only applicable for has_one,
+      # has_many is managed via presence of instance variable)
+      if @asset.respond_to?(model)
+        @asset.send("#{model}=", related)
+      end
     end
   rescue ActiveRecord::RecordNotFound # Kicks in if related asset was not found.
     respond_to_related_not_found(model, :js) if model
