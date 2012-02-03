@@ -12,12 +12,12 @@ describe ContactsController do
   #----------------------------------------------------------------------------
   describe "responding to GET index" do
 
-    it "should expose all contacts as @contacts and render [index] template" do
-      @contacts = [ Factory(:contact, :user => @current_user) ]
+    it "should expose all contacts as @assets and render [index] template" do
+      @assets = [ Factory(:contact, :user => @current_user) ]
 
       get :index
-      assigns[:contacts].should == @contacts
-      response.should render_template("contacts/index")
+      assigns[:assets].should == @assets
+      response.should render_template("base/index")
     end
 
     it "should perform lookup using query string" do
@@ -25,30 +25,30 @@ describe ContactsController do
       @captain_flint = Factory(:contact, :user => @current_user, :first_name => "Captain", :last_name => "Flint")
 
       get :index, :query => "bill"
-      assigns[:contacts].should == [ @billy_bones ]
+      assigns[:assets].should == [ @billy_bones ]
       assigns[:current_query].should == "bill"
       session[:contacts_current_query].should == "bill"
     end
 
     describe "AJAX pagination" do
       it "should pick up page number from params" do
-        @contacts = [ Factory(:contact, :user => @current_user) ]
+        @assets = [ Factory(:contact, :user => @current_user) ]
         xhr :get, :index, :page => 42
 
         assigns[:current_page].to_i.should == 42
-        assigns[:contacts].should == [] # page #42 should be empty if there's only one contact ;-)
+        assigns[:assets].should == [] # page #42 should be empty if there's only one contact ;-)
         session[:contacts_current_page].to_i.should == 42
-        response.should render_template("contacts/index")
+        response.should render_template("base/index")
       end
 
       it "should pick up saved page number from session" do
         session[:contacts_current_page] = 42
-        @contacts = [ Factory(:contact, :user => @current_user) ]
+        @assets = [ Factory(:contact, :user => @current_user) ]
         xhr :get, :index
 
         assigns[:current_page].should == 42
-        assigns[:contacts].should == []
-        response.should render_template("contacts/index")
+        assigns[:assets].should == []
+        response.should render_template("base/index")
       end
     end
 
@@ -82,22 +82,22 @@ describe ContactsController do
 
     describe "with mime type of HTML" do
       before(:each) do
-        @contact = Factory(:contact, :id => 42)
+        @asset = Factory(:contact, :id => 42)
         @stage = Setting.unroll(:opportunity_stage)
         @comment = Comment.new
       end
 
-      it "should expose the requested contact as @contact" do
+      it "should expose the requested contact as @asset" do
         get :show, :id => 42
-        assigns[:contact].should == @contact
+        assigns[:asset].should == @asset
         assigns[:stage].should == @stage
         assigns[:comment].attributes.should == @comment.attributes
         response.should render_template("contacts/show")
       end
 
       it "should update an activity when viewing the contact" do
-        Activity.should_receive(:log).with(@current_user, @contact, :viewed).once
-        get :show, :id => @contact.id
+        Activity.should_receive(:log).with(@current_user, @asset, :viewed).once
+        get :show, :id => @asset.id
       end
     end
 
@@ -125,10 +125,10 @@ describe ContactsController do
 
     describe "contact got deleted or otherwise unavailable" do
       it "should redirect to contact index if the contact got deleted" do
-        @contact = Factory(:contact, :user => @current_user)
-        @contact.destroy
+        @asset = Factory(:contact, :user => @current_user)
+        @asset.destroy
 
-        get :show, :id => @contact.id
+        get :show, :id => @asset.id
         flash[:warning].should_not == nil
         response.should redirect_to(contacts_path)
       end
@@ -142,11 +142,11 @@ describe ContactsController do
       end
 
       it "should return 404 (Not Found) XML error" do
-        @contact = Factory(:contact, :user => @current_user)
-        @contact.destroy
+        @asset = Factory(:contact, :user => @current_user)
+        @asset.destroy
         request.env["HTTP_ACCEPT"] = "application/xml"
 
-        get :show, :id => @contact.id
+        get :show, :id => @asset.id
         response.code.should == "404" # :not_found
       end
     end
@@ -158,14 +158,14 @@ describe ContactsController do
   #----------------------------------------------------------------------------
   describe "responding to GET new" do
 
-    it "should expose a new contact as @contact and render [new] template" do
-      @contact = Contact.new(:user => @current_user)
+    it "should expose a new contact as @asset and render [new] template" do
+      @asset = Contact.new(:user => @current_user)
       @account = Account.new(:user => @current_user)
       @users = [ Factory(:user) ]
       @accounts = [ Factory(:account, :user => @current_user) ]
 
       xhr :get, :new
-      assigns[:contact].attributes.should == @contact.attributes
+      assigns[:asset].attributes.should == @asset.attributes
       assigns[:account].attributes.should == @account.attributes
       assigns[:users].should == @users
       assigns[:accounts].should == @accounts
@@ -204,31 +204,31 @@ describe ContactsController do
   #----------------------------------------------------------------------------
   describe "responding to GET edit" do
 
-    it "should expose the requested contact as @contact and render [edit] template" do
-      @contact = Factory(:contact, :id => 42, :user => @current_user, :lead => nil)
+    it "should expose the requested contact as @asset and render [edit] template" do
+      @asset = Factory(:contact, :id => 42, :user => @current_user, :lead => nil)
       @users = [ Factory(:user) ]
       @account = Account.new(:user => @current_user)
 
       xhr :get, :edit, :id => 42
-      assigns[:contact].should == @contact
+      assigns[:asset].should == @asset
       assigns[:users].should == @users
       assigns[:account].attributes.should == @account.attributes
       assigns[:previous].should == nil
       response.should render_template("contacts/edit")
     end
 
-    it "should expose the requested contact as @contact and linked account as @account" do
+    it "should expose the requested contact as @asset and linked account as @account" do
       @account = Factory(:account, :id => 99)
-      @contact = Factory(:contact, :id => 42, :user => @current_user, :lead => nil)
-      Factory(:account_contact, :account => @account, :contact => @contact)
+      @asset = Factory(:contact, :id => 42, :user => @current_user, :lead => nil)
+      Factory(:account_contact, :account => @account, :contact => @asset)
 
       xhr :get, :edit, :id => 42
-      assigns[:contact].should == @contact
+      assigns[:asset].should == @asset
       assigns[:account].should == @account
     end
 
     it "should expose previous contact as @previous when necessary" do
-      @contact = Factory(:contact, :id => 42)
+      @asset = Factory(:contact, :id => 42)
       @previous = Factory(:contact, :id => 1992)
 
       xhr :get, :edit, :id => 42, :previous => 1992
@@ -237,10 +237,10 @@ describe ContactsController do
 
     describe "(contact got deleted or is otherwise unavailable)" do
       it "should reload current page with the flash message if the contact got deleted" do
-        @contact = Factory(:contact, :user => @current_user)
-        @contact.destroy
+        @asset = Factory(:contact, :user => @current_user)
+        @asset.destroy
 
-        xhr :get, :edit, :id => @contact.id
+        xhr :get, :edit, :id => @asset.id
         flash[:warning].should_not == nil
         response.body.should == "window.location.reload();"
       end
@@ -256,14 +256,14 @@ describe ContactsController do
 
     describe "(previous contact got deleted or is otherwise unavailable)" do
       before(:each) do
-        @contact = Factory(:contact, :user => @current_user)
+        @asset = Factory(:contact, :user => @current_user)
         @previous = Factory(:contact, :user => Factory(:user))
       end
 
       it "should notify the view if previous contact got deleted" do
         @previous.destroy
 
-        xhr :get, :edit, :id => @contact.id, :previous => @previous.id
+        xhr :get, :edit, :id => @asset.id, :previous => @previous.id
         flash[:warning].should == nil
         assigns[:previous].should == @previous.id
         response.should render_template("contacts/edit")
@@ -272,7 +272,7 @@ describe ContactsController do
       it "should notify the view if previous contact got protected" do
         @previous.update_attribute(:access, "Private")
 
-        xhr :get, :edit, :id => @contact.id, :previous => @previous.id
+        xhr :get, :edit, :id => @asset.id, :previous => @previous.id
         flash[:warning].should == nil
         assigns[:previous].should == @previous.id
         response.should render_template("contacts/edit")
@@ -288,41 +288,41 @@ describe ContactsController do
 
     describe "with valid params" do
 
-      it "should expose a newly created contact as @contact and render [create] template" do
-        @contact = Factory.build(:contact, :first_name => "Billy", :last_name => "Bones")
-        Contact.stub!(:new).and_return(@contact)
+      it "should expose a newly created contact as @asset and render [create] template" do
+        @asset = Factory.build(:contact, :first_name => "Billy", :last_name => "Bones")
+        Contact.stub!(:new).and_return(@asset)
 
         xhr :post, :create, :contact => { :first_name => "Billy", :last_name => "Bones" }, :account => { :name => "Hello world" }, :users => %w(1 2 3)
-        assigns(:contact).should == @contact
-        assigns(:contact).account.name.should == "Hello world"
+        assigns(:asset).should == @asset
+        assigns(:asset).account.name.should == "Hello world"
         response.should render_template("contacts/create")
       end
 
       it "should be able to associate newly created contact with the opportunity" do
         @opportunity = Factory(:opportunity, :id => 987);
-        @contact = Factory.build(:contact)
-        Contact.stub!(:new).and_return(@contact)
+        @asset = Factory.build(:contact)
+        Contact.stub!(:new).and_return(@asset)
 
         xhr :post, :create, :contact => { :first_name => "Billy"}, :account => {}, :opportunity => 987
-        assigns(:contact).opportunities.should include(@opportunity)
+        assigns(:asset).opportunities.should include(@opportunity)
         response.should render_template("contacts/create")
       end
 
       it "should reload contacts to update pagination if called from contacts index" do
-        @contact = Factory.build(:contact, :user => @current_user)
-        Contact.stub!(:new).and_return(@contact)
+        @asset = Factory.build(:contact, :user => @current_user)
+        Contact.stub!(:new).and_return(@asset)
 
         request.env["HTTP_REFERER"] = "http://localhost/contacts"
         xhr :post, :create, :contact => { :first_name => "Billy", :last_name => "Bones" }, :account => {}, :users => %w(1 2 3)
-        assigns[:contacts].should == [ @contact ]
+        assigns[:assets].should == [ @asset ]
       end
     end
 
     describe "with invalid params" do
 
       before(:each) do
-        @contact = Factory.build(:contact, :first_name => nil, :user => @current_user, :lead => nil)
-        Contact.stub!(:new).and_return(@contact)
+        @asset = Factory.build(:contact, :first_name => nil, :user => @current_user, :lead => nil)
+        Contact.stub!(:new).and_return(@asset)
         @users = [ Factory(:user) ]
       end
 
@@ -332,7 +332,7 @@ describe ContactsController do
 
         # This redraws [create] form with blank account.
         xhr :post, :create, :contact => {}, :account => { :id => 42, :user_id => @current_user.id }
-        assigns(:contact).should == @contact
+        assigns(:asset).should == @asset
         assigns(:users).should == @users
         assigns(:account).should == @account
         assigns(:accounts).should == [ @account ]
@@ -345,7 +345,7 @@ describe ContactsController do
 
         request.env["HTTP_REFERER"] = "http://localhost/accounts/123"
         xhr :post, :create, :contact => { :first_name => nil }, :account => { :name => nil, :user_id => @current_user.id }
-        assigns(:contact).should == @contact
+        assigns(:asset).should == @asset
         assigns(:users).should == @users
         assigns(:account).should == @account
         assigns(:accounts).should == [ @account ]
@@ -357,7 +357,7 @@ describe ContactsController do
         @account = Account.new(:user => @current_user)
 
         xhr :post, :create, :contact => { :first_name => nil }, :account => { :name => nil, :user_id => @current_user.id }
-        assigns(:contact).should == @contact
+        assigns(:asset).should == @asset
         assigns(:users).should == @users
         assigns(:account).attributes.should == @account.attributes
         assigns(:accounts).should == @accounts
@@ -384,48 +384,48 @@ describe ContactsController do
     describe "with valid params" do
 
       it "should update the requested contact and render [update] template" do
-        @contact = Factory(:contact, :id => 42, :first_name => "Billy")
+        @asset = Factory(:contact, :id => 42, :first_name => "Billy")
 
         xhr :put, :update, :id => 42, :contact => { :first_name => "Bones" }, :account => {}
-        @contact.reload.first_name.should == "Bones"
-        assigns(:contact).should == @contact
+        @asset.reload.first_name.should == "Bones"
+        assigns(:asset).should == @asset
         response.should render_template("contacts/update")
       end
 
       it "should be able to create a new account and link it to the contact" do
-        @contact = Factory(:contact, :id => 42, :first_name => "Billy")
+        @asset = Factory(:contact, :id => 42, :first_name => "Billy")
 
         xhr :put, :update, :id => 42, :contact => { :first_name => "Bones" }, :account => { :name => "new account" }
-        @contact.reload.first_name.should == "Bones"
-        @contact.account.name.should == "new account"
+        @asset.reload.first_name.should == "Bones"
+        @asset.account.name.should == "new account"
       end
 
       it "should be able to link existing account with the contact" do
         @account = Factory(:account, :id => 99, :name => "Hello world")
-        @contact = Factory(:contact, :id => 42, :first_name => "Billy")
+        @asset = Factory(:contact, :id => 42, :first_name => "Billy")
 
         xhr :put, :update, :id => 42, :contact => { :first_name => "Bones" }, :account => { :id => 99 }
-        @contact.reload.first_name.should == "Bones"
-        @contact.account.id.should == 99
+        @asset.reload.first_name.should == "Bones"
+        @asset.account.id.should == 99
       end
 
       it "should update contact permissions when sharing with specific users" do
-        @contact = Factory(:contact, :id => 42, :access => "Public")
+        @asset = Factory(:contact, :id => 42, :access => "Public")
         he  = Factory(:user, :id => 7)
         she = Factory(:user, :id => 8)
 
         xhr :put, :update, :id => 42, :contact => { :first_name => "Hello", :access => "Shared" }, :users => %w(7 8), :account => {}
-        @contact.reload.access.should == "Shared"
-        @contact.permissions.map(&:user_id).sort.should == [ 7, 8 ]
-        assigns[:contact].should == @contact
+        @asset.reload.access.should == "Shared"
+        @asset.permissions.map(&:user_id).sort.should == [ 7, 8 ]
+        assigns[:asset].should == @asset
       end
 
       describe "contact got deleted or otherwise unavailable" do
         it "should reload current page is the contact got deleted" do
-          @contact = Factory(:contact, :user => @current_user)
-          @contact.destroy
+          @asset = Factory(:contact, :user => @current_user)
+          @asset.destroy
 
-          xhr :put, :update, :id => @contact.id
+          xhr :put, :update, :id => @asset.id
           flash[:warning].should_not == nil
           response.body.should == "window.location.reload();"
         end
@@ -443,14 +443,14 @@ describe ContactsController do
 
     describe "with invalid params" do
 
-      it "should not update the contact, but still expose it as @contact and render [update] template" do
-        @contact = Factory(:contact, :id => 42, :user => @current_user, :first_name => "Billy", :lead => nil)
+      it "should not update the contact, but still expose it as @asset and render [update] template" do
+        @asset = Factory(:contact, :id => 42, :user => @current_user, :first_name => "Billy", :lead => nil)
         @account = Account.new(:user => @current_user)
         @users = [ Factory(:user) ]
 
         xhr :put, :update, :id => 42, :contact => { :first_name => nil }, :account => {}
-        @contact.reload.first_name.should == "Billy"
-        assigns(:contact).should == @contact
+        @asset.reload.first_name.should == "Billy"
+        assigns(:asset).should == @asset
         assigns(:account).attributes.should == @account.attributes
         assigns(:users).should == @users
         response.should render_template("contacts/update")
@@ -458,7 +458,7 @@ describe ContactsController do
 
       it "should expose existing account as @account if selected" do
         @account = Factory(:account, :id => 99)
-        @contact = Factory(:contact, :id => 42, :account => @account)
+        @asset = Factory(:contact, :id => 42, :account => @account)
 
         xhr :put, :update, :id => 42, :contact => { :first_name => nil }, :account => { :id => 99 }
         assigns(:account).should == @account
@@ -473,15 +473,15 @@ describe ContactsController do
   #----------------------------------------------------------------------------
   describe "responding to DELETE destroy" do
     before(:each) do
-      @contact = Factory(:contact, :user => @current_user)
+      @asset = Factory(:contact, :user => @current_user)
     end
 
     describe "AJAX request" do
       it "should destroy the requested contact and render [destroy] template" do
-        xhr :delete, :destroy, :id => @contact.id
+        xhr :delete, :destroy, :id => @asset.id
 
-        lambda { Contact.find(@contact) }.should raise_error(ActiveRecord::RecordNotFound)
-        response.should render_template("contacts/destroy")
+        lambda { Contact.find(@asset) }.should raise_error(ActiveRecord::RecordNotFound)
+        response.should render_template("base/destroy")
       end
 
       describe "when called from Contacts index page" do
@@ -491,37 +491,37 @@ describe ContactsController do
 
         it "should try previous page and render index action if current page has no contacts" do
           session[:contacts_current_page] = 42
-          xhr :delete, :destroy, :id => @contact.id
+          xhr :delete, :destroy, :id => @asset.id
 
           session[:contacts_current_page].should == 41
-          response.should render_template("contacts/index")
+          response.should render_template("base/index")
         end
 
         it "should render index action when deleting last contact" do
           session[:contacts_current_page] = 1
-          xhr :delete, :destroy, :id => @contact.id
+          xhr :delete, :destroy, :id => @asset.id
 
           session[:contacts_current_page].should == 1
-          response.should render_template("contacts/index")
+          response.should render_template("base/index")
         end
       end
 
       describe "when called from related asset page page" do
         it "should reset current page to 1" do
           request.env["HTTP_REFERER"] = "http://localhost/accounts/123"
-          xhr :delete, :destroy, :id => @contact.id
+          xhr :delete, :destroy, :id => @asset.id
 
           session[:contacts_current_page].should == 1
-          response.should render_template("contacts/destroy")
+          response.should render_template("base/destroy")
         end
       end
 
       describe "contact got deleted or otherwise unavailable" do
         it "should reload current page is the contact got deleted" do
-          @contact = Factory(:contact, :user => @current_user)
-          @contact.destroy
+          @asset = Factory(:contact, :user => @current_user)
+          @asset.destroy
 
-          xhr :delete, :destroy, :id => @contact.id
+          xhr :delete, :destroy, :id => @asset.id
           flash[:warning].should_not == nil
           response.body.should == "window.location.reload();"
         end
@@ -538,17 +538,17 @@ describe ContactsController do
 
     describe "HTML request" do
       it "should redirect to Contacts index when a contact gets deleted from its landing page" do
-        delete :destroy, :id => @contact.id
+        delete :destroy, :id => @asset.id
 
         flash[:notice].should_not == nil
         response.should redirect_to(contacts_path)
       end
 
       it "should redirect to contact index with the flash message is the contact got deleted" do
-        @contact = Factory(:contact, :user => @current_user)
-        @contact.destroy
+        @asset = Factory(:contact, :user => @current_user)
+        @asset.destroy
 
-        delete :destroy, :id => @contact.id
+        delete :destroy, :id => @asset.id
         flash[:warning].should_not == nil
         response.should redirect_to(contacts_path)
       end
@@ -684,15 +684,15 @@ describe ContactsController do
       session[:contacts_current_page].should == 1
     end
 
-    it "should select @contacts and render [index] template" do
-      @contacts = [
+    it "should select @assets and render [index] template" do
+      @assets = [
         Factory(:contact, :first_name => "Alice", :user => @current_user),
         Factory(:contact, :first_name => "Bobby", :user => @current_user)
       ]
 
       xhr :post, :redraw, :per_page => 1, :sort_by => "first_name"
-      assigns(:contacts).should == [ @contacts.first ]
-      response.should render_template("contacts/index")
+      assigns(:assets).should == [ @assets.first ]
+      response.should render_template("base/index")
     end
   end
 

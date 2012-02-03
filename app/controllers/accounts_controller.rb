@@ -32,6 +32,13 @@ class AccountsController < BaseController
     @users = User.except(@current_user)
   end
 
+  # GET /accounts/1                                                        AJAX
+  #----------------------------------------------------------------------------
+  def show
+    @stage = Setting.unroll(:opportunity_stage)
+    super
+  end
+
   # POST /accounts                                                         AJAX
   #----------------------------------------------------------------------------
   def create

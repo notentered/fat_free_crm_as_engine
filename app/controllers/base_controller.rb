@@ -37,8 +37,13 @@ class BaseController < ApplicationController
   #----------------------------------------------------------------------------
   def show
     @asset = klass.my.find(params[:id])
-    @comment = Comment.new
-    @timeline = timeline(@asset)
+
+    respond_with(@asset) do |format|
+      format.html do
+        @comment = Comment.new
+        @timeline = timeline(@asset)
+      end
+    end
   rescue ActiveRecord::RecordNotFound
     respond_to_not_found(:html, :json, :xml)
   end
@@ -105,7 +110,8 @@ class BaseController < ApplicationController
           @account = @asset.account                 # Reload related account if any.
         elsif called_from_landing_page?(:campaigns)
           @campaign = @asset.campaign               # Reload related campaign if any.
-        elsif called_from_index_page?               # Called from index.
+        end
+        if called_from_index_page?               # Called from index.
           # Get data for the sidebar, if available
           get_data_for_sidebar if respond_to?(:get_data_for_sidebar)
           @assets = get_list_of_records             # Get assets for current page.
@@ -123,7 +129,7 @@ class BaseController < ApplicationController
         self.current_page = 1
         asset_name = @asset.respond_to?(:full_name) ? @asset.full_name : @asset.name
         flash[:notice] = t(:msg_asset_deleted, asset_name)
-        redirect_to url_for
+        redirect_to url_for(:action => :index)
       end
     end
 
@@ -208,6 +214,11 @@ class BaseController < ApplicationController
   end
 
   protected
+  #----------------------------------------------------------------------------
+  def update_recently_viewed
+    Activity.log(current_user, @asset, :viewed) if @asset
+  end
+
   #----------------------------------------------------------------------------
   def collection
     @assets ||= get_list_of_records(:page => params[:page])

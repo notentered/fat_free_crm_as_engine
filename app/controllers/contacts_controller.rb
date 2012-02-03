@@ -23,14 +23,21 @@ class ContactsController < BaseController
   #----------------------------------------------------------------------------
   def new
     super
-    @account ||= @asset.account || Account.new(:user => current_user)
+    @account ||= @asset.account || Account.new(:user => current_user) if @asset
   end
 
   # GET /contacts/1/edit                                                   AJAX
   #----------------------------------------------------------------------------
   def edit
     super
-    @account  = @asset.account || Account.new(:user => current_user)
+    @account  = @asset.account || Account.new(:user => current_user) if @asset
+  end
+
+  # GET /contacts/1                                                        AJAX
+  #----------------------------------------------------------------------------
+  def show
+    @stage = Setting.unroll(:opportunity_stage)
+    super
   end
 
   # POST /contacts
