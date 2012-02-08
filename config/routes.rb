@@ -1,4 +1,4 @@
-FatFreeCRM::Application.routes.draw do
+Rails.application.routes.draw do
   scope Setting.base_url.to_s do
     root :to => 'home#index'
 
@@ -153,4 +153,3 @@ FatFreeCRM::Application.routes.draw do
     get '/:controller/tagged/:id' => '#tagged'
   end
 end
-
