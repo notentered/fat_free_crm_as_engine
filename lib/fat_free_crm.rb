@@ -15,13 +15,15 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
+require 'fat_free_crm/engine'
+
 # Plugin dependencies
-require Rails.root.join('vendor/plugins/is_paranoid/init')
+require FatFreeCRM::Engine.root.join('vendor/plugins/is_paranoid/lib/is_paranoid')
 
 # Overrides
-require "overrides/authlogic/session/cookies"
-require "overrides/simple_form/action_view_extensions/form_helper"
-require "overrides/rails/text_helper"
+require 'overrides/authlogic/session/cookies'
+require 'overrides/simple_form/action_view_extensions/form_helper'
+require 'overrides/rails/text_helper'
 
 # Fat Free CRM
 require "fat_free_crm/version"
