@@ -215,5 +215,7 @@ DEPENDENCIES
   rspec-rails (~> 2.8.1)
   ruby-debug19
   sass-rails
+  simple_form
   spork
   therubyracer
+  will_paginate
