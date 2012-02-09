@@ -10,6 +10,9 @@ Gem::Specification.new do |s|
   s.files = `git ls-files`.split("\n")
   s.version = FatFreeCRM::Version
 
+  s.add_development_dependency 'pg',           '~> 0.12.2'
+  s.add_development_dependency 'mysql2',       '~> 0.2.11'
+  s.add_development_dependency 'sqlite3' ,     '~> 1.3.5'
   s.add_development_dependency 'rspec-rails',  '~> 2.8.1'
   s.add_development_dependency 'capybara'
   s.add_development_dependency 'combustion'
@@ -19,11 +22,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'spork'
   s.add_development_dependency 'fuubar'
   s.add_development_dependency 'factory_girl'
-  s.add_development_dependency 'ruby-debug19'
   s.add_dependency 'rails',               '~> 3.2.1'
   s.add_dependency 'prototype-rails'
-  s.add_dependency 'pg',                  '~> 0.12.2'
-  s.add_dependency 'sqlite3'
   s.add_dependency 'authlogic',           '~> 3.1.0'
   s.add_dependency 'acts_as_commentable', '~> 3.0.1'
   s.add_dependency 'acts-as-taggable-on', '~> 2.2.1'
