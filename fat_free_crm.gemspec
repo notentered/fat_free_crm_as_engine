@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.version = FatFreeCRM::Version
 
   s.add_development_dependency 'pg',           '~> 0.12.2'
-  s.add_development_dependency 'mysql2',       '~> 0.2.11'
+  s.add_development_dependency 'mysql2',       '~> 0.3.11'
   s.add_development_dependency 'sqlite3' ,     '~> 1.3.5'
   s.add_development_dependency 'rspec-rails',  '~> 2.8.1'
   s.add_development_dependency 'capybara'
