@@ -16,6 +16,7 @@
 #------------------------------------------------------------------------------
 
 class Admin::TagsController < Admin::ApplicationController
+  tab
   before_filter "set_current_tab('admin/tags')", :only => [ :index, :show ]
 
   # GET /admin/tags

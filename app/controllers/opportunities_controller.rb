@@ -16,6 +16,7 @@
 #------------------------------------------------------------------------------
 
 class OpportunitiesController < BaseController
+  tab
   before_filter :load_settings
   before_filter :get_data_for_sidebar, :only => :index
   before_filter :set_params, :only => [:index, :redraw, :filter]

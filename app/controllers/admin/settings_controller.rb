@@ -16,6 +16,7 @@
 #------------------------------------------------------------------------------
 
 class Admin::SettingsController < Admin::ApplicationController
+  tab
   before_filter "set_current_tab('admin/settings')", :only => [ :index ]
 
   # GET /admin/settings

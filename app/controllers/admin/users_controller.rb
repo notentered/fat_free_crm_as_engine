@@ -16,6 +16,7 @@
 #------------------------------------------------------------------------------
 
 class Admin::UsersController < Admin::ApplicationController
+  tab
   before_filter "set_current_tab('admin/users')", :only => [ :index, :show ]
 
   # GET /admin/users

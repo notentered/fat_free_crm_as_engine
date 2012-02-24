@@ -16,14 +16,14 @@
 #------------------------------------------------------------------------------
 
 # Fat Free CRM settings are stored in three places, and are loaded in the following order:
-# 
+#
 # 1) db/default_settings.yml
 # 2) config/config.yml  (if exists)
 # 3) 'settings' table in database  (if exists)
 #
 # Any configured settings in `config/config.yml` will override those in
 # `db/default_settings.yml`, and settings in the database table have the highest priority.
-# 
+#
 # This settings arrangement offers a lot of flexibility:
 #
 # * No manual configuration is required to start the application after installation
@@ -44,7 +44,8 @@
 :require_last_names: true
 :compound_address: true
 :task_calendar_with_time: true
-
+:tabs: :all
+:admin_tabs: :all
 
 # Beta features
 #------------------------------------------------------------------------------
@@ -57,7 +58,7 @@
 
 # Background information
 #------------------------------------------------------------------------------
-# Specify model names that should have background information displayed. 
+# Specify model names that should have background information displayed.
 # This field can be used when importing records from legacy databases,
 # to display the 'background' of where they came from.
 #
@@ -75,26 +76,6 @@
 #
 :background_info: []
 
-
-# Main and Admin Tabs
-#------------------------------------------------------------------------------
-:tabs: [
-  { :active : true,  :text : :tab_dashboard,     :url : { :controller : "home"           } },
-  { :active : false, :text : :tab_tasks,         :url : { :controller : "tasks"          } },
-  { :active : false, :text : :tab_campaigns,     :url : { :controller : "campaigns"      } },
-  { :active : false, :text : :tab_leads,         :url : { :controller : "leads"          } },
-  { :active : false, :text : :tab_accounts,      :url : { :controller : "accounts"       } },
-  { :active : false, :text : :tab_contacts,      :url : { :controller : "contacts"       } },
-  { :active : false, :text : :tab_opportunities, :url : { :controller : "opportunities"  } }
-]
-
-:admin_tabs: [
-  { :active : true,  :text : :admin_tab_users,    :url : { :controller : "admin/users"    } },
-  { :active : false, :text : :admin_tab_fields,   :url : { :controller : "admin/fields"   } },
-  { :active : false, :text : :admin_tab_tags,     :url : { :controller : "admin/tags"     } },  
-  { :active : false, :text : :admin_tab_settings, :url : { :controller : "admin/settings" } },
-  { :active : false, :text : :admin_tab_plugins,  :url : { :controller : "admin/plugins"  } }
-]
 
 # Account Category. To add custom account type use string value, for example:
 #

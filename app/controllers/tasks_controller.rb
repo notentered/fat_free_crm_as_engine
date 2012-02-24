@@ -16,6 +16,7 @@
 #------------------------------------------------------------------------------
 
 class TasksController < BaseController
+  tab
   before_filter :auto_complete, :only => :auto_complete
   before_filter :update_sidebar, :only => :index
   skip_after_filter :update_recently_viewed

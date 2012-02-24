@@ -16,6 +16,7 @@
 #------------------------------------------------------------------------------
 
 class Admin::PluginsController < Admin::ApplicationController
+  tab
   before_filter "set_current_tab('admin/plugins')", :only => [ :index ]
 
   # GET /admin/plugins

@@ -39,6 +39,18 @@ class ApplicationController < ActionController::Base
 
 private
   #----------------------------------------------------------------------------
+  def tab(name = nil)
+    #unless name
+      debugger
+    #end
+  end
+
+  #----------------------------------------------------------------------------
+  def set_current_tab(tab = controller_name)
+    @current_tab = tab
+  end
+
+  #----------------------------------------------------------------------------
   def clear_setting_cache
     Setting.clear_cache!
   end
@@ -47,11 +59,6 @@ private
   def set_context
     Time.zone = ActiveSupport::TimeZone[session[:timezone_offset]] if session[:timezone_offset]
     I18n.locale = Setting.locale if Setting.locale
-  end
-
-  #----------------------------------------------------------------------------
-  def set_current_tab(tab = controller_name)
-    @current_tab = tab
   end
 
   #----------------------------------------------------------------------------

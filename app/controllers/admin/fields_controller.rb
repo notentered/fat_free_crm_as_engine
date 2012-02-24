@@ -16,6 +16,7 @@
 #------------------------------------------------------------------------------
 
 class Admin::FieldsController < Admin::ApplicationController
+  tab
   before_filter :require_user
   before_filter :set_current_tab, :only => [ :index, :show ]
   before_filter "set_current_tab('admin/fields')", :only => [ :index ]

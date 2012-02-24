@@ -16,6 +16,7 @@
 #------------------------------------------------------------------------------
 
 class ContactsController < BaseController
+  tab
   before_filter :get_users, :only => [ :new, :create, :edit, :update ]
   before_filter :get_accounts, :only => [ :new, :create, :edit, :update ]
 

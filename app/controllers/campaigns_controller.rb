@@ -16,6 +16,7 @@
 #------------------------------------------------------------------------------
 
 class CampaignsController < BaseController
+  tab
   before_filter :get_data_for_sidebar, :only => :index
 
   # GET /campaigns

@@ -31,6 +31,12 @@ class Admin::ApplicationController < BaseController
 
   private
   #----------------------------------------------------------------------------
+  def tab(name = nil)
+    unless name
+      debugger
+    end
+  end
+  #----------------------------------------------------------------------------
   def require_admin_user
     require_user
     if @current_user && !@current_user.admin?

@@ -16,14 +16,14 @@
 #------------------------------------------------------------------------------
 
 # Fat Free CRM settings are stored in three places, and are loaded in the following order:
-# 
+#
 # 1) db/default_settings.yml
 # 2) config/config.yml  (if exists)
 # 3) 'settings' table in database  (if exists)
 #
 # Any configured settings in `config/config.yml` will override those in
 # `db/default_settings.yml`, and settings in the database table have the highest priority.
-# 
+#
 # This settings arrangement offers a lot of flexibility:
 #
 # * No manual configuration is required to start the application after installation
@@ -85,9 +85,9 @@
 
 # Individual locales per user
 #------------------------------------------------------------------------------
-# To enable language selection in User/Profile set the following option to true. 
+# To enable language selection in User/Profile set the following option to true.
 # By default, individual users can't pick their own locale and are presented
-# with the default locale. 
+# with the default locale.
 #
 :per_user_locale: false
 
@@ -126,7 +126,7 @@
 # The following setting controls whether to show time in dropdown calendar
 # when scheduling a task for specific date.
 #   true  -- allow selecting date and time.  (default)
-#   false -- allow selecting date only.  
+#   false -- allow selecting date only.
 #
 :task_calendar_with_time: true
 
@@ -136,6 +136,15 @@
 # If this validation is disabled, records will only require a first name.
 #
 :require_last_names: true
+
+
+# Enabled Main & Admin Tabs
+#------------------------------------------------------------------------------
+#          Show all tabs:  :all
+#      Hide certain tabs:  {:except => %w(tasks campaigns leads)}
+# Only show certain tabs:  {:only => %w(users fields plugins)}
+:tabs: :all
+:admin_tabs: :all
 
 
 #------------------------------------------------------------------------------
