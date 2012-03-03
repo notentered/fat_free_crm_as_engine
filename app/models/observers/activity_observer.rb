@@ -76,12 +76,26 @@ class ActivityObserver < ActiveRecord::Observer
   private
   def log_activity(subject, action)
     current_user = User.current_user
-    Activity.log(current_user, subject, action) if current_user
+    if current_user
+      Activity.log(current_user, subject, action)
+
+      # TODO: Change Activity.log to return the newly created activity
+      # and pass it to notify_audience, to avoid any possible race
+      # condition. This is fine for low-to-medium size installations
+      # however.
+      notify_audience(Activity.order("created_at").last) if Bushido::Platform.on_bushido?
+    end
   end
 
   def update_campaign_revenue(campaign, revenue)
     campaign.update_attribute(:revenue, (campaign.revenue || 0) + revenue) if campaign
   end
 
+  # Todo: Generalize this for non-Bushido platforms
+  def notify_audience(activity)
+    activity.audience.each do |user|
+      user.notify('New Activity!', activity.to_sentence, 'crm')
+    end
+  end
 end
 

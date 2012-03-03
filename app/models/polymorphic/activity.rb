@@ -70,6 +70,30 @@ class Activity < ActiveRecord::Base
     end
   end
 
+  #----------------------------------------------------------------------------
+  def audience
+    users_to_notify = [user]
+    users_to_notify << subject.assignee if subject.respond_to?(:assignee)
+    users_to_notify.uniq
+  end
+
+  #----------------------------------------------------------------------------
+  def to_sentence
+    if subject
+      url = Rails.application.routes.url_helpers.send("#{subject_type.downcase}_url", subject, :host => ENV['BUSHIDO_DOMAIN'])
+
+      _subject  = subject.name
+      _subject  = subject.full_name if subject.respond_to?(:full_name)
+      _subject += " (#{url})"       if url
+    end
+
+    # Default to activity.info if that's all we have
+    _subject ||= activity.info
+
+    "#{user.full_name} #{action} #{subject_type.downcase} #{_subject}"
+  end
+
+
   private
   #----------------------------------------------------------------------------
   def self.create_activity(user, subject, action)
@@ -101,6 +125,5 @@ class Activity < ActiveRecord::Base
       delete_all([ 'user_id = ? AND subject_id = ? AND subject_type = ? AND action = ?', user.id, subject.id, subject.class.name, action.to_s ])
     end
   end
-
 end
 

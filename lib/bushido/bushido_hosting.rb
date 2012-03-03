@@ -9,6 +9,8 @@ module FatFreeCRM
     def self.extend_user!
       puts "Extending the user model"
       User.instance_eval do
+        include ::Bushido::UserHelper
+
         validates_presence_of   :ido_id
         validates_uniqueness_of :ido_id
 
