@@ -94,7 +94,7 @@ class ActivityObserver < ActiveRecord::Observer
   # Todo: Generalize this for non-Bushido platforms
   def notify_audience(activity)
     activity.audience.each do |user|
-      user.notify('New Activity!', activity.to_sentence, 'crm')
+      user.notify('New Activity!', activity.to_sentence, 'crm') if user && !user.ido_id.nil?
     end
   end
 end
