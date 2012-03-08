@@ -23,11 +23,11 @@ module FatFreeCRM
         end
 
         def bushido_extra_attributes(extra_attributes)
-          self.first_name = extra_attributes["first_name"]
-          self.first_name = extra_attributes["last_name"]
-          self.locale     = extra_attributes["locale"]
-          self.email      = extra_attributes["email"]
-          self.username   = extra_attributes["email"].split("@").first
+          self.first_name   = extra_attributes["first_name"]
+          self.last_name    = extra_attributes["last_name"]
+          self.locale       = extra_attributes["locale"]
+          self.email        = extra_attributes["email"]
+          self.username   ||= extra_attributes["email"].split("@").first
         end
       end
     end
