@@ -46,7 +46,7 @@ class CustomerHooks < Bushido::EventObserver
     lead = Lead.find_by_email(data['email'])
     lead ||= Lead.new
 
-    lead.email = recipient
+    lead.email        = data['email']
     lead.first_name ||= data['first_name'] || recipient.split("@").first if lead.first_name.blank?
     lead.last_name  ||= data['last_name']  || recipient.split("@").last  if lead.last_name.blank?
 
