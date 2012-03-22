@@ -9,7 +9,7 @@ class EmailHooks < Bushido::EventObserver
   # :custom_variables => nil
   # :human            =>"Mail to s+cfdemo@bushi.do successfully delievered."}}
   def email_delivered
-    note_email_activity("delivered email in campaign '#{campaign.titleize}' to #{recipient}")
+    note_email_activity("Campaign '#{campaign.titleize}' email delivered to #{recipient}")
   end
 
   # "email_opened"
@@ -21,7 +21,7 @@ class EmailHooks < Bushido::EventObserver
   # :mailing_list=>nil
   # :custom_variables=>nil
   def email_opened
-    note_email_activity("opened email in campaign '#{campaign.titleize}' to #{recipient}")
+    note_email_activity("Campaign '#{campaign.titleize}' email opened by #{recipient}")
   end
 
   # :event=>"clicked"
@@ -35,7 +35,7 @@ class EmailHooks < Bushido::EventObserver
   # :url=>"https://bushi.do/cas/invite/?invitation_token=8hswc7kqhPys6FsUJ1Nm&service=https://bushi.do/users/service&redirect=https://bushi.do/apps/new?app=fat_free_crm&src=icon"
   # :human=>"s+cfdemo@bushi.do clicked on link in Bushido Buddies to https://bushi.do/cas/invite/?invitation_token=8hswc7kqhPys6FsUJ1Nm&service=https://bushi.do/users/service&redirect=https://bushi.do/apps/new?app=fat_free_crm&src=icon"}
   def email_clicked
-    note_email_activity("#{recipient} clicked #{data['url'].truncate(30)} in campaign '#{campaign.titleize}")
+    note_email_activity("#{recipient} clicked #{data['url']} in email campaign '#{campaign.titleize}")
   end
 
 

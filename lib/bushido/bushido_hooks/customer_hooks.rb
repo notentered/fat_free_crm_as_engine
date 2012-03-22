@@ -8,7 +8,11 @@ class CustomerHooks < Bushido::EventObserver
   # :livemode        => true
   # :human           => "Customer CREATED (cus_cpkg4h0KfLD3lp), s+cfdemo@bushi.do"}
   def customer_created
-    note_customer_activity("customer created: #{data['email']}") if data['livemode']
+    note_customer_activity("#{data['email']} created as a customer with external id #{data['id']}") if data['livemode']
+  end
+
+  def customer_signed_up
+    note_customer_activity("#{data['first_name']} #{data['last_name']} (#{data['email']}) signed up as a customer")
   end
 
   private
@@ -43,8 +47,8 @@ class CustomerHooks < Bushido::EventObserver
     lead ||= Lead.new
 
     lead.email = recipient
-    lead.first_name ||= recipient.split("@").first
-    lead.last_name ||= recipient.split("@").last
+    lead.first_name ||= data['first_name'] || recipient.split("@").first if lead.first_name.blank?
+    lead.last_name  ||= data['last_name']  || recipient.split("@").last  if lead.last_name.blank?
 
     lead.save
 
