@@ -121,7 +121,7 @@ class EmailHooks < Bushido::EventObserver
 
   def campaign
     campaign   = data['campaign_id'] || data['campaign_name']
-    campaign ||= headers.select{|key, value| key == "X-Mailgun-Campaign-Id"}.first.last unless headers.empty?
+    campaign ||= headers.select{|key, value| key == "X-Mailgun-Campaign-Id"}.try(:first).try(:last) unless headers.empty?
     campaign
   end
 end
