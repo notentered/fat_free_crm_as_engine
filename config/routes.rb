@@ -1,10 +1,19 @@
+begin
+  Rails.application.routes.draw do
+    cloudfuji_routes
+  end
+rescue => e
+  puts "Error loading the Cloudfuji routes:"
+  puts "#{e.inspect}"
+end
+
 FatFreeCRM::Application.routes.draw do
   resources :lists
 
   scope Setting.base_url.to_s do
     root :to => 'home#index'
 
-    bushido_authentication_routes if Bushido::Platform.on_bushido?
+    cloudfuji_authentication_routes if Cloudfuji::Platform.on_cloudfuji?
     
     match 'activities' => 'home#index'
     match 'admin'      => 'admin/users#index',       :as => :admin

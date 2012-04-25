@@ -83,7 +83,7 @@ class ActivityObserver < ActiveRecord::Observer
       # and pass it to notify_audience, to avoid any possible race
       # condition. This is fine for low-to-medium size installations
       # however.
-      notify_audience(Activity.order("created_at").last) if Bushido::Platform.on_bushido?
+      notify_audience(Activity.order("created_at").last) if Cloudfuji::Platform.on_cloudfuji?
     end
   end
 
@@ -91,7 +91,7 @@ class ActivityObserver < ActiveRecord::Observer
     campaign.update_attribute(:revenue, (campaign.revenue || 0) + revenue) if campaign
   end
 
-  # Todo: Generalize this for non-Bushido platforms
+  # Todo: Generalize this for non-Cloudfuji platforms
   def notify_audience(activity)
     activity.audience.each do |user|
       user.notify('New Activity!', activity.to_sentence, 'crm') if user && !user.ido_id.nil?

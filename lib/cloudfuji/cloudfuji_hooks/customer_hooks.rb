@@ -1,12 +1,12 @@
-class CustomerHooks < Bushido::EventObserver
+class CustomerHooks < Cloudfuji::EventObserver
   # "customer_created"
   # :account_balance => 0
   # :object          => "customer"
-  # :email           => "s+cfdemo@bushi.do"
+  # :email           => "s+cfdemo@cloudfuji.com"
   # :created         => 1332269951
   # :id              => "cus_cpkg4h0KfLD3lp"
   # :livemode        => true
-  # :human           => "Customer CREATED (cus_cpkg4h0KfLD3lp), s+cfdemo@bushi.do"}
+  # :human           => "Customer CREATED (cus_cpkg4h0KfLD3lp), s+cfdemo@cloudfuji.com"}
   def customer_created
     note_customer_activity("#{data['email']} created as a customer with external id #{data['id']}") if data['livemode']
   end

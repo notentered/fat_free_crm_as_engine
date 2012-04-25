@@ -1,4 +1,4 @@
-class BushidoUserHooks < Bushido::EventObserver
+class CloudfujiUserHooks < Cloudfuji::EventObserver
   def user_added
     puts "Adding a new user with incoming data #{params.inspect}"
     puts "Authlogic username column: #{::Authlogic::Cas.cas_username_column}="
@@ -41,7 +41,7 @@ class BushidoUserHooks < Bushido::EventObserver
       # Re-use the CAS login method to set all the extra attributes we
       # care about (first_name, last_name, email, local, timezone,
       # etc.)
-      user.bushido_extra_attributes(data)
+      user.cloudfuji_extra_attributes(data)
       user.save
     end
   end

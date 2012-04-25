@@ -1,6 +1,6 @@
 module FatFreeCRM
-  module Bushido
-    def self.enable_bushido!
+  module Cloudfuji
+    def self.enable_cloudfuji!
       self.load_hooks!
       self.extend_user!
       self.setup_authentication!
@@ -9,7 +9,7 @@ module FatFreeCRM
     def self.extend_user!
       puts "Extending the user model"
       User.instance_eval do
-        include ::Bushido::UserHelper
+        include ::Cloudfuji::UserHelper
 
         validates_presence_of   :ido_id
         validates_uniqueness_of :ido_id
@@ -22,7 +22,7 @@ module FatFreeCRM
           self.admin = true
         end
 
-        def bushido_extra_attributes(extra_attributes)
+        def cloudfuji_extra_attributes(extra_attributes)
           self.first_name   = extra_attributes["first_name"]
           self.last_name    = extra_attributes["last_name"]
           self.locale       = extra_attributes["locale"]
@@ -33,7 +33,7 @@ module FatFreeCRM
     end
     
     def self.load_hooks!
-      Dir["#{Dir.pwd}/lib/bushido/**/*.rb"].each { |file| require file }
+      Dir["#{Dir.pwd}/lib/cloudfuji/**/*.rb"].each { |file| require file }
     end
 
     def self.setup_authentication!
@@ -48,7 +48,7 @@ end
 module ActionDispatch::Routing
   class RouteSet
     Mapper.class_eval do
-      def bushido_authentication_routes
+      def cloudfuji_authentication_routes
         Rails.application.routes.draw do
           scope :module => :authlogic do
             scope :module => :cas do
@@ -63,16 +63,16 @@ module ActionDispatch::Routing
 end
 
 
-if Bushido::Platform.on_bushido?
-  class BushidoRailtie < Rails::Railtie
+if Cloudfuji::Platform.on_cloudfuji?
+  class CloudfujiRailtie < Rails::Railtie
     
     # Enabling it via this hook means that it'll be reloaded on each
     # request in development mode, so you can make changes in here and
     # it'll be immeidately reflected
     config.to_prepare do
-      puts "Enabling Bushido"
-      FatFreeCRM::Bushido.enable_bushido!
-      puts "Finished enabling Bushido"
+      puts "Enabling Cloudfuji"
+      FatFreeCRM::Cloudfuji.enable_cloudfuji!
+      puts "Finished enabling Cloudfuji"
     end
   end
 end

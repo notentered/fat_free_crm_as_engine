@@ -1,4 +1,4 @@
-class AddBushidoFieldsToUsers < ActiveRecord::Migration
+class AddCloudfujiFieldsToUsers < ActiveRecord::Migration
   def change
     add_column :users, :ido_id, :text
     add_column :users, :locale, :string

@@ -1,13 +1,13 @@
-class EmailHooks < Bushido::EventObserver
+class EmailHooks < Cloudfuji::EventObserver
   # NOTE: It'd be nice to have a before_filter.
 
   # "email_delivered"
-  # :message_headers  => "[[\"Received\", \"by luna.mailgun.net with SMTP mgrt 7313261; Tue, 20 Mar 2012 19:00:58 +0000\"], [\"Received\", \"from localhost.localdomain (ec2-23-20-14-40.compute-1.amazonaws.com [23.20.14.40]) by mxa.mailgun.org with ESMTP id 4f68d3e9.4ddcdf0-luna; Tue, 20 Mar 2012 19:00:57 -0000 (UTC)\"], [\"Date\", \"Tue, 20 Mar 2012 19:00:57 +0000\"], [\"From\", \"Sean Grove <sean@gobushido.com>\"], [\"Reply-To\", \"Bushido Team <support@bushi.do>\"], [\"Message-Id\", \"<4f68d3e9ad834_3c29377ea432615@ip-10-190-150-17.mail>\"], [\"X-Mailgun-Campaign-Id\", \"bushido_buddies\"], [\"Repy-To\", \"support@bushi.do\"], [\"To\", \"s+cfdemo@bushi.do\"], [\"Subject\", \"Bushido Beta: Thank you for your early support. Here's a gift for you.\"], [\"List-Unsubscribe\", \"<mailto:u+na6wcn3gmqzdszbsmrrdam3ghfstkzrxgbstgn3fgvtdgzjumvrgmyzgmm6tqnlkgetheplteuzeey3gmrsw23zfgqyge5ltnbus4zdpez2d2jjsietgipjrmi4a@email.bushi.do>\"], [\"X-Mailgun-Sid\", \"WyI2NWQ4MSIsICJzK2NmZGVtb0BidXNoaS5kbyIsICIxYjgiXQ==\"], [\"Sender\", \"sean=gobushido.com@gobushido.com\"]]"
+  # :message_headers  => "[[\"Received\", \"by luna.mailgun.net with SMTP mgrt 7313261; Tue, 20 Mar 2012 19:00:58 +0000\"], [\"Received\", \"from localhost.localdomain (ec2-23-20-14-40.compute-1.amazonaws.com [23.20.14.40]) by mxa.mailgun.org with ESMTP id 4f68d3e9.4ddcdf0-luna; Tue, 20 Mar 2012 19:00:57 -0000 (UTC)\"], [\"Date\", \"Tue, 20 Mar 2012 19:00:57 +0000\"], [\"From\", \"Sean Grove <sean@cloudfuji.com>\"], [\"Reply-To\", \"Cloudfuji Team <support@cloudfuji.com>\"], [\"Message-Id\", \"<4f68d3e9ad834_3c29377ea432615@ip-10-190-150-17.mail>\"], [\"X-Mailgun-Campaign-Id\", \"cloudfuji_buddies\"], [\"Repy-To\", \"support@cloudfuji.com\"], [\"To\", \"s+cfdemo@cloudfuji.com\"], [\"Subject\", \"Cloudfuji Beta: Thank you for your early support. Here's a gift for you.\"], [\"List-Unsubscribe\", \"<mailto:u+na6wcn3gmqzdszbsmrrdam3ghfstkzrxgbstgn3fgvtdgzjumvrgmyzgmm6tqnlkgetheplteuzeey3gmrsw23zfgqyge5ltnbus4zdpez2d2jjsietgipjrmi4a@email.cloudfuji.com>\"], [\"X-Mailgun-Sid\", \"WyI2NWQ4MSIsICJzK2NmZGVtb0BidXNoaS5kbyIsICIxYjgiXQ==\"], [\"Sender\", \"sean=cloudfuji.com@cloudfuji.com\"]]"
   # :message_id       =>"<4f68d3e9ad834_3c29377ea432615@ip-10-190-150-17.mail>"
-  # :recipient        => "s+cfdemo@bushi.do"
-  # :domain           => "bushi.do"
+  # :recipient        => "s+cfdemo@cloudfuji.com"
+  # :domain           => "cloudfuji.com"
   # :custom_variables => nil
-  # :human            =>"Mail to s+cfdemo@bushi.do successfully delievered."}}
+  # :human            =>"Mail to s+cfdemo@cloudfuji.com successfully delievered."}}
   def email_delivered
     message  = ""
     message += "Email delivered to #{recipient}"
@@ -17,10 +17,10 @@ class EmailHooks < Bushido::EventObserver
   end
 
   # "email_opened"
-  # :recipient=>"s+cfdemo@bushi.do"
-  # :domain=>"bushi.do"
-  # :campaign_id=>"bushido_buddies"
-  # :campaign_name=>"Bushido Buddies"
+  # :recipient=>"s+cfdemo@cloudfuji.com"
+  # :domain=>"cloudfuji.com"
+  # :campaign_id=>"cloudfuji_buddies"
+  # :campaign_name=>"Cloudfuji Buddies"
   # :tag=>nil
   # :mailing_list=>nil
   # :custom_variables=>nil
@@ -33,15 +33,15 @@ class EmailHooks < Bushido::EventObserver
   end
 
   # :event=>"clicked"
-  # :recipient=>"s+cfdemo@bushi.do"
-  # :domain=>"bushi.do"
-  # :campaign_id=>"bushido_buddies"
-  # :campaign_name=>"Bushido Buddies"
+  # :recipient=>"s+cfdemo@cloudfuji.com"
+  # :domain=>"cloudfuji.com"
+  # :campaign_id=>"cloudfuji_buddies"
+  # :campaign_name=>"Cloudfuji Buddies"
   # :tag=>nil
   # :mailing_list=>nil
   # :custom_variables=>nil
-  # :url=>"https://bushi.do/cas/invite/?invitation_token=8hswc7kqhPys6FsUJ1Nm&service=https://bushi.do/users/service&redirect=https://bushi.do/apps/new?app=fat_free_crm&src=icon"
-  # :human=>"s+cfdemo@bushi.do clicked on link in Bushido Buddies to https://bushi.do/cas/invite/?invitation_token=8hswc7kqhPys6FsUJ1Nm&service=https://bushi.do/users/service&redirect=https://bushi.do/apps/new?app=fat_free_crm&src=icon"}
+  # :url=>"https://cloudfuji.com/cas/invite/?invitation_token=8hswc7kqhPys6FsUJ1Nm&service=https://cloudfuji.com/users/service&redirect=https://cloudfuji.com/apps/new?app=fat_free_crm&src=icon"
+  # :human=>"s+cfdemo@cloudfuji.com clicked on link in Cloudfuji Buddies to https://cloudfuji.com/cas/invite/?invitation_token=8hswc7kqhPys6FsUJ1Nm&service=https://cloudfuji.com/users/service&redirect=https://cloudfuji.com/apps/new?app=fat_free_crm&src=icon"}
   def email_clicked
     message = "#{recipient} clicked #{data['url']}"
     message += "in email campaign '#{campaign.titleize}" if campaign

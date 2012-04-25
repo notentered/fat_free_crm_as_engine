@@ -24,10 +24,10 @@ gem 'chosen-rails'#,        :git => "git://github.com/fatfreecrm/chosen-rails.gi
 gem 'ransack'#,             :git => "git://github.com/ndbroadbent/ransack.git"
 gem 'jquery-rails'
 
-# Bushido dependencies
-gem 'bushido'
-gem 'tane', :group => :development
-gem 'authlogic_bushido', '~> 0.9'
+# Cloudfuji dependencies
+gem 'cloudfuji', :path => '../cloudfujigem'
+gem 'tane', :path => '../tane', :group => :development
+gem 'authlogic_cloudfuji', '~> 0.9'
 
 group :heroku do
   gem 'unicorn', :platform => :ruby
@@ -42,7 +42,7 @@ group :assets do
 end
 
 group :development, :test do
-  unless ENV["CI"] || ENV["HOSTING_PLATFORM"] == "bushido"
+  unless ENV["CI"] || ENV["HOSTING_PLATFORM"] == "cloudfuji"
     # gem 'ruby-debug',   :platform => :mri_18
     # gem 'ruby-debug19', :platform => :mri_19, :require => 'ruby-debug' if RUBY_VERSION == "1.9.2"
     gem 'awesome_print'

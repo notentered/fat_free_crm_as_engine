@@ -1,4 +1,4 @@
-class BushidoAppHooks < Bushido::EventObserver
+class CloudfujiAppHooks < Cloudfuji::EventObserver
   def app_claimed
     puts "Updating #{User.first.inspect} with incoming data #{params.inspect}"
     puts "Authlogic username column: #{::Authlogic::Cas.cas_username_column}="
