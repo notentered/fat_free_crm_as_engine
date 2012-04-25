@@ -80,7 +80,7 @@ class Activity < ActiveRecord::Base
   #----------------------------------------------------------------------------
   def to_sentence
     if subject
-      url = Rails.application.routes.url_helpers.send("#{subject_type.downcase}_url", subject, :host => ENV['BUSHIDO_DOMAIN'])
+      url = Rails.application.routes.url_helpers.send("#{subject_type.downcase}_url", subject, :host => ENV['CLOUDFUJI_DOMAIN'])
 
       _subject  = subject.name
       _subject  = subject.full_name if subject.respond_to?(:full_name)

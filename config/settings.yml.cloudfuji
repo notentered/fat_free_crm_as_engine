@@ -33,7 +33,7 @@
 #
 # :host: "http://www.example.com"
 #
-:host: http://<%= ENV['BUSHIDO_DOMAIN'] %>/
+:host: http://<%= ENV['CLOUDFUJI_DOMAIN'] %>/
 
 # Base URL
 #------------------------------------------------------------------------------

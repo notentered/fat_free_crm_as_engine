@@ -25,8 +25,7 @@ gem 'ransack'#,             :git => "git://github.com/ndbroadbent/ransack.git"
 gem 'jquery-rails'
 
 # Cloudfuji dependencies
-gem 'cloudfuji', :path => '../cloudfujigem'
-gem 'tane', :path => '../tane', :group => :development
+gem 'cloudfuji'
 gem 'authlogic_cloudfuji', '~> 0.9'
 
 group :heroku do
