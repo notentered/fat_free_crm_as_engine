@@ -78,3 +78,5 @@ group :assets do
   gem 'uglifier',     '>= 1.0.3'
 end
 
+# Add cloudfuji integration
+gem 'ffcrm_cloudfuji'
