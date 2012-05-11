@@ -79,4 +79,4 @@ group :assets do
 end
 
 # Add cloudfuji integration
-gem 'ffcrm_cloudfuji', '>= 0.1.1'
+gem 'ffcrm_cloudfuji', '>= 0.1.3'
