@@ -398,6 +398,8 @@ ActiveRecord::Schema.define(:version => 20120510025219) do
     t.boolean  "admin",                             :default => false, :null => false
     t.datetime "suspended_at"
     t.string   "single_access_token"
+    t.text     "ido_id"
+    t.string   "locale"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"
