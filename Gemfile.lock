@@ -99,7 +99,7 @@ GEM
       factory_girl (~> 3.0.0)
       railties (>= 3.0.0)
     ffaker (1.14.0)
-    ffcrm_cloudfuji (0.1.6)
+    ffcrm_cloudfuji (0.1.7)
       authlogic_cloudfuji (~> 0.9)
       cloudfuji (>= 0.0.41)
     ffi (1.0.11)
