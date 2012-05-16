@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120510025219) do
+ActiveRecord::Schema.define(:version => 20120515194445) do
 
   create_table "account_contacts", :force => true do |t|
     t.integer  "account_id"
@@ -227,6 +227,21 @@ ActiveRecord::Schema.define(:version => 20120510025219) do
   add_index "fields", ["field_group_id"], :name => "index_fields_on_field_group_id"
   add_index "fields", ["name"], :name => "index_fields_on_name"
 
+  create_table "lead_scoring_rule_counts", :force => true do |t|
+    t.integer "lead_id"
+    t.integer "lead_scoring_rule_id"
+    t.integer "count",                :default => 0
+  end
+
+  create_table "lead_scoring_rules", :force => true do |t|
+    t.string   "event"
+    t.string   "match"
+    t.integer  "points",     :default => 0
+    t.boolean  "once"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
+  end
+
   create_table "leads", :force => true do |t|
     t.integer  "user_id"
     t.integer  "campaign_id"
@@ -255,6 +270,7 @@ ActiveRecord::Schema.define(:version => 20120510025219) do
     t.string   "background_info"
     t.string   "skype",            :limit => 128
     t.text     "subscribed_users"
+    t.integer  "score",                           :default => 0
   end
 
   add_index "leads", ["assigned_to"], :name => "index_leads_on_assigned_to"
