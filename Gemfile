@@ -11,7 +11,6 @@ gem 'pg', '~> 0.13.2'
 gem 'bundler_local_development', :group => :development, :require => false
 begin
   require 'bundler_local_development'
-  Bundler.development_gems = [/^ffcrm_/]
 rescue LoadError
 end
 
