@@ -81,4 +81,5 @@ end
 
 # Add cloudfuji integration
 gem 'ffcrm_cloudfuji', '>= 0.2.4'
+gem 'tane', :group => :development
 gem 'airbrake_user_attributes'
