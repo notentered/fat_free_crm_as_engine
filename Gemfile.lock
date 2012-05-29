@@ -67,7 +67,7 @@ GEM
       railties (~> 3.0)
       thor (~> 0.14)
     chronic (0.6.7)
-    cloudfuji (0.0.43)
+    cloudfuji (0.0.44)
       highline (>= 1.6.1)
       json (>= 1.4.6)
       orm_adapter (~> 0.0.3)
@@ -249,7 +249,7 @@ GEM
     steak (2.0.0)
       capybara (>= 1.0.0)
       rspec-rails (>= 2.5.0)
-    tane (0.0.4)
+    tane (0.0.5)
       awesome_print
       erubis
       highline
@@ -319,7 +319,7 @@ DEPENDENCIES
   spork
   squeel (~> 0.9.3)
   steak
-  tane
+  tane (>= 0.0.5)
   therubyracer
   uglifier (>= 1.0.3)
   unicorn
