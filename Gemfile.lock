@@ -36,7 +36,7 @@ GEM
     airbrake (3.0.9)
       activesupport
       builder
-    airbrake_user_attributes (0.1.3)
+    airbrake_user_attributes (0.1.4)
       airbrake (= 3.0.9)
     ajax-chosen-rails (0.2.0)
       chosen-rails_ffcrm
@@ -282,7 +282,7 @@ DEPENDENCIES
   acts-as-taggable-on (~> 2.2.1)
   acts_as_commentable (~> 3.0.1)
   acts_as_list (~> 0.1.4)
-  airbrake_user_attributes (>= 0.1.3)
+  airbrake_user_attributes (>= 0.1.4)
   ajax-chosen-rails (>= 0.2.0)
   authlogic (~> 3.1.0)
   bundler_local_development
