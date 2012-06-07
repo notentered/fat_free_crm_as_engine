@@ -79,6 +79,6 @@ group :assets do
 end
 
 # Add cloudfuji integration
-gem 'ffcrm_cloudfuji', '>= 0.2.11'
+gem 'ffcrm_cloudfuji', '>= 0.3.0'
 gem 'tane', '>= 0.0.5', :group => :development
 gem 'airbrake_user_attributes', '>= 0.1.4'
