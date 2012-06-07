@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120528102124) do
+ActiveRecord::Schema.define(:version => 20120607115701) do
 
   create_table "account_contacts", :force => true do |t|
     t.integer  "account_id"
@@ -208,6 +208,12 @@ ActiveRecord::Schema.define(:version => 20120528102124) do
     t.string   "tag"
     t.integer  "limit_per_lead"
     t.boolean  "case_insensitive_matching"
+    t.string   "mailing_list"
+    t.string   "mailing_list_group"
+    t.string   "mailing_list_grouping"
+    t.string   "page_name"
+    t.string   "app_id"
+    t.string   "user_ido_id"
   end
 
   create_table "field_groups", :force => true do |t|
