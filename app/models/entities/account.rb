@@ -39,7 +39,7 @@
 
 class Account < ActiveRecord::Base
   belongs_to  :user
-  belongs_to  :assignee, :class_name => "User", :foreign_key => :assigned_to
+  belongs_to  :assignee, :class_name => FatFreeCRM.user_class.to_s, :foreign_key => :assigned_to
   has_many    :account_contacts, :dependent => :destroy
   has_many    :contacts, :through => :account_contacts, :uniq => true
   has_many    :account_opportunities, :dependent => :destroy

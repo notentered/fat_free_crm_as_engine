@@ -6,7 +6,7 @@ if params[:cancel].true?     # <----------------- Hide [Edit User]
 else # <----------------------------------------  Show [Edit User] form.
 
   if @previous                                    # Hide open [Edit User] form if any.
-    if @previous.is_a?(User)                      # Previous user still exists?
+    if @previous.is_a?(FatFreeCRM.user_class)                      # Previous user still exists?
       page[dom_id(@previous)].replace :partial => "user", :collection => [ @previous ]
     else
       page.call "crm.flick", "user_#{@previous}", :remove
