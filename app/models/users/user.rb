@@ -83,7 +83,7 @@ class User < ActiveRecord::Base
   }
 
   scope :my, lambda {
-    accessible_by(User.current_ability)
+    accessible_by(FatFreeCRM.user_class.current_ability)
   }
 
   scope :have_assigned_opportunities, joins("INNER JOIN opportunities ON users.id = opportunities.assigned_to").
@@ -168,7 +168,7 @@ class User < ActiveRecord::Base
   # Prevent current user from deleting herself.
   #----------------------------------------------------------------------------
   def check_if_current_user
-    User.current_user.nil? || User.current_user != self
+    FatFreeCRM.user_class.current_user.nil? || FatFreeCRM.user_class.current_user != self
   end
 
   # Prevent deleting a user unless she has no artifacts left.
@@ -187,7 +187,7 @@ class User < ActiveRecord::Base
   class << self
 
     def current_ability
-      Ability.new(User.current_user)
+      Ability.new(FatFreeCRM.user_class.current_user)
     end
 
   end

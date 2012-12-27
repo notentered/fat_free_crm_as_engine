@@ -41,8 +41,8 @@ class Task < ActiveRecord::Base
   attr_accessor :calendar
 
   belongs_to :user
-  belongs_to :assignee, :class_name => "User", :foreign_key => :assigned_to
-  belongs_to :completor, :class_name => "User", :foreign_key => :completed_by
+  belongs_to :assignee, :class_name => FatFreeCRM.user_class.to_s, :foreign_key => :assigned_to
+  belongs_to :completor, :class_name => FatFreeCRM.user_class.to_s, :foreign_key => :completed_by
   belongs_to :asset, :polymorphic => true
 
   serialize :subscribed_users, Set
@@ -51,7 +51,7 @@ class Task < ActiveRecord::Base
   # what gets shown on Tasks/Pending and Tasks/Completed pages.
   scope :my, lambda { |*args|
     options = args[0] || {}
-    user_option = options[:user] || User.current_user
+    user_option = options[:user] || FatFreeCRM.user_class.current_user
     includes(:assignee).
     where('(user_id = ? AND assigned_to IS NULL) OR assigned_to = ?', user_option, user_option).
     order(options[:order] || 'name ASC').

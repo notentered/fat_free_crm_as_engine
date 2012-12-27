@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../../../spec_helper')
 describe "admin/users/new" do
   before do
     login_and_assign(:admin => true)
-    assign(:user, User.new)
+    assign(:user, FatFreeCRM.user_class.new)
   end
 
   describe "new user" do
@@ -28,4 +28,3 @@ describe "admin/users/new" do
   end
 
 end
-

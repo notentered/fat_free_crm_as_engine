@@ -40,7 +40,7 @@ class HomeController < ApplicationController
       @action = current_user.pref[:activity_event] || "all_events"
       @user = current_user.pref[:activity_user] || "all_users"
       @duration = current_user.pref[:activity_duration] || "two_days"
-      @all_users = User.order("first_name, last_name")
+      @all_users = FatFreeCRM.user_class.order("first_name, last_name")
     end
   end
 
@@ -134,7 +134,7 @@ class HomeController < ApplicationController
     user = current_user.pref[:activity_user]
     if user && user != "all_users"
       user = if user =~ /@/ # email
-          User.where(:email => user).first
+          FatFreeCRM.user_class.where(:email => user).first
         else # first_name middle_name last_name any_name
           name_query = if user.include?(" ")
             user.name_permutations.map{ |first, last|
@@ -143,10 +143,10 @@ class HomeController < ApplicationController
           else
             "upper(first_name) LIKE upper('%#{user}%') OR upper(last_name) LIKE upper('%#{user}%')"
           end
-          User.where(name_query).first
+          FatFreeCRM.user_class.where(name_query).first
         end
     end
-    user.is_a?(User) ? user.id : nil
+    user.is_a?(FatFreeCRM.user_class) ? user.id : nil
   end
 
   #----------------------------------------------------------------------------

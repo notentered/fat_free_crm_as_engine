@@ -116,7 +116,7 @@ private
         @current_user.set_individual_locale
         @current_user.set_single_access_token
       end
-      User.current_user = @current_user
+      FatFreeCRM.user_class.current_user = @current_user
     end
     @current_user
   end

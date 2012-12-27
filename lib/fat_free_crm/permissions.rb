@@ -35,7 +35,7 @@ module FatFreeCRM
           has_many :permissions, :as => :asset
 
           scope :my, lambda {
-            accessible_by(User.current_ability)
+            accessible_by(FatFreeCRM.user_class.current_ability)
           }
 
           include FatFreeCRM::Permissions::InstanceMethods

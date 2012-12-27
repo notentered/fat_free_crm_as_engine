@@ -27,7 +27,7 @@ class PasswordsController < ApplicationController
 
   #----------------------------------------------------------------------------
   def create
-    @user = User.find_by_email(params[:email])
+    @user = FatFreeCRM.user_class.find_by_email(params[:email])
     if @user
       @user.deliver_password_reset_instructions!
       flash[:notice] = t(:msg_pwd_instructions_sent)
@@ -59,7 +59,7 @@ class PasswordsController < ApplicationController
   #----------------------------------------------------------------------------
   private
   def load_user_using_perishable_token
-    @user = User.find_using_perishable_token(params[:id])
+    @user = FatFreeCRM.user_class.find_using_perishable_token(params[:id])
     unless @user
       flash[:notice] = <<-EOS
         Sorry, we could not locate your user profile. Try to copy and paste the URL
@@ -75,4 +75,3 @@ class PasswordsController < ApplicationController
     (params[:user][:password] =~ /^\s*$/)
   end
 end
-

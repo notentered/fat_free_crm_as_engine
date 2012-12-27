@@ -81,8 +81,8 @@ namespace :ffcrm do
           exit
         end
       end
-      User.reset_column_information # Reload the class since we've added new fields in migrations.
-      user = User.find_by_username(username) || User.new
+      FatFreeCRM.user_class.reset_column_information # Reload the class since we've added new fields in migrations.
+      user = FatFreeCRM.user_class.find_by_username(username) || FatFreeCRM.user_class.new
       user.update_attributes(:username => username, :password => password, :email => email)
       user.update_attribute(:admin, true) # Mass assignments don't work for :admin because of the attr_protected
       user.update_attribute(:suspended_at, nil) # Mass assignments don't work for :suspended_at because of the attr_protected

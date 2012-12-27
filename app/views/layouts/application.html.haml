@@ -22,7 +22,7 @@
     :javascript
       #{yield :javascript}
       var _ffcrm_users = [
-      #{User.all.map{|u| "\"#{u.full_name} (@#{u.username})\"" }.join(",\n")}
+      #{FatFreeCRM.user_class.all.map{|u| "\"#{u.full_name} (@#{u.username})\"" }.join(",\n")}
       ];
 
       window.controller = "#{controller.controller_name}"

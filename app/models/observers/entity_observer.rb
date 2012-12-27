@@ -20,10 +20,10 @@ class EntityObserver < ActiveRecord::Observer
   def current_user
     # this deals with whodunnit inconsistencies, where in some cases it's set to a user's id and others the user object itself
     user_id_or_user = PaperTrail.whodunnit
-    if user_id_or_user.is_a?(User)
+    if user_id_or_user.is_a?(FatFreeCRM.user_class)
       user_id_or_user
     elsif user_id_or_user.is_a?(String)
-      User.find_by_id(user_id_or_user.to_i)
+      FatFreeCRM.user_class.find_by_id(user_id_or_user.to_i)
     end
   end
 end

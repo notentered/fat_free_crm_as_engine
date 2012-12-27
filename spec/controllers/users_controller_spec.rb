@@ -30,7 +30,7 @@ describe UsersController do
       end
 
       it "should render the requested user as JSON" do
-        User.should_receive(:find).and_return(user = mock("User"))
+        FatFreeCRM.user_class.should_receive(:find).and_return(user = mock("User"))
         user.should_receive(:to_json).and_return("generated JSON")
 
         get :show, :id => 42
@@ -51,7 +51,7 @@ describe UsersController do
       end
 
       it "should render the requested user as XML" do
-        User.should_receive(:find).and_return(user = mock("User"))
+        FatFreeCRM.user_class.should_receive(:find).and_return(user = mock("User"))
         user.should_receive(:to_xml).and_return("generated XML")
 
         get :show, :id => 42
@@ -76,7 +76,7 @@ describe UsersController do
       it "should expose a new user as @user and render [new] template" do
         @controller.should_receive(:can_signup?).and_return(true)
         @user = FactoryGirl.build(:user)
-        User.stub!(:new).and_return(@user)
+        FatFreeCRM.user_class.stub!(:new).and_return(@user)
 
         get :new
         assigns[:user].should == @user
@@ -121,7 +121,7 @@ describe UsersController do
         @email = @username + "@example.com"
         @password = "secret"
         @user = FactoryGirl.build(:user, :username => @username, :email => @email)
-        User.stub!(:new).and_return(@user)
+        FatFreeCRM.user_class.stub!(:new).and_return(@user)
       end
 
       it "exposes a newly created user as @user and redirect to profile page" do
@@ -144,7 +144,7 @@ describe UsersController do
     describe "with invalid params" do
       it "assigns a newly created but unsaved user as @user and renders [new] template" do
         @user = FactoryGirl.build(:user, :username => "", :email => "")
-        User.stub!(:new).and_return(@user)
+        FatFreeCRM.user_class.stub!(:new).and_return(@user)
 
         post :create, :user => {}
         assigns[:user].should == @user

@@ -384,7 +384,7 @@ module ApplicationHelper
   end
 
   def user_options
-    User.all.map {|u| [u.full_name, u.id]}
+    FatFreeCRM.user_class.all.map {|u| [u.full_name, u.id]}
   end
 
   def group_options

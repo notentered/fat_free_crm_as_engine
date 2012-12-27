@@ -1,7 +1,7 @@
 %li.highlight[version]
   .body
     - item_type = version.item_type.underscore.humanize
-    - if user = User.find_by_id(version.whodunnit)
+    - if user = FatFreeCRM.user_class.find_by_id(version.whodunnit)
       - user_name = user.name
     - else
       - user_name = t('version.anonymous')

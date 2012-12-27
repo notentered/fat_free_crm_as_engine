@@ -49,7 +49,7 @@ describe Admin::UsersController do
   #----------------------------------------------------------------------------
   describe "GET new" do
     it "assigns a new user as @user and renders [new] template" do
-      @user = User.new
+      @user = FatFreeCRM.user_class.new
 
       xhr :get, :new
       assigns[:user].attributes.should == @user.attributes
@@ -112,7 +112,7 @@ describe Admin::UsersController do
 
       it "assigns a newly created user as @user and renders [create] template" do
         @user = FactoryGirl.build(:user, :username => @username, :email => @email)
-        User.stub!(:new).and_return(@user)
+        FatFreeCRM.user_class.stub!(:new).and_return(@user)
 
         xhr :post, :create, :user => { :username => @username, :email => @email, :password => @password, :password_confirmation => @password }
         assigns[:user].should == @user
@@ -135,7 +135,7 @@ describe Admin::UsersController do
     describe "with invalid params" do
       it "assigns a newly created but unsaved user as @user and re-renders [create] template" do
         @user = FactoryGirl.build(:user, :username => "", :email => "")
-        User.stub!(:new).and_return(@user)
+        FatFreeCRM.user_class.stub!(:new).and_return(@user)
 
         xhr :post, :create, :user => {}
         assigns[:user].should == @user
@@ -226,7 +226,7 @@ describe Admin::UsersController do
       @user = FactoryGirl.create(:user)
 
       xhr :delete, :destroy, :id => @user.id
-      lambda { User.find(@user) }.should raise_error(ActiveRecord::RecordNotFound)
+      lambda { FatFreeCRM.user_class.find(@user) }.should raise_error(ActiveRecord::RecordNotFound)
       response.should render_template("admin/users/destroy")
     end
 
@@ -236,7 +236,7 @@ describe Admin::UsersController do
 
       xhr :delete, :destroy, :id => @user.id
       flash[:warning].should_not == nil
-      lambda { User.find(@user) }.should_not raise_error(ActiveRecord::RecordNotFound)
+      lambda { FatFreeCRM.user_class.find(@user) }.should_not raise_error(ActiveRecord::RecordNotFound)
       response.should render_template("admin/users/destroy")
     end
   end

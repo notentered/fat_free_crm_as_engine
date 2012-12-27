@@ -150,7 +150,7 @@ class UsersController < ApplicationController
   end
 
   def opportunities_overview
-    @users_with_opportunities = User.have_assigned_opportunities.order(:first_name)
+    @users_with_opportunities = FatFreeCRM.user_class.have_assigned_opportunities.order(:first_name)
     @unassigned_opportunities = Opportunity.unassigned.pipeline.order(:stage)
   end
 
@@ -163,6 +163,6 @@ class UsersController < ApplicationController
   end
 
   def assign_given_or_current_user
-    @user = params[:id] ? User.find(params[:id]) : current_user
+    @user = params[:id] ? FatFreeCRM.user_class.find(params[:id]) : current_user
   end
 end

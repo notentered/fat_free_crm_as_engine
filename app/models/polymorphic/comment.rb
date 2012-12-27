@@ -57,7 +57,7 @@ class Comment < ActiveRecord::Base
   # Notify subscribed users when a comment is added, unless user created this comment
   def notify_subscribers
     commentable.subscribed_users.reject{|user_id| user_id == user.id}.each do |subscriber_id|
-      if subscriber = User.find_by_id(subscriber_id)
+      if subscriber = FatFreeCRM.user_class.find_by_id(subscriber_id)
         # Only send email if SMTP settings are configured
         if Rails.application.config.action_mailer.smtp_settings.present?
           SubscriptionMailer.comment_notification(subscriber, self).deliver
@@ -72,7 +72,7 @@ class Comment < ActiveRecord::Base
     # Scan for usernames mentioned in the comment,
     # e.g. "Hi @example_user, take a look at this lead. Please show @another_user"
     comment.scan(/@([a-zA-Z0-9_-]+)/).map(&:first).each do |username|
-      if (mentioned_user = User.find_by_username(username))
+      if (mentioned_user = FatFreeCRM.user_class.find_by_username(username))
         subscribe_user_to_entity(mentioned_user)
       end
     end

@@ -46,7 +46,7 @@ class Admin::UsersController < Admin::ApplicationController
   #----------------------------------------------------------------------------
   def edit
     if params[:previous].to_s =~ /(\d+)\z/
-      @previous = User.find_by_id($1) || $1.to_i
+      @previous = FatFreeCRM.user_class.find_by_id($1) || $1.to_i
     end
 
     respond_with(@user)
@@ -58,7 +58,7 @@ class Admin::UsersController < Admin::ApplicationController
   def create
     params[:user][:password_confirmation] = nil if params[:user][:password_confirmation].blank?
     admin = params[:user].delete(:admin)
-    @user = User.new(params[:user])
+    @user = FatFreeCRM.user_class.new(params[:user])
     @user.admin = (admin == "1") unless admin.nil?
     @user.save_without_session_maintenance
 
@@ -71,7 +71,7 @@ class Admin::UsersController < Admin::ApplicationController
   def update
     params[:user][:password_confirmation] = nil if params[:user][:password_confirmation].blank?
     admin = params[:user].delete(:admin)
-    @user = User.find(params[:id])
+    @user = FatFreeCRM.user_class.find(params[:id])
     @user.attributes = params[:user]
     @user.admin = (admin == "1") unless admin.nil?
     @user.save_without_session_maintenance
@@ -89,7 +89,7 @@ class Admin::UsersController < Admin::ApplicationController
   # DELETE /admin/users/1.xml                                              AJAX
   #----------------------------------------------------------------------------
   def destroy
-    unless @user.destroy
+    if wants_to_delete_current_user? or !@user.destroy
       flash[:warning] = t(:msg_cant_delete_user, @user.full_name)
     end
 
@@ -129,10 +129,15 @@ private
     @search.build_grouping unless @search.groupings.any?
 
     wants = request.format
-    scope = User.by_id
+    scope = FatFreeCRM.user_class.by_id
     scope = scope.merge(@search.result)
     scope = scope.text_search(current_query)      if current_query.present?
     scope = scope.paginate(:page => current_page) if wants.html? || wants.js? || wants.xml?
     scope
   end
+
+  def wants_to_delete_current_user?
+    current_user == @user
+  end
+  
 end
