@@ -16,6 +16,9 @@
 #------------------------------------------------------------------------------
 
 module FatFreeCRM
+
+  mattr_accessor :user_class
+  
   class << self
     # Return either Application or Engine,
     # depending on how Fat Free CRM has been loaded
@@ -26,6 +29,11 @@ module FatFreeCRM
     def root
       application.root
     end
+      
+    def user_class
+      @@user_class.constantize
+    end
+
   end
 end
 
