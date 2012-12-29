@@ -1,6 +1,6 @@
 # Fat Free CRM [![TravisCI][travis-img-url]][travis-ci-url]
 
-[travis-img-url]: https://secure.travis-ci.org/fatfreecrm/fat_free_crm.png?branch=master
+[travis-img-url]: https://secure.travis-ci.org/fatfreecrm/fat_free_crm.png?branch=ruby1.8
 [travis-ci-url]: http://travis-ci.org/fatfreecrm/fat_free_crm
 
 ### An open source, Ruby on Rails [customer relationship management][crm-wiki] platform (CRM).
@@ -156,4 +156,3 @@ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 FOR A PARTICULAR PURPOSE.
 
 See LICENSE file for more details.
-
