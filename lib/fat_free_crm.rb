@@ -18,7 +18,7 @@
 module FatFreeCRM
 
   mattr_accessor :user_class
-  
+
   class << self
     # Return either Application or Engine,
     # depending on how Fat Free CRM has been loaded
@@ -29,9 +29,10 @@ module FatFreeCRM
     def root
       application.root
     end
-      
+
+    # Default to FatFreeCRM provided User class unless already specified
     def user_class
-      @@user_class.constantize
+      (@@user_class || 'User').constantize
     end
 
   end
@@ -49,6 +50,12 @@ require 'fat_free_crm/syck_yaml'
 require "fat_free_crm/gem_dependencies"
 require "fat_free_crm/gem_ext"
 require "fat_free_crm/plugin_dependencies"
+
+# Register and defer loading FatFreeCRM.user_class has been set
+# This is the last of 5 hooks in the Rails initialization process
+FatFreeCRM.application.config.after_initialize do
+  require "fat_free_crm/user_class_extensions"
+end
 
 require "fat_free_crm/version"
 require "fat_free_crm/core_ext"
