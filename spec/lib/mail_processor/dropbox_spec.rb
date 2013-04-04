@@ -3,12 +3,12 @@ require File.dirname(__FILE__) + '/sample_emails/dropbox'
 
 require "fat_free_crm/mail_processor/dropbox"
 
-describe FatFreeCRM::MailProcessor::Dropbox do
+describe FatFreeCrm::MailProcessor::Dropbox do
   include MockIMAP
 
   before(:each) do
     @mock_address = "dropbox@example.com"
-    @crawler = FatFreeCRM::MailProcessor::Dropbox.new
+    @crawler = FatFreeCrm::MailProcessor::Dropbox.new
   end
 
   #------------------------------------------------------------------------------
@@ -262,7 +262,7 @@ describe FatFreeCRM::MailProcessor::Dropbox do
   #------------------------------------------------------------------------------
   describe "Extracting body" do
     before do
-      @dropbox = FatFreeCRM::MailProcessor::Dropbox.new
+      @dropbox = FatFreeCrm::MailProcessor::Dropbox.new
     end
 
     it "should extract text from multipart text/plain" do

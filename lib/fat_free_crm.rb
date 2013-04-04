@@ -15,12 +15,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-module FatFreeCRM
+module FatFreeCrm
   class << self
     # Return either Application or Engine,
     # depending on how Fat Free CRM has been loaded
     def application
-      defined?(FatFreeCRM::Engine) ? Engine : Application
+      defined?(FatFreeCrm::Engine) ? Engine : Application
     end
 
     def root
@@ -30,7 +30,7 @@ module FatFreeCRM
 end
 
 # Load Fat Free CRM as a Rails Engine, unless running as a Rails Application
-unless defined?(FatFreeCRM::Application)
+unless defined?(FatFreeCrm::Application)
   require 'fat_free_crm/engine'
 end
 

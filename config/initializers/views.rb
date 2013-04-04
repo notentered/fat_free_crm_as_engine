@@ -1,5 +1,5 @@
 
-# Register the views that FatFreeCRM provides
+# Register the views that FatFreeCrm provides
 #------------------------------------------------------------------------------
 
 [ {:name => 'contacts_index_brief', :title => 'Brief format', :icon => 'brief.png',
@@ -39,4 +39,4 @@
  {:name => 'campaigns_show_normal', :title => 'Normal format', :icon => 'long.png',
    :controllers => ['campaigns'], :actions => ['show'], :template => nil}, # default show view
  
-].each {|view| FatFreeCRM::ViewFactory.new(view)}
+].each {|view| FatFreeCrm::ViewFactory.new(view)}

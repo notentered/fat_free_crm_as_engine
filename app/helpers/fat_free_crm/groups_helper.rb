@@ -1,0 +1,2 @@
+module FatFreeCrm::GroupsHelper
+end

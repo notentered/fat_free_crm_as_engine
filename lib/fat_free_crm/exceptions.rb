@@ -15,14 +15,14 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-module FatFreeCRM
+module FatFreeCrm
   class MissingSettings < StandardError; end
   class ObsoleteSettings < StandardError; end
 end
 
 class ActionController::Base
-  rescue_from FatFreeCRM::MissingSettings,  :with => :render_fat_free_crm_exception
-  rescue_from FatFreeCRM::ObsoleteSettings, :with => :render_fat_free_crm_exception
+  rescue_from FatFreeCrm::MissingSettings,  :with => :render_fat_free_crm_exception
+  rescue_from FatFreeCrm::ObsoleteSettings, :with => :render_fat_free_crm_exception
 
   private
 

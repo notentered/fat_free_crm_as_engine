@@ -21,20 +21,20 @@ namespace :ffcrm do
     desc "Run comment inbox crawler and process incoming emails"
     task :run => :environment do
       require "fat_free_crm/mail_processor/comment_replies"
-      FatFreeCRM::MailProcessor::CommentReplies.new.run(dry_run = false)
+      FatFreeCrm::MailProcessor::CommentReplies.new.run(dry_run = false)
     end
     namespace :run do
       desc "[Dry run] - Run comment inbox crawler and process incoming emails"
       task :dry => :environment do
         require "fat_free_crm/mail_processor/comment_replies"
-        FatFreeCRM::MailProcessor::CommentReplies.new.run(dry_run = true)
+        FatFreeCrm::MailProcessor::CommentReplies.new.run(dry_run = true)
       end
     end
 
     desc "Set up comment inbox based on currently loaded settings"
     task :setup => :environment do
       require "fat_free_crm/mail_processor/comment_replies"
-      FatFreeCRM::MailProcessor::CommentReplies.new.setup
+      FatFreeCrm::MailProcessor::CommentReplies.new.setup
     end
 
   end

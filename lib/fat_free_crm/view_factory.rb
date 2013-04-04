@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-module FatFreeCRM
+module FatFreeCrm
 
   # A view factory keeps track of views and the contexts in which they are available.
   #----------------------------------------------------------------------------

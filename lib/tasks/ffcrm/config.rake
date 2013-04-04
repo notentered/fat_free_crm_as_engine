@@ -22,7 +22,7 @@ namespace :ffcrm do
     task :copy_database_yml do
       require 'fileutils'
       filename = "config/database.#{ENV['DB'] || 'postgres'}.yml"
-      orig, dest = FatFreeCRM.root.join(filename), Rails.root.join('config/database.yml')
+      orig, dest = FatFreeCrm.root.join(filename), Rails.root.join('config/database.yml')
       unless File.exists?(dest)
         puts "Copying #{filename} to config/database.yml ..."
         FileUtils.cp orig, dest

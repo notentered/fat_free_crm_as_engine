@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-module FatFreeCRM
+module FatFreeCrm
   module Exportable
 
     def self.included(base)
@@ -58,6 +58,6 @@ module FatFreeCRM
     end
 
   end # Exportable
-end # FatFreeCRM
+end # FatFreeCrm
 
-ActiveRecord::Base.send(:include, FatFreeCRM::Exportable)
+ActiveRecord::Base.send(:include, FatFreeCrm::Exportable)

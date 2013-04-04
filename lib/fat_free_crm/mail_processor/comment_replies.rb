@@ -17,7 +17,7 @@
 
 require 'fat_free_crm/mail_processor/base'
 
-module FatFreeCRM
+module FatFreeCrm
   module MailProcessor
     class CommentReplies < Base
 

@@ -10,12 +10,12 @@ Gem::Specification.new do |gem|
   gem.homepage = 'http://fatfreecrm.com'
   gem.email = ['mike@fatfreecrm.com', 'nathan@fatfreecrm.com', 'warp@fatfreecrm.com', 'steveyken@gmail.com']
   gem.files = `git ls-files`.split("\n")
-  gem.version = FatFreeCRM::VERSION::STRING
+  gem.version = FatFreeCrm::VERSION::STRING
   gem.required_ruby_version = '>= 1.9'
 
   gem.add_dependency 'rails',               '~> 3.2.12'
   gem.add_dependency 'prototype-rails'
-  gem.add_dependency 'jquery-rails',        '~> 2.1.4' # pegs us to jQuery 1.8
+  gem.add_dependency 'jquery-rails',        '~> 2.2.1' # pegs us to jQuery 1.8
   gem.add_dependency 'select2-rails'
   gem.add_dependency 'simple_form',         '~> 2.0.1'
   gem.add_dependency 'will_paginate',       '~> 3.0.2'
@@ -38,7 +38,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'rails3-jquery-autocomplete'
   gem.add_dependency 'valium'
 
-  # FatFreeCRM has released it's own versions of the following gems:
+  # FatFreeCrm has released it's own versions of the following gems:
   #-----------------------------------------------------------------
   gem.add_dependency 'ransack_ffcrm',       '~> 0.7.1'
   gem.add_dependency 'ransack_ui',          '>= 1.1.0'

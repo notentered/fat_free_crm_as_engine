@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-module FatFreeCRM
+module FatFreeCrm
   module I18n
 
     #----------------------------------------------------------------------------
@@ -47,5 +47,5 @@ module FatFreeCRM
   end
 end
 
-ActionView::Base.send(:include, FatFreeCRM::I18n)
-ActionController::Base.send(:include, FatFreeCRM::I18n)
+ActionView::Base.send(:include, FatFreeCrm::I18n)
+ActionController::Base.send(:include, FatFreeCrm::I18n)

@@ -1,4 +1,4 @@
-Rails.application.routes.draw do
+FatFreeCrm::Engine.routes.draw do
   resources :lists
 
   root :to => 'home#index'
@@ -195,5 +195,5 @@ Rails.application.routes.draw do
     resources :plugins
   end
 
-  get '/:controller/tagged/:id' => '#tagged'
+  #get '/:controller/tagged/:id' => '#tagged'
 end

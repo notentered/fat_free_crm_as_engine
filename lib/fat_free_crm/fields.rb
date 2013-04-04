@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-module FatFreeCRM
+module FatFreeCrm
   module Fields
 
     def self.included(base)
@@ -95,4 +95,4 @@ module FatFreeCRM
   end
 end
 
-ActiveRecord::Base.send(:include, FatFreeCRM::Fields)
+ActiveRecord::Base.send(:include, FatFreeCrm::Fields)

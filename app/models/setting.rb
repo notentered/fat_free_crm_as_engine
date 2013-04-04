@@ -44,6 +44,18 @@ class Setting < ActiveRecord::Base
   @@cache = @@yaml_settings = {}.with_indifferent_access
 
   class << self
+    def yaml_settings
+      if @@yaml_settings.blank?
+        # Load default settings, then override with custom settings, if present.
+        setting_files = [FatFreeCrm.root.join("config", "settings.default.yml")]
+        # Don't override default settings in test environment
+        setting_files << Rails.root.join("config", "settings.yml") unless Rails.env == 'test'
+        setting_files.each do |settings_file|
+          Setting.load_settings_from_yaml(settings_file) if File.exist?(settings_file)
+        end
+      end
+      @@yaml_settings
+    end
 
     # Cache should be cleared before each request.
     def clear_cache!
@@ -125,22 +137,3 @@ class Setting < ActiveRecord::Base
   end
 end
 
-#
-# TODO: code smell - refactor loading of settings
-# The following code should be in a lazy load hook or Settings class initializer
-#
-
-#
-# We have fat_free_crm/syck_yaml which loads very early on in the bootstrap process
-# However, something else (possibly bundler) is reverting back to Psych later on so
-# we need to set it again here to ensure the files are read in the correct manner.
-#
-YAML::ENGINE.yamler = 'syck'
-
-# Load default settings, then override with custom settings, if present.
-setting_files = [FatFreeCRM.root.join("config", "settings.default.yml")]
-# Don't override default settings in test environment
-setting_files << Rails.root.join("config", "settings.yml") unless Rails.env == 'test'
-setting_files.each do |settings_file|
-  Setting.load_settings_from_yaml(settings_file) if File.exist?(settings_file)
-end

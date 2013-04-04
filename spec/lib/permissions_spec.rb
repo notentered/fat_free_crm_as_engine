@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe FatFreeCRM::Permissions do
+describe FatFreeCrm::Permissions do
 
   before :each do
     build_model(:user_with_permission) do

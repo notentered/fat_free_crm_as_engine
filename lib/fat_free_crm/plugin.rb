@@ -25,7 +25,7 @@ Rails::Plugin.class_eval do
   end
 end
 
-module FatFreeCRM
+module FatFreeCrm
   class Plugin
     @@list = {} # List of added plugins.
 
@@ -63,7 +63,7 @@ module FatFreeCRM
         main_or_admin = :main
       end
       if Setting.database_and_table_exists?
-        tabs = FatFreeCRM::Tabs.send(main_or_admin)
+        tabs = FatFreeCrm::Tabs.send(main_or_admin)
         if tabs                         # Might be nil when running rake task (ex: rake ffcrm:setup).
           if block_given?
             yield tabs
@@ -102,5 +102,5 @@ module FatFreeCRM
     end
 
   end # class Plugin
-end # module FatFreeCRM
+end # module FatFreeCrm
 

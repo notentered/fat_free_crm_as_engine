@@ -1,4 +1,4 @@
-module FatFreeCRM
+module FatFreeCrm
   module CommentExtensions
     def self.included(base)
       base.extend(ClassMethods)
@@ -7,7 +7,7 @@ module FatFreeCRM
     module ClassMethods
       def uses_comment_extensions
         unless included_modules.include?(InstanceMethods)
-          include FatFreeCRM::CommentExtensions::InstanceMethods
+          include FatFreeCrm::CommentExtensions::InstanceMethods
         end
       end
     end
@@ -20,4 +20,4 @@ module FatFreeCRM
   end
 end
 
-ActiveRecord::Base.send(:include, FatFreeCRM::CommentExtensions)
+ActiveRecord::Base.send(:include, FatFreeCrm::CommentExtensions)

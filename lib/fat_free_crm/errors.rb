@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-module FatFreeCRM
+module FatFreeCrm
   module ActiveModel
     module Errors
 
@@ -48,4 +48,4 @@ module FatFreeCRM
   end
 end
 
-ActiveModel::Errors.send(:include, FatFreeCRM::ActiveModel::Errors)
+ActiveModel::Errors.send(:include, FatFreeCrm::ActiveModel::Errors)
