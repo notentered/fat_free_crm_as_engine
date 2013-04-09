@@ -22,7 +22,7 @@
     :javascript
       #{yield :javascript}
       var _ffcrm_users = [
-      #{User.all.map{|u| "\"#{u.full_name} (@#{u.username})\"" }.join(",\n")}
+      #{FatFreeCrm::User.all.map{|u| "\"#{u.full_name} (@#{u.username})\"" }.join(",\n")}
       ];
 
       window.controller = "#{controller.controller_name}"
@@ -39,7 +39,7 @@
       = render "layouts/fat_free_crm/footer"
 
     %script{:type => "text/javascript"}
-      = "crm.base_url = '#{Setting.base_url}';" unless Setting.base_url.blank?
+      = "crm.base_url = '#{FatFreeCrm::Setting.base_url}';" unless FatFreeCrm::Setting.base_url.blank?
       = get_browser_timezone_offset
       = content_for :javascript_epilogue
       = hook(:javascript_epilogue, self)

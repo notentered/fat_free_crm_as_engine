@@ -81,7 +81,7 @@ private
 
   #----------------------------------------------------------------------------
   def clear_setting_cache
-    Setting.clear_cache!
+    FatFreeCrm::Setting.clear_cache!
   end
 
   #----------------------------------------------------------------------------
@@ -89,8 +89,8 @@ private
     Time.zone = ActiveSupport::TimeZone[session[:timezone_offset]] if session[:timezone_offset]
     if current_user.present? and (locale = current_user.preference[:locale]).present?
       I18n.locale = locale
-    elsif Setting.locale.present?
-      I18n.locale = Setting.locale
+    elsif FatFreeCrm::Setting.locale.present?
+      I18n.locale = FatFreeCrm::Setting.locale
     end
   end
 
@@ -116,7 +116,7 @@ private
         @current_user.set_individual_locale
         @current_user.set_single_access_token
       end
-      User.current_user = @current_user
+      FatFreeCrm::User.current_user = @current_user
     end
     @current_user
   end
@@ -155,7 +155,7 @@ private
 
   #----------------------------------------------------------------------------
   def can_signup?
-    [ :allowed, :needs_approval ].include? Setting.user_signup
+    [ :allowed, :needs_approval ].include? FatFreeCrm::Setting.user_signup
   end
 
   #----------------------------------------------------------------------------
