@@ -15,6 +15,14 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-# Set default locale from Settings
+class FatFreeCrm::CustomFieldDatetimePair < FatFreeCrm::CustomFieldDatePair
 
-I18n.default_locale = FatFreeCrm::Setting.locale
+  # Register this CustomField with the application
+  #------------------------------------------------------------------------------
+  register(:as => 'datetime_pair', :klass => 'CustomFieldDatetimePair', :type => 'timestamp')
+
+  def render(value)
+    value && value.strftime(I18n.t("time.formats.mmddhhss"))
+  end
+
+end

@@ -15,6 +15,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-# Set default locale from Settings
+class FatFreeCrm::List < ActiveRecord::Base
+  validates_presence_of :name
 
-I18n.default_locale = FatFreeCrm::Setting.locale
+  # Parses the controller from the url
+  def controller
+    (url || "").sub(/^\//,'').split(/\/|\?/).first
+  end
+end

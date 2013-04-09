@@ -15,6 +15,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-# Set default locale from Settings
+class Admin::FatFreeCrm::PluginsController < FatFreeCrm::Admin::ApplicationController
+  before_filter "set_current_tab('admin/plugins')", :only => [ :index ]
 
-I18n.default_locale = FatFreeCrm::Setting.locale
+  # GET /admin/plugins
+  # GET /admin/plugins.xml
+  #----------------------------------------------------------------------------
+  def index
+    @plugins = FatFreeCrm::Plugin.list
+
+    respond_with(@plugins)
+  end
+end
+

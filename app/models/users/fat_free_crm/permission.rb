@@ -15,6 +15,24 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-# Set default locale from Settings
+# == Schema Information
+#
+# Table name: permissions
+#
+#  id         :integer         not null, primary key
+#  user_id    :integer
+#  asset_id   :integer
+#  asset_type :string(255)
+#  created_at :datetime
+#  updated_at :datetime
+#
 
-I18n.default_locale = FatFreeCrm::Setting.locale
+class FatFreeCrm::Permission < ActiveRecord::Base
+  belongs_to :user
+  belongs_to :group
+  belongs_to :asset, :polymorphic => true
+
+  validates_presence_of :user_id, :unless => :group_id?
+  validates_presence_of :group_id, :unless => :user_id?
+end
+

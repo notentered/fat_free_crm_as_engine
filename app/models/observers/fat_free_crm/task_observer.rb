@@ -15,6 +15,27 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-# Set default locale from Settings
+class FatFreeCrm::TaskObserver < ActiveRecord::Observer
+  observe :task
 
-I18n.default_locale = FatFreeCrm::Setting.locale
+  @@tasks = {}
+
+  def before_update(item)
+    @@tasks[item.id] = FatFreeCrm::Task.find(item.id).freeze
+  end
+
+  def after_update(item)
+    original = @@tasks.delete(item.id)
+    if original
+      return log_activity(item, :complete)   if item.completed_at && original.completed_at.nil?
+      return log_activity(item, :reassign)   if item.assigned_to != original.assigned_to
+      return log_activity(item, :reschedule) if item.bucket != original.bucket
+    end
+  end
+
+  private
+
+  def log_activity(item, event)
+    item.send(item.class.versions_association_name).create(:event => event, :whodunnit => PaperTrail.whodunnit)
+  end
+end

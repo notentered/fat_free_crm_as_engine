@@ -15,6 +15,23 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-# Set default locale from Settings
+# == Schema Information
+#
+# Table name: contact_opportunities
+#
+#  id             :integer         not null, primary key
+#  contact_id     :integer
+#  opportunity_id :integer
+#  role           :string(32)
+#  deleted_at     :datetime
+#  created_at     :datetime
+#  updated_at     :datetime
+#
 
-I18n.default_locale = FatFreeCrm::Setting.locale
+class FatFreeCrm::ContactOpportunity < ActiveRecord::Base
+  belongs_to :contact
+  belongs_to :opportunity
+  validates_presence_of :contact_id, :opportunity_id
+
+  # has_paper_trail
+end

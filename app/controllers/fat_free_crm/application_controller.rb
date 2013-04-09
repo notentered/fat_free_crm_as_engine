@@ -101,7 +101,7 @@ private
 
   #----------------------------------------------------------------------------
   def current_user_session
-    @current_user_session ||= Authentication.find
+    @current_user_session ||= FatFreeCrm::Authentication.find
     if @current_user_session && @current_user_session.record.suspended?
       @current_user_session = nil
     end

@@ -15,6 +15,34 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-# Set default locale from Settings
+# == Schema Information
+#
+# Table name: fields
+#
+#  id             :integer         not null, primary key
+#  type           :string(255)
+#  field_group_id :integer
+#  position       :integer
+#  name           :string(64)
+#  label          :string(128)
+#  hint           :string(255)
+#  placeholder    :string(255)
+#  as             :string(32)
+#  collection     :text
+#  disabled       :boolean
+#  required       :boolean
+#  maxlength      :integer
+#  created_at     :datetime
+#  updated_at     :datetime
+#
 
-I18n.default_locale = FatFreeCrm::Setting.locale
+class FatFreeCrm::CoreField < FatFreeCrm::Field
+  # Some CoreField attributes should be read-only
+  attr_readonly :name, :as, :collection
+  before_destroy :error_on_destroy
+
+  def error_on_destroy
+    errors.add_to_base "Core fields cannot be deleted."
+  end
+end
+

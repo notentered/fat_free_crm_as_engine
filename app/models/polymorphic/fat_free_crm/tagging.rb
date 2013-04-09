@@ -15,6 +15,5 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-# Set default locale from Settings
-
-I18n.default_locale = FatFreeCrm::Setting.locale
+class FatFreeCrm::Tagging < ActsAsTaggableOn::Tagging
+end

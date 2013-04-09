@@ -15,6 +15,19 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-# Set default locale from Settings
+class FatFreeCrm::DropboxMailer < ActionMailer::Base
 
-I18n.default_locale = FatFreeCrm::Setting.locale
+  def dropbox_notification(user, from, email, mediator_links)
+    I18n.locale = FatFreeCrm::Setting.locale
+    @mediator_links = mediator_links.join("\n")
+    @subject        = email.subject
+    @body           = email.body_plain
+
+    mail :subject => I18n.t(:dropbox_notification_subject, :subject => email.subject),
+         :to => user.email,
+         :from => from,
+         :date => Time.now
+  end
+  
+end
+

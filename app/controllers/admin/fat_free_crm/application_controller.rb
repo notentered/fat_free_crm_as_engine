@@ -15,6 +15,28 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-# Set default locale from Settings
+class Admin::FatFreeCrm::ApplicationController < FatFreeCrm::ApplicationController
+  before_filter :require_admin_user
 
-I18n.default_locale = FatFreeCrm::Setting.locale
+  layout "admin/application"
+  helper "admin/field_groups"
+
+  # Autocomplete handler for all admin controllers.
+  #----------------------------------------------------------------------------
+  def auto_complete
+    @query = params[:auto_complete_query]
+    @auto_complete = klass.text_search(@query).limit(10)
+    render :partial => 'auto_complete'
+  end
+
+private
+
+  #----------------------------------------------------------------------------
+  def require_admin_user
+    require_user
+    if current_user && !current_user.admin?
+      flash[:notice] = t(:msg_require_admin)
+      redirect_to root_path
+    end
+  end
+end

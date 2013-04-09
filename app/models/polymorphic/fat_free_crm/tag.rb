@@ -15,6 +15,17 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-# Set default locale from Settings
+class FatFreeCrm::Tag < ActsAsTaggableOn::Tag
+  before_destroy :no_associated_field_groups
 
-I18n.default_locale = FatFreeCrm::Setting.locale
+  # Don't allow a tag to be deleted if it is associated with a Field Group
+  def no_associated_field_groups
+    FatFreeCrm::FieldGroup.find_all_by_tag_id(self).none?
+  end
+  
+  # Returns a count of taggings per model klass
+  # e.g. {"Contact" => 3, "Account" => 1}
+  def model_tagging_counts
+    FatFreeCrm::Tagging.where(:tag_id => id).count(:group => :taggable_type)
+  end
+end
