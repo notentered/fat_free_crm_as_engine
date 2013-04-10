@@ -16,7 +16,7 @@
 #------------------------------------------------------------------------------
 
 class FatFreeCrm::LeadObserver < ActiveRecord::Observer
-  observe :lead
+  observe FatFreeCrm::Lead
 
   @@leads = {}
 

@@ -16,7 +16,7 @@
 #------------------------------------------------------------------------------
 
 class FatFreeCrm::TaskObserver < ActiveRecord::Observer
-  observe :task
+  observe FatFreeCrm::Task
 
   @@tasks = {}
 

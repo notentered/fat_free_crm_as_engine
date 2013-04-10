@@ -1,5 +1,5 @@
 class FatFreeCrm::EntityObserver < ActiveRecord::Observer
-  observe :account, :contact, :lead, :opportunity
+  observe FatFreeCrm::Account, FatFreeCrm::Contact, FatFreeCrm::Lead, FatFreeCrm::Opportunity
 
   def after_create(item)
     send_notification_to_assignee(item) if current_user != item.assignee
