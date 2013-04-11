@@ -129,8 +129,7 @@ class FatFreeCrm::User < ActiveRecord::Base
 
   #----------------------------------------------------------------------------
   def preference
-    raise FatFreeCrm::Preference.new(:user => self).inspect
-    @preference ||= FatFreeCrm::Preference.new(:user => self)
+    @preference ||= self.preferences.new
   end
   alias :pref :preference
 

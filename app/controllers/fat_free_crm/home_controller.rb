@@ -26,9 +26,9 @@ class FatFreeCrm::HomeController < FatFreeCrm::ApplicationController
     hook(:home_controller, self, :params => "it works!")
 
     @activities = get_activities
-    @my_tasks = Task.visible_on_dashboard(current_user).by_due_at
-    @my_opportunities = Opportunity.visible_on_dashboard(current_user).by_closes_on.by_amount
-    @my_accounts = Account.visible_on_dashboard(current_user).by_name
+    @my_tasks = FatFreeCrm::Task.visible_on_dashboard(current_user).by_due_at
+    @my_opportunities = FatFreeCrm::Opportunity.visible_on_dashboard(current_user).by_closes_on.by_amount
+    @my_accounts = FatFreeCrm::Account.visible_on_dashboard(current_user).by_name
     respond_with(@activities)
   end
 
@@ -40,7 +40,7 @@ class FatFreeCrm::HomeController < FatFreeCrm::ApplicationController
       @action = current_user.pref[:activity_event] || "all_events"
       @user = current_user.pref[:activity_user] || "all_users"
       @duration = current_user.pref[:activity_duration] || "two_days"
-      @all_users = User.order("first_name, last_name")
+      @all_users = FatFreeCrm::User.order("first_name, last_name")
     end
   end
 
@@ -76,8 +76,8 @@ class FatFreeCrm::HomeController < FatFreeCrm::ApplicationController
       item.update_attribute(:state, params[:state])
     else
       comments, emails = params[:id].split("+")
-      Comment.update_all("state = '#{params[:state]}'", "id IN (#{comments})") unless comments.blank?
-      Email.update_all("state = '#{params[:state]}'", "id IN (#{emails})") unless emails.blank?
+      FatFreeCrm::Comment.update_all("state = '#{params[:state]}'", "id IN (#{comments})") unless comments.blank?
+      FatFreeCrm::Email.update_all("state = '#{params[:state]}'", "id IN (#{emails})") unless emails.blank?
     end
 
     render :nothing => true
@@ -134,7 +134,7 @@ class FatFreeCrm::HomeController < FatFreeCrm::ApplicationController
     user = current_user.pref[:activity_user]
     if user && user != "all_users"
       user = if user =~ /@/ # email
-          User.where(:email => user).first
+          FatFreeCrm::User.where(:email => user).first
         else # first_name middle_name last_name any_name
           name_query = if user.include?(" ")
             user.name_permutations.map{ |first, last|
@@ -143,10 +143,11 @@ class FatFreeCrm::HomeController < FatFreeCrm::ApplicationController
           else
             "upper(first_name) LIKE upper('%#{user}%') OR upper(last_name) LIKE upper('%#{user}%')"
           end
-          User.where(name_query).first
+          FatFreeCrm::User.where(name_query).first
         end
     end
-    user.is_a?(User) ? user.id : nil
+
+    user.is_a?(FatFreeCrm::User) ? user.id : nil
   end
 
   #----------------------------------------------------------------------------

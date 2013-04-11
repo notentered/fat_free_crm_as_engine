@@ -8,7 +8,7 @@ Version.class_eval do
 
   attr_accessible :related
   belongs_to :related, :polymorphic => true
-  belongs_to :user, :foreign_key => :whodunnit
+  belongs_to :user, :class_name => 'FatFreeCrm::User', :foreign_key => :whodunnit
 
   scope :default_order,  order('created_at DESC')
   scope :include_events, lambda { |*events| where(:event => events) }

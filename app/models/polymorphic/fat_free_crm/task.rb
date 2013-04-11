@@ -41,8 +41,8 @@ class FatFreeCrm::Task < ActiveRecord::Base
   attr_accessor :calendar
 
   belongs_to :user
-  belongs_to :assignee, :class_name => "User", :foreign_key => :assigned_to
-  belongs_to :completor, :class_name => "User", :foreign_key => :completed_by
+  belongs_to :assignee, :class_name => "FatFreeCrm::User", :foreign_key => :assigned_to
+  belongs_to :completor, :class_name => "FatFreeCrm::User", :foreign_key => :completed_by
   belongs_to :asset, :polymorphic => true
 
   serialize :subscribed_users, Set

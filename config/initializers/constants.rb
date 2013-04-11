@@ -1,1 +1,1 @@
-ENTITIES = %w(Account Campaign Contact Lead Opportunity).freeze
+ENTITIES = %w(FatFreeCrm::Account FatFreeCrm::Campaign FatFreeCrm::Contact FatFreeCrm::Lead FatFreeCrm::Opportunity).freeze

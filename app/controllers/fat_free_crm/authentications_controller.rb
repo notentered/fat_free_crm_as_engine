@@ -32,7 +32,7 @@ class FatFreeCrm::AuthenticationsController < FatFreeCrm::ApplicationController
 
   #----------------------------------------------------------------------------
   def create
-    @authentication = FatFreeCrm::Authentication.new(params[:authentication])
+    @authentication = FatFreeCrm::Authentication.new(params[:fat_free_crm_authentication])
 
     if @authentication.save && !@authentication.user.suspended?
       flash[:notice] = t(:msg_welcome)

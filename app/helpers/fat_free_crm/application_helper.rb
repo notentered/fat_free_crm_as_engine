@@ -174,8 +174,8 @@ module FatFreeCrm::ApplicationHelper
   #----------------------------------------------------------------------------
   def link_to_email(email, length = nil, &block)
     name = (length ? truncate(email, :length => length) : email)
-    if Setting.email_dropbox && Setting.email_dropbox[:address].present?
-      mailto = "#{email}?bcc=#{Setting.email_dropbox[:address]}"
+    if FatFreeCrm::Setting.email_dropbox && FatFreeCrm::Setting.email_dropbox[:address].present?
+      mailto = "#{email}?bcc=#{FatFreeCrm::Setting.email_dropbox[:address]}"
     else
       mailto = email
     end
@@ -199,7 +199,7 @@ module FatFreeCrm::ApplicationHelper
 
   #----------------------------------------------------------------------------
   def styles_for(*models)
-    render :partial => "shared/inline_styles", :locals => { :models => models }
+    render :partial => "fat_free_crm/shared/inline_styles", :locals => { :models => models }
   end
 
   #----------------------------------------------------------------------------

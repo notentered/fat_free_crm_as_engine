@@ -24,7 +24,6 @@ class RenameAllTables < ActiveRecord::Migration
     rename_table :permissions,           :fat_free_crm_permissions
     rename_table :accounts,              :fat_free_crm_accounts
     rename_table :account_opportunities, :fat_free_crm_account_opportunities
-    rename_table :versions,              :fat_free_crm_versions
     rename_table :fields,                :fat_free_crm_fields
     rename_table :groups_users,          :fat_free_crm_groups_users
   end
