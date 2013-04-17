@@ -25,7 +25,7 @@ module FatFreeCrm
     # After the observers are namespaced, we cannot run rake db:migrate because the tables are missing (Catch-22)
     unless defined?(::Rake) and !Rails.env.test?
       config.to_prepare do
-        ActiveRecord::Base.observers = FatFreeCrm::LeadObserver, FatFreeCrm::OpportunityObserver, FatFreeCrm::TaskObserver
+        ActiveRecord::Base.observers = 'FatFreeCrm::LeadObserver', 'FatFreeCrm::OpportunityObserver', 'FatFreeCrm::TaskObserver'
       end
     end
   end

@@ -34,7 +34,7 @@ GEM
     acts_as_fu (0.0.8)
       activerecord
       sqlite3
-    acts_as_list (0.1.6)
+    acts_as_list (0.1.9)
     addressable (2.3.3)
     ajax-chosen-rails (0.2.1)
       chosen-rails_ffcrm
@@ -49,7 +49,7 @@ GEM
     builder (3.0.4)
     bundler_local_development (0.4.1)
       bundler
-    cancan (1.6.7)
+    cancan (1.6.9)
     capistrano (2.13.5)
       highline
       net-scp (>= 1.0.0)

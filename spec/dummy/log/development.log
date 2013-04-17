@@ -1,0 +1,14 @@
+Connecting to database specified by database.yml
+DEPRECATION WARNING: Calling set_table_name is deprecated. Please use `self.table_name = 'the_name'` instead. (called from <class:Tag> at /home/zlatko/ffcrm_as_engine/vendor/engines/fat_free_crm/config/initializers/acts_as_taggable_on.rb:4)
+DEPRECATION WARNING: Calling set_table_name is deprecated. Please use `self.table_name = 'the_name'` instead. (called from <class:Tagging> at /home/zlatko/ffcrm_as_engine/vendor/engines/fat_free_crm/config/initializers/acts_as_taggable_on.rb:8)
+Connecting to database specified by database.yml
+DEPRECATION WARNING: Calling set_table_name is deprecated. Please use `self.table_name = 'the_name'` instead. (called from <class:Tag> at /home/zlatko/ffcrm_as_engine/vendor/engines/fat_free_crm/config/initializers/acts_as_taggable_on.rb:4)
+DEPRECATION WARNING: Calling set_table_name is deprecated. Please use `self.table_name = 'the_name'` instead. (called from <class:Tagging> at /home/zlatko/ffcrm_as_engine/vendor/engines/fat_free_crm/config/initializers/acts_as_taggable_on.rb:8)
+  [1m[36m (0.0ms)[0m  [1mselect sqlite_version(*)[0m
+  [1m[35m (150.0ms)[0m  CREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) 
+  [1m[36m (78.9ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35m (0.1ms)[0m  SELECT "schema_migrations"."version" FROM "schema_migrations" 
+Connecting to database specified by database.yml
+DEPRECATION WARNING: Calling set_table_name is deprecated. Please use `self.table_name = 'the_name'` instead. (called from <class:Tag> at /home/zlatko/ffcrm_as_engine/vendor/engines/fat_free_crm/config/initializers/acts_as_taggable_on.rb:4)
+DEPRECATION WARNING: Calling set_table_name is deprecated. Please use `self.table_name = 'the_name'` instead. (called from <class:Tagging> at /home/zlatko/ffcrm_as_engine/vendor/engines/fat_free_crm/config/initializers/acts_as_taggable_on.rb:8)
+  [1m[36m (0.0ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m

@@ -36,6 +36,11 @@
 #
 
 class FatFreeCrm::Address < ActiveRecord::Base
+  # CODE SMELL
+  # Set the table name to the old one. Used in migrations.
+  if $BEFORE_NAMESPACE
+    set_table_name 'addresses'
+  end
   belongs_to :addressable, :polymorphic => true
 
   has_paper_trail :meta => { :related => :addressable }

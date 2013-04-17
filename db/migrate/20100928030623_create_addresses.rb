@@ -19,18 +19,20 @@ class CreateAddresses < ActiveRecord::Migration
     add_index :addresses, [ :addressable_id, :addressable_type ]
 
     # Migrate data from assets to Address table into full_address blob
-    Contact.find(:all).each do |asset|
-      Address.create(:street1 => asset.address, :full_address => asset.address, :address_type => "Business", :addressable => asset)
+    $BEFORE_NAMESPACE = true
+    FatFreeCrm::Contact.find(:all).each do |asset|
+      FatFreeCrm::Address.create(:street1 => asset.address, :full_address => asset.address, :address_type => "Business", :addressable => asset)
     end
 
-    Account.find(:all).each do |asset|
-      Address.create(:street1 => asset.billing_address, :full_address => asset.billing_address, :address_type => "Billing", :addressable => asset)
-      Address.create(:street1 => asset.shipping_address, :full_address => asset.shipping_address, :address_type => "Shipping", :addressable => asset)
+    FatFreeCrm::Account.find(:all).each do |asset|
+      FatFreeCrm::Address.create(:street1 => asset.billing_address, :full_address => asset.billing_address, :address_type => "Billing", :addressable => asset)
+      FatFreeCrm::Address.create(:street1 => asset.shipping_address, :full_address => asset.shipping_address, :address_type => "Shipping", :addressable => asset)
     end
 
-    Lead.find(:all).each do |asset|
-      Address.create(:street1 => asset.address, :full_address => asset.address, :address_type => "Business", :addressable => asset)
+    FatFreeCrm::Lead.find(:all).each do |asset|
+      FatFreeCrm::Address.create(:street1 => asset.address, :full_address => asset.address, :address_type => "Business", :addressable => asset)
     end
+    $BEFORE_NAMESPACE = false
 
     # Remove addresses columns from assets allready migrated
     remove_column(:contacts, :address)

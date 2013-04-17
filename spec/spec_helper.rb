@@ -1,7 +1,7 @@
 require 'rubygems'
 
 ENV["RAILS_ENV"] = 'test'
-require File.expand_path("../../config/environment", __FILE__)
+require File.expand_path("../../spec/dummy/config/environment", __FILE__)
 require 'rspec/rails'
 require 'capybara/rails'
 
@@ -62,7 +62,7 @@ RSpec.configure do |config|
 
   # PaperTrail slows down tests so only turned on when needed.
   PaperTrail.enabled = false
-  
+
   config.around :each, :type => :feature do |example|
     was_enabled = PaperTrail.enabled?
     PaperTrail.enabled = true
@@ -74,7 +74,7 @@ RSpec.configure do |config|
       PaperTrail.enabled = was_enabled
     end
   end
-  
+
   config.around :each, :versioning => true do |example|
     was_enabled = PaperTrail.enabled?
     PaperTrail.enabled = true
