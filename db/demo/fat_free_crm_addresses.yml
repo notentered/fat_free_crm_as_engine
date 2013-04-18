@@ -43,4 +43,6 @@ address_<%= i %>:
                       <%= street2 %>
                       <%= "#{city}, #{state} #{zipcode}" %>
                       US
+  created_at: <%= starts = Date.today - rand(15).days %>
+  updated_at: <%= starts + rand(5).days %>
 <% end %>

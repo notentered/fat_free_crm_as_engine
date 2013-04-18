@@ -35,8 +35,8 @@ namespace :ffcrm do
       # Simulate random user activities.
       $stdout.sync = true
       puts "Generating user activities..."
-      %w(Account Address Campaign Comment Contact Email Lead Opportunity Task).map do |model|
-        model.constantize.all
+      [FatFreeCrm::Account, FatFreeCrm::Address, FatFreeCrm::Campaign, FatFreeCrm::Comment, FatFreeCrm::Contact, FatFreeCrm::Email, FatFreeCrm::Lead, FatFreeCrm::Opportunity, FatFreeCrm::Task].map do |model|
+        model.all
       end.flatten.each do |item|
         user = if item.respond_to?(:user)
           item.user
@@ -57,7 +57,7 @@ namespace :ffcrm do
         create_version(:event => "create", :created_at => created_at, :user => user, :item => item, :related => related)
         create_version(:event => "update", :created_at => updated_at, :user => user, :item => item, :related => related)
 
-        if [Account, Campaign, Contact, Lead, Opportunity].include?(item.class)
+        if [FatFreeCrm::Account, FatFreeCrm::Campaign, FatFreeCrm::Contact, FatFreeCrm::Lead, FatFreeCrm::Opportunity].include?(item.class)
           viewed_at = created_at + rand(12 * 60).minutes
           version = create_version(:event => "view", :created_at => viewed_at, :user => user, :item => item)
         end

@@ -50,4 +50,6 @@ email_<%= i %>:
   header          :
   sent_at         : <%= Date.today - rand(15).days %>
   received_at     : <%= Date.today - rand(15).days %>
+  created_at: <%= starts = Date.today - rand(15).days %>
+  updated_at: <%= starts + rand(5).days %>
 <% end %>

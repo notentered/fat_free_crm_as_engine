@@ -27,4 +27,6 @@ comment_<%= i %>:
   commentable_id   : <%= rand(100) + 1 %>
   commentable_type : <%= commentable.sample %>
   comment          : <%= Faker::Lorem::paragraph(rand(10) + 1) %>
+  created_at: <%= starts = Date.today - rand(15).days %>
+  updated_at: <%= starts + rand(5).days %>
 <% end %>
