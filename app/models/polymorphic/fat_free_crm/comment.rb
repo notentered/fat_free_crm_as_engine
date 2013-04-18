@@ -32,6 +32,11 @@
 #
 
 class FatFreeCrm::Comment < ActiveRecord::Base
+  # CODE SMELL
+  # Set the table name to the old one. Used in migrations.
+  if $BEFORE_NAMESPACE
+    set_table_name 'opportunities'
+  end
   belongs_to  :user
   belongs_to  :commentable, :polymorphic => true
 

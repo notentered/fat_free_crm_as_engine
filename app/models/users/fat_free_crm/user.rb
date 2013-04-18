@@ -92,21 +92,20 @@ class FatFreeCrm::User < ActiveRecord::Base
 
   # CODE SMELL
   # Set the table name to the old one. Used in migrations.
-  # Also Authlogic BUG https://github.com/binarylogic/authlogic/issues/318
   if $BEFORE_NAMESPACE
     set_table_name 'users'
-  else
-    acts_as_authentic do |c|
-      c.session_class = FatFreeCrm::Authentication
-      c.validates_uniqueness_of_login_field_options = { :message => :username_taken }
-      c.validates_length_of_login_field_options     = { :minimum => 1, :message => :missing_username }
-      c.merge_validates_format_of_login_field_options(:with => /[a-zA-Z0-9_-]+/)
-
-      c.validates_uniqueness_of_email_field_options = { :message => :email_in_use }
-      c.validates_length_of_password_field_options  = { :minimum => 0, :allow_blank => true, :if => :require_password? }
-      c.ignore_blank_passwords = true
-    end
   end
+  acts_as_authentic do |c|
+    c.session_class = FatFreeCrm::Authentication
+    c.validates_uniqueness_of_login_field_options = { :message => :username_taken }
+    c.validates_length_of_login_field_options     = { :minimum => 1, :message => :missing_username }
+    c.merge_validates_format_of_login_field_options(:with => /[a-zA-Z0-9_-]+/)
+
+    c.validates_uniqueness_of_email_field_options = { :message => :email_in_use }
+    c.validates_length_of_password_field_options  = { :minimum => 0, :allow_blank => true, :if => :require_password? }
+    c.ignore_blank_passwords = true
+  end
+
 
   # Store current user in the class so we could access it from the activity
   # observer without extra authentication query.

@@ -36,6 +36,11 @@
 # `config/settings.default.yml`, and settings in the database table have the highest priority.
 
 class FatFreeCrm::Setting < ActiveRecord::Base
+  # CODE SMELL
+  # Set the table name to the old one. Used in migrations.
+  if $BEFORE_NAMESPACE
+    set_table_name 'opportunities'
+  end
 
   serialize :value
 

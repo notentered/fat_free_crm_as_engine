@@ -1,15 +1,17 @@
 class AddSubscribedUsersToEntities < ActiveRecord::Migration
   def change
-    %w(accounts campaigns contacts leads opportunities tasks).each do |table|
-      add_column table.to_sym, :subscribed_users, :text
+    $BEFORE_NAMESPACE = true
+
+    [FatFreeCrm::Account, FatFreeCrm::Campaign, FatFreeCrm::Contact, FatFreeCrm::Lead, FatFreeCrm::Opportunity, FatFreeCrm::Task].each do |model|
+      add_column model.table_name.to_sym, :subscribed_users, :text
       # Reset the column information of each model
-      table.singularize.capitalize.constantize.reset_column_information
+      model.reset_column_information
     end
 
     entity_subscribers = Hash.new(Set.new)
 
     # Add comment's user to the entity's Set
-    Comment.all.each do |comment|
+    FatFreeCrm::Comment.all.each do |comment|
       entity_subscribers[[comment.commentable_type, comment.commentable_id]] += [comment.user_id]
     end
 
@@ -19,5 +21,6 @@ class AddSubscribedUsersToEntities < ActiveRecord::Migration
         connection.execute "UPDATE #{entity[0].tableize} SET subscribed_users = '#{user_ids.to_a.to_yaml}' WHERE id = #{entity[1]}"
       end
     end
+    $BEFORE_NAMESPACE = false
   end
 end
