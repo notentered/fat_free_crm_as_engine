@@ -89,18 +89,18 @@ class FatFreeCrm::Task < ActiveRecord::Base
 
 
   # Status based scopes to be combined with the due date and completion time.
-  scope :pending,       where('completed_at IS NULL').order('tasks.due_at, tasks.id')
-  scope :assigned,      where('completed_at IS NULL AND assigned_to IS NOT NULL').order('tasks.due_at, tasks.id')
-  scope :completed,     where('completed_at IS NOT NULL').order('tasks.completed_at DESC')
+  scope :pending,       where('completed_at IS NULL').order('fat_free_crm_tasks.due_at, fat_free_crm_tasks.id')
+  scope :assigned,      where('completed_at IS NULL AND assigned_to IS NOT NULL').order('fat_free_crm_tasks.due_at, fat_free_crm_tasks.id')
+  scope :completed,     where('completed_at IS NOT NULL').order('fat_free_crm_tasks.completed_at DESC')
 
   # Due date scopes.
-  scope :due_asap,      where("due_at IS NULL AND bucket = 'due_asap'").order('tasks.id DESC')
-  scope :overdue,       where('due_at IS NOT NULL AND due_at < ?', Time.zone.now.midnight.utc).order('tasks.id DESC')
-  scope :due_today,     where('due_at >= ? AND due_at < ?', Time.zone.now.midnight.utc, Time.zone.now.midnight.tomorrow.utc).order('tasks.id DESC')
-  scope :due_tomorrow,  where('due_at >= ? AND due_at < ?', Time.zone.now.midnight.tomorrow.utc, Time.zone.now.midnight.tomorrow.utc + 1.day).order('tasks.id DESC')
-  scope :due_this_week, where('due_at >= ? AND due_at < ?', Time.zone.now.midnight.tomorrow.utc + 1.day, Time.zone.now.next_week.utc).order('tasks.id DESC')
-  scope :due_next_week, where('due_at >= ? AND due_at < ?', Time.zone.now.next_week.utc, Time.zone.now.next_week.end_of_week.utc + 1.day).order('tasks.id DESC')
-  scope :due_later,     where("(due_at IS NULL AND bucket = 'due_later') OR due_at >= ?", Time.zone.now.next_week.end_of_week.utc + 1.day).order('tasks.id DESC')
+  scope :due_asap,      where("due_at IS NULL AND bucket = 'due_asap'").order('fat_free_crm_tasks.id DESC')
+  scope :overdue,       where('due_at IS NOT NULL AND due_at < ?', Time.zone.now.midnight.utc).order('fat_free_crm_tasks.id DESC')
+  scope :due_today,     where('due_at >= ? AND due_at < ?', Time.zone.now.midnight.utc, Time.zone.now.midnight.tomorrow.utc).order('fat_free_crm_tasks.id DESC')
+  scope :due_tomorrow,  where('due_at >= ? AND due_at < ?', Time.zone.now.midnight.tomorrow.utc, Time.zone.now.midnight.tomorrow.utc + 1.day).order('fat_free_crm_tasks.id DESC')
+  scope :due_this_week, where('due_at >= ? AND due_at < ?', Time.zone.now.midnight.tomorrow.utc + 1.day, Time.zone.now.next_week.utc).order('fat_free_crm_tasks.id DESC')
+  scope :due_next_week, where('due_at >= ? AND due_at < ?', Time.zone.now.next_week.utc, Time.zone.now.next_week.end_of_week.utc + 1.day).order('fat_free_crm_tasks.id DESC')
+  scope :due_later,     where("(due_at IS NULL AND bucket = 'due_later') OR due_at >= ?", Time.zone.now.next_week.end_of_week.utc + 1.day).order('fat_free_crm_tasks.id DESC')
 
   # Completion time scopes.
   scope :completed_today,      where('completed_at >= ? AND completed_at < ?', Time.zone.now.midnight.utc, Time.zone.now.midnight.tomorrow.utc)

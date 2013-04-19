@@ -52,7 +52,7 @@ task<%= i %>:
   completed_by : <%= completed_by %>
   name         : <%= Faker::Lorem::sentence(rand(2) + 2).sub(".", "") %>
   asset_id     : <%= asset %>
-  asset_type   : <%= %w(Account Campaign Contact Lead Opportunity).sample if asset %>
+  asset_type   : <%= %w(FatFreeCrm::Account FatFreeCrm::Campaign FatFreeCrm::Contact FatFreeCrm::Lead FatFreeCrm::Opportunity).sample if asset %>
   category     : <%= category.sample %>
   bucket       : <%= bucket %>
   background_info :

@@ -317,10 +317,10 @@ module FatFreeCrm::ApplicationHelper
     args = { :class => 'gravatar', :size => :large }.merge(args)
 
     if model.respond_to?(:avatar) and model.avatar.present?
-      Avatar
+      FatFreeCrm::Avatar
       image_tag(model.avatar.image.url(args[:size]), args)
     else
-      args = Avatar.size_from_style!(args) # convert size format :large => '75x75'
+      args = FatFreeCrm::Avatar.size_from_style!(args) # convert size format :large => '75x75'
       gravatar_image_tag(model.email, args)
     end
 

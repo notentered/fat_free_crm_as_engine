@@ -24,7 +24,7 @@ class FatFreeCrm::TasksController < FatFreeCrm::ApplicationController
   #----------------------------------------------------------------------------
   def index
     @view = params[:view] || "pending"
-    @tasks = Task.find_all_grouped(current_user, @view)
+    @tasks = FatFreeCrm::Task.find_all_grouped(current_user, @view)
 
     respond_with @tasks do |format|
       format.xls { render :layout => 'header' }
@@ -36,7 +36,7 @@ class FatFreeCrm::TasksController < FatFreeCrm::ApplicationController
   # GET /tasks/1
   #----------------------------------------------------------------------------
   def show
-    @task = Task.tracked_by(current_user).find(params[:id])
+    @task = FatFreeCrm::Task.tracked_by(current_user).find(params[:id])
 
     respond_with(@task)
   end
@@ -45,9 +45,9 @@ class FatFreeCrm::TasksController < FatFreeCrm::ApplicationController
   #----------------------------------------------------------------------------
   def new
     @view = params[:view] || "pending"
-    @task = Task.new
-    @bucket = Setting.unroll(:task_bucket)[1..-1] << [ t(:due_specific_date, :default => 'On Specific Date...'), :specific_time ]
-    @category = Setting.unroll(:task_category)
+    @task = FatFreeCrm::Task.new
+    @bucket = FatFreeCrm::Setting.unroll(:task_bucket)[1..-1] << [ t(:due_specific_date, :default => 'On Specific Date...'), :specific_time ]
+    @category = FatFreeCrm::Setting.unroll(:task_category)
 
     if params[:related]
       model, id = params[:related].split(/_(\d+)/)
@@ -65,13 +65,13 @@ class FatFreeCrm::TasksController < FatFreeCrm::ApplicationController
   #----------------------------------------------------------------------------
   def edit
     @view = params[:view] || "pending"
-    @task = Task.tracked_by(current_user).find(params[:id])
-    @bucket = Setting.unroll(:task_bucket)[1..-1] << [ t(:due_specific_date, :default => 'On Specific Date...'), :specific_time ]
-    @category = Setting.unroll(:task_category)
+    @task = FatFreeCrm::Task.tracked_by(current_user).find(params[:id])
+    @bucket = FatFreeCrm::Setting.unroll(:task_bucket)[1..-1] << [ t(:due_specific_date, :default => 'On Specific Date...'), :specific_time ]
+    @category = FatFreeCrm::Setting.unroll(:task_category)
     @asset = @task.asset if @task.asset_id?
 
     if params[:previous].to_s =~ /(\d+)\z/
-      @previous = Task.tracked_by(current_user).find_by_id($1) || $1.to_i
+      @previous = FatFreeCrm::Task.tracked_by(current_user).find_by_id($1) || $1.to_i
     end
 
     respond_with(@task)
@@ -81,7 +81,7 @@ class FatFreeCrm::TasksController < FatFreeCrm::ApplicationController
   #----------------------------------------------------------------------------
   def create
     @view = params[:view] || "pending"
-    @task = Task.new(params[:task]) # NOTE: we don't display validation messages for tasks.
+    @task = FatFreeCrm::Task.new(params[:task]) # NOTE: we don't display validation messages for tasks.
 
     respond_with(@task) do |format|
       if @task.save
@@ -94,7 +94,7 @@ class FatFreeCrm::TasksController < FatFreeCrm::ApplicationController
   #----------------------------------------------------------------------------
   def update
     @view = params[:view] || "pending"
-    @task = Task.tracked_by(current_user).find(params[:id])
+    @task = FatFreeCrm::Task.tracked_by(current_user).find(params[:id])
     @task_before_update = @task.clone
 
     if @task.due_at && (@task.due_at < Date.today.to_time)
@@ -107,7 +107,7 @@ class FatFreeCrm::TasksController < FatFreeCrm::ApplicationController
       if @task.update_attributes(params[:task])
         @task.bucket = @task.computed_bucket
         if called_from_index_page?
-          if Task.bucket_empty?(@task_before_update.bucket, current_user, @view)
+          if FatFreeCrm::Task.bucket_empty?(@task_before_update.bucket, current_user, @view)
             @empty_bucket = @task_before_update.bucket
           end
           update_sidebar
@@ -120,11 +120,11 @@ class FatFreeCrm::TasksController < FatFreeCrm::ApplicationController
   #----------------------------------------------------------------------------
   def destroy
     @view = params[:view] || "pending"
-    @task = Task.tracked_by(current_user).find(params[:id])
+    @task = FatFreeCrm::Task.tracked_by(current_user).find(params[:id])
     @task.destroy
 
     # Make sure bucket's div gets hidden if we're deleting last task in the bucket.
-    if Task.bucket_empty?(params[:bucket], current_user, @view)
+    if FatFreeCrm::Task.bucket_empty?(params[:bucket], current_user, @view)
       @empty_bucket = params[:bucket]
     end
 
@@ -135,11 +135,11 @@ class FatFreeCrm::TasksController < FatFreeCrm::ApplicationController
   # PUT /tasks/1/complete
   #----------------------------------------------------------------------------
   def complete
-    @task = Task.tracked_by(current_user).find(params[:id])
-    @task.update_attributes(:completed_at => Time.now, :completed_by => current_user.id) if @task
+    @task = FatFreeCrm::Task.tracked_by(current_user).find(params[:id])
+    @task.update_attributes(:completed_at => FatFreeCrm::Time.now, :completed_by => current_user.id) if @task
 
     # Make sure bucket's div gets hidden if it's the last completed task in the bucket.
-    if Task.bucket_empty?(params[:bucket], current_user)
+    if FatFreeCrm::Task.bucket_empty?(params[:bucket], current_user)
       @empty_bucket = params[:bucket]
     end
 
@@ -181,7 +181,7 @@ private
   def update_sidebar
     @view = params[:view]
     @view = "pending" unless %w(pending assigned completed).include?(@view)
-    @task_total = Task.totals(current_user, @view)
+    @task_total = FatFreeCrm::Task.totals(current_user, @view)
 
     # Update filters session if we added, deleted, or completed a task.
     if @task

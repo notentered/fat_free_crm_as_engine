@@ -126,7 +126,7 @@ protected
   
   def set_options
     unless params[:cancel].true?
-      klass = controller_name.classify.constantize
+      klass = "FatFreeCrm::#{controller_name.classify}".constantize
       action = params['action']
       @per_page = current_user.pref[:"#{controller_name}_per_page"] || klass.per_page
       @sort_by  = current_user.pref[:"#{controller_name}_sort_by"]  || klass.sort_by
