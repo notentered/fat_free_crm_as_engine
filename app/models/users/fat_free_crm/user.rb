@@ -181,7 +181,7 @@ class FatFreeCrm::User < ActiveRecord::Base
   # Prevent deleting a user unless she has no artifacts left.
   #----------------------------------------------------------------------------
   def check_if_has_related_assets
-    artifacts = [Account Campaign Lead Contact Opportunity Comment].inject(0) do |sum, asset|
+    artifacts = [FatFreeCrm::Account, FatFreeCrm::Campaign, FatFreeCrm::Lead, FatFreeCrm::Contact, FatFreeCrm::Opportunity, FatFreeCrm::Comment].inject(0) do |sum, asset|
       klass = asset.constantize
       sum += klass.assigned_to(self).count if asset != "Comment"
       sum += klass.created_by(self).count

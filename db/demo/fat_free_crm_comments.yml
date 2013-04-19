@@ -18,7 +18,7 @@
   require "ffaker"
   puts "Loading comments..."
 
-  commentable = %w(Account Campaign Contact Lead Opportunity) # Task
+  commentable = %w(FatFreeCrm::Account FatFreeCrm::Campaign FatFreeCrm::Contact FatFreeCrm::Lead FatFreeCrm::Opportunity) # Task
   for i in (1 .. rand(250) + 500) do
 %>
 comment_<%= i %>:

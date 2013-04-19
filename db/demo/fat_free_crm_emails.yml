@@ -27,7 +27,7 @@
   puts "Loading emails..."
 
   users = %w(aaron bed cindy dan elizabeth frank george heather)
-  mediators = %w(Account Campaign Contact Lead Opportunity)
+  mediators = %w(FatFreeCrm::Account FatFreeCrm::Campaign FatFreeCrm::Contact FatFreeCrm::Lead FatFreeCrm::Opportunity)
 
   for i in (1 .. rand(250) + 500) do
     user = rand(users.size)

@@ -23,7 +23,7 @@
   puts "Loading addresses..."
 
   type = %w(Billing Shipping)
-  addressable = %w(Account Contact Lead)
+  addressable = %w(FatFreeCrm::Account FatFreeCrm::Contact FatFreeCrm::Lead)
 
   for i in (1 .. rand(200) + 200) do
 %>
