@@ -1,7 +1,7 @@
 require 'rubygems'
 
 ENV["RAILS_ENV"] = 'test'
-require File.expand_path("../../spec/dummy/config/environment", __FILE__)
+require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'capybara/rails'
 
@@ -32,7 +32,7 @@ RSpec.configure do |config|
   config.include RSpec::Rails::Matchers
 
   config.before(:each) do
-    # Overwrite locale settings within "config/fat_free_crm_settings.yml" if necessary.
+    # Overwrite locale settings within "config/settings.yml" if necessary.
     # In order to ensure that test still pass if "Setting.locale" is not set to "en-US".
     I18n.locale = 'en-US'
     Setting.locale = 'en-US' unless Setting.locale == 'en-US'

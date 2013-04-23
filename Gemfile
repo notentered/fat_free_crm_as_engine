@@ -28,8 +28,8 @@ end
 
 # Bundler no longer treats runtime dependencies as base dependencies.
 # The following code restores this behaviour.
-# (See https://github..gemspeccom/carlhuda/bundler/issues/1041)
-spec = Bundler.load_gemspec(File.expand_path Dir["./{,*}.gemspec"].first)
+# (See https://github.com/carlhuda/bundler/issues/1041)
+spec = Bundler.load_gemspec(Dir["#{File.dirname(__FILE__)}/{,*}.gemspec"].first)
 spec.runtime_dependencies.each do |dep|
   gem dep.name, *(dep.requirement.as_list)
 end

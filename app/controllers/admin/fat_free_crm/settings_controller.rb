@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-class Admin::FatFreeCrm::SettingsController < FatFreeCrm::Admin::ApplicationController
+class Admin::FatFreeCrm::SettingsController < Admin::FatFreeCrm::ApplicationController
   before_filter "set_current_tab('admin/settings')", :only => [ :index ]
 
   # GET /admin/settings

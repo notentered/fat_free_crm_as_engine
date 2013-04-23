@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-class Admin::FatFreeCrm::PluginsController < FatFreeCrm::Admin::ApplicationController
+class Admin::FatFreeCrm::PluginsController < Admin::FatFreeCrm::ApplicationController
   before_filter "set_current_tab('admin/plugins')", :only => [ :index ]
 
   # GET /admin/plugins

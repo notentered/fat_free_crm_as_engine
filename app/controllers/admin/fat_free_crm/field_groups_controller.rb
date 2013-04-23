@@ -15,9 +15,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-class Admin::FatFreeCrm::FieldGroupsController < FatFreeCrm::Admin::ApplicationController
+class Admin::FatFreeCrm::FieldGroupsController < Admin::FatFreeCrm::ApplicationController
 
-  helper 'admin/fields'
+  helper 'fat_free_crm/admin/fields'
 
   # GET /admin/field_groups/new
   # GET /admin/field_groups/new.xml                                        AJAX
