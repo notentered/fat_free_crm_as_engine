@@ -14,6 +14,8 @@ spec/internal/public/assets
 coverage/*
 db/*.sql*
 log/*.log
+spec/dummy/db/*.sql*
+spec/dummy/log/*.log
 doc/
 vendor/bundle
 Gemfile.ci.lock
