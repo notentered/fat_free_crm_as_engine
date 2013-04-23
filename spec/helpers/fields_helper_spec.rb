@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-include FieldsHelper
+include FatFreeCrm::FieldsHelper
 
-describe FieldsHelper do
+describe FatFreeCrm::FieldsHelper do
 end
 

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ApplicationController do
+describe FatFreeCrm::ApplicationController do
 
   describe "auto_complete_ids_to_exclude" do
   

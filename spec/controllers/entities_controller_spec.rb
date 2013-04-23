@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe EntitiesController do
+describe FatFreeCrm::EntitiesController do
 
   describe "parse_query_and_tags" do
   

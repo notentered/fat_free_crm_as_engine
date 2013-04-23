@@ -22,7 +22,7 @@
 
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-describe CustomField do
+describe FatFreeCrm::CustomField do
 
   it "should add a column to the database" do
     CustomField.connection.should_receive(:add_column).

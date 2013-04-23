@@ -13,7 +13,7 @@
 
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-describe ContactOpportunity do
+describe FatFreeCrm::ContactOpportunity do
   before(:each) do
     @valid_attributes = {
       :contact => mock_model(Contact),

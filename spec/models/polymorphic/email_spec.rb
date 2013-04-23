@@ -24,7 +24,7 @@
 
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-describe Email do
+describe FatFreeCrm::Email do
   before(:each) do
     @email = Email.new
   end

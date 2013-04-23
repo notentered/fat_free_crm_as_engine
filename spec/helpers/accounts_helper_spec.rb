@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe AccountsHelper do
+describe FatFreeCrm::AccountsHelper do
 
   #Delete this example and add some real ones or delete this file
   it "should be included in the object returned by #helper" do

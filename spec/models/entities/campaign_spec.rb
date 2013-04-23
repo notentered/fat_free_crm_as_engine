@@ -26,7 +26,7 @@
 
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-describe Campaign do
+describe FatFreeCrm::Campaign do
 
   before { login }
 
@@ -133,6 +133,6 @@ describe Campaign do
   end
 
   describe "permissions" do
-    it_should_behave_like Ability, Campaign
+    it_should_behave_like FatFreeCrm::Ability, FatFreeCrm::Campaign
   end
 end

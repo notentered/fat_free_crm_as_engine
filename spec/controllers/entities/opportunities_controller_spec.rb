@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-describe OpportunitiesController do
+describe FatFreeCrm::OpportunitiesController do
 
   def get_data_for_sidebar
     @stage = Setting.unroll(:opportunity_stage)

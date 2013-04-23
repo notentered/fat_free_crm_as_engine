@@ -17,7 +17,7 @@
 
 require 'spec_helper'
 
-describe CustomFieldDatePair do
+describe FatFreeCrm::CustomFieldDatePair do
 
   describe "render_value" do
   

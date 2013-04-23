@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe UsersHelper do
+describe FatFreeCrm::UsersHelper do
 
   let(:myself) { FactoryGirl.create(:user, :id => 54)}
   let(:user1) { FactoryGirl.create(:user,  :id => 60, :first_name => 'Bob', :last_name => "Hope") }

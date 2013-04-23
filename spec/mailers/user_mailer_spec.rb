@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe UserMailer do
+describe FatFreeCrm::UserMailer do
   describe "password_reset_instructions" do
     let(:user) { FactoryGirl.create(:user, :email => "forgot_my_password@example.com") }
     let(:mail) { UserMailer.password_reset_instructions(user) }

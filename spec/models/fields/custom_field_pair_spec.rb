@@ -17,7 +17,7 @@
 
 require 'spec_helper'
 
-describe CustomFieldPair do
+describe FatFreeCrm::CustomFieldPair do
 
   class CustomFieldFooPair
   end

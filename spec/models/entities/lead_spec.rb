@@ -33,7 +33,7 @@
 
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-describe Lead do
+describe FatFreeCrm::Lead do
 
   before { login }
 
@@ -99,6 +99,6 @@ describe Lead do
   end
 
   describe "permissions" do
-    it_should_behave_like Ability, Lead
+    it_should_behave_like FatFreeCrm::Ability, FatFreeCrm::Lead
   end
 end

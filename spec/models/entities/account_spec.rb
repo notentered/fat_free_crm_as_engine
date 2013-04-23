@@ -22,7 +22,7 @@
 
 require 'spec_helper'
 
-describe Account do
+describe FatFreeCrm::Account do
 
   before { login }
 
@@ -134,7 +134,7 @@ describe Account do
   end
 
   describe "permissions" do
-    it_should_behave_like Ability, Account
+    it_should_behave_like FatFreeCrm::Ability, FatFreeCrm::Account
   end
 
   describe "scopes" do

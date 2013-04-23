@@ -10,6 +10,6 @@ require 'spec_helper'
 #     end
 #   end
 # end
-describe GroupsHelper do
+describe FatFreeCrm::GroupsHelper do
   
 end

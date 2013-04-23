@@ -12,7 +12,7 @@
 
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-describe Preference do
+describe FatFreeCrm::Preference do
   before(:each) do
     @user = FactoryGirl.create(:user)
     @magoody = Base64.encode64(Marshal.dump("magoody"))

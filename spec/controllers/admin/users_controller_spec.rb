@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-describe Admin::UsersController do
+describe Admin::FatFreeCrm::UsersController do
 
   before(:each) do
     require_user(:admin => true)

@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe CommentsController do
+describe FatFreeCrm::CommentsController do
 
   COMMENTABLE = [ :account, :campaign, :contact, :lead, :opportunity ].freeze
 

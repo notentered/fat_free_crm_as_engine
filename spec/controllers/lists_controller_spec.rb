@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe ListsController do
+describe FatFreeCrm::ListsController do
 
 end

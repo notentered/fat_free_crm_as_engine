@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe TasksController do
+describe FatFreeCrm::TasksController do
 
   def update_sidebar
     @task_total = { :key => :value, :pairs => :etc }

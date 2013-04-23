@@ -33,7 +33,7 @@
 
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-describe Contact do
+describe FatFreeCrm::Contact do
 
   before { login }
 
@@ -158,7 +158,7 @@ describe Contact do
   end
   
   describe "permissions" do
-    it_should_behave_like Ability, Contact
+    it_should_behave_like FatFreeCrm::Ability, FatFreeCrm::Contact
   end
   
   describe "text_search" do

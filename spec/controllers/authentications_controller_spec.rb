@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe AuthenticationsController do
+describe FatFreeCrm::AuthenticationsController do
 
   before(:each) do
     activate_authlogic

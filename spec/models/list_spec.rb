@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe List do
+describe FatFreeCrm::List do
   it "should parse the controller from the url" do
     ["/controller/action", "controller/action?utf8=%E2%9C%93"].each do |url|
       list = FactoryGirl.build(:list, :url => url)

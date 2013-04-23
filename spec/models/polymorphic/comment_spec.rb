@@ -16,7 +16,7 @@
 
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-describe Comment do
+describe FatFreeCrm::Comment do
 
   before(:each) do
     login

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe EntityObserver do
+describe FatFreeCrm::EntityObserver do
   [:account, :contact, :lead, :opportunity].each do |entity_type|
     describe "on creation of #{entity_type}" do
       let(:assignee) { FactoryGirl.create(:user) }

@@ -38,7 +38,7 @@ shared_examples "exportable" do
   end
 end
 
-shared_examples Ability do |klass|
+shared_examples FatFreeCrm::Ability do |klass|
 
   subject { ability }
   let(:ability){ Ability.new(user) }

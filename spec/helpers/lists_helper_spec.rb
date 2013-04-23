@@ -10,6 +10,6 @@ require 'spec_helper'
 #     end
 #   end
 # end
-describe ListsHelper do
+describe FatFreeCrm::ListsHelper do
   
 end

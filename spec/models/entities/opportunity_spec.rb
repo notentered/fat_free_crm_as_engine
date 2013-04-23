@@ -22,7 +22,7 @@
 
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-describe Opportunity do
+describe FatFreeCrm::Opportunity do
 
   before { login }
 
@@ -206,7 +206,7 @@ describe Opportunity do
   end
 
   describe "permissions" do
-    it_should_behave_like Ability, Opportunity
+    it_should_behave_like FatFreeCrm::Ability, FatFreeCrm::Opportunity
   end
 
   describe "scopes" do

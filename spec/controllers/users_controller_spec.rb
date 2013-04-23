@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe UsersController do
+describe FatFreeCrm::UsersController do
 
   # GET /users/1
   # GET /users/1.xml                                                       HTML

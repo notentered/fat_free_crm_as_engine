@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe Group do
+describe FatFreeCrm::Group do
   
 end

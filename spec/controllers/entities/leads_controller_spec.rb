@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-describe LeadsController do
+describe FatFreeCrm::LeadsController do
 
   before(:each) do
     require_user
