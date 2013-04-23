@@ -31,11 +31,6 @@
 #
 
 class FatFreeCrm::FieldGroup < ActiveRecord::Base
-  # CODE SMELL
-  # Set the table name to the old one. Used in migrations.
-  if $BEFORE_NAMESPACE
-    set_table_name 'field_groups'
-  end
   has_many :fields, :order => :position
   belongs_to :tag
   before_destroy :not_default_field_group, :move_fields_to_default_field_group

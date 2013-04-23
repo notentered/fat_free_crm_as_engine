@@ -38,12 +38,6 @@
 #
 
 class FatFreeCrm::Task < ActiveRecord::Base
-  # CODE SMELL
-  # Set the table name to the old one. Used in migrations.
-  if $BEFORE_NAMESPACE
-    set_table_name 'tasks'
-  end
-
   attr_accessor :calendar
 
   belongs_to :user

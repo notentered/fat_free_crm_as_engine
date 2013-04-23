@@ -38,11 +38,6 @@
 #
 
 class FatFreeCrm::Opportunity < ActiveRecord::Base
-  # CODE SMELL
-  # Set the table name to the old one. Used in migrations.
-  if $BEFORE_NAMESPACE
-    set_table_name 'opportunities'
-  end
   belongs_to  :user
   belongs_to  :campaign
   belongs_to  :assignee, :class_name => "User", :foreign_key => :assigned_to

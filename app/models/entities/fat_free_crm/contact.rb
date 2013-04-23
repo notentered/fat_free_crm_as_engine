@@ -49,11 +49,6 @@
 #
 
 class FatFreeCrm::Contact < ActiveRecord::Base
-  # CODE SMELL
-  # Set the table name to the old one. Used in migrations.
-  if $BEFORE_NAMESPACE
-    set_table_name 'contacts'
-  end
   belongs_to  :user
   belongs_to  :lead
   belongs_to  :assignee, :class_name => "User", :foreign_key => :assigned_to

@@ -1,6 +1,12 @@
 class AddSubscribedUsersToEntities < ActiveRecord::Migration
   def change
-    $BEFORE_NAMESPACE = true
+    FatFreeCrm::Account.table_name = 'accounts'
+    FatFreeCrm::Campaign.table_name = 'campaigns'
+    FatFreeCrm::Contact.table_name = 'contacts'
+    FatFreeCrm::Lead.table_name = 'leads'
+    FatFreeCrm::Opportunity.table_name = 'opportunities'
+    FatFreeCrm::Task.table_name = 'tasks'
+    FatFreeCrm::Comment.table_name = 'comments'
 
     [FatFreeCrm::Account, FatFreeCrm::Campaign, FatFreeCrm::Contact, FatFreeCrm::Lead, FatFreeCrm::Opportunity, FatFreeCrm::Task].each do |model|
       add_column model.table_name.to_sym, :subscribed_users, :text
@@ -21,6 +27,5 @@ class AddSubscribedUsersToEntities < ActiveRecord::Migration
         connection.execute "UPDATE #{entity[0].tableize} SET subscribed_users = '#{user_ids.to_a.to_yaml}' WHERE id = #{entity[1]}"
       end
     end
-    $BEFORE_NAMESPACE = false
   end
 end

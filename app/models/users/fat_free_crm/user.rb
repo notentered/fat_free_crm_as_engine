@@ -90,11 +90,6 @@ class FatFreeCrm::User < ActiveRecord::Base
                                       where("opportunities.stage <> 'lost' AND opportunities.stage <> 'won'").
                                       select('DISTINCT(users.id), users.*')
 
-  # CODE SMELL
-  # Set the table name to the old one. Used in migrations.
-  if $BEFORE_NAMESPACE
-    set_table_name 'users'
-  end
   acts_as_authentic do |c|
     c.session_class = FatFreeCrm::Authentication
     c.validates_uniqueness_of_login_field_options = { :message => :username_taken }

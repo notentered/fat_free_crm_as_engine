@@ -1,7 +1,9 @@
 class AddFieldGroupsKlassName < ActiveRecord::Migration
   def up
-    $BEFORE_NAMESPACE = true
     add_column :field_groups, :klass_name, :string, :limit => 32
+
+    FatFreeCrm::Field.table_name = 'fields'
+    FatFreeCrm::FieldGroup.table_name = 'field_groups'
 
     # Add a default field group for each model
     %w(FatFreeCrm::Account FatFreeCrm::Campaign FatFreeCrm::Contact FatFreeCrm::Lead FatFreeCrm::Opportunity).each do |entity|
@@ -15,7 +17,6 @@ class AddFieldGroupsKlassName < ActiveRecord::Migration
 
     remove_column :fields, :klass_name
     FatFreeCrm::Field.reset_column_information
-    $BEFORE_NAMESPACE = false
   end
 
   def down

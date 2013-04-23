@@ -38,12 +38,6 @@
 #
 
 class FatFreeCrm::Field < ActiveRecord::Base
-  # CODE SMELL
-  # Set the table name to the old one. Used in migrations.
-  if $BEFORE_NAMESPACE
-    set_table_name 'fields'
-  end
-
   acts_as_list
 
   serialize :collection, Array

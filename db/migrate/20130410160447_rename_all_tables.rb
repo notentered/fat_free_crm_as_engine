@@ -26,5 +26,31 @@ class RenameAllTables < ActiveRecord::Migration
     rename_table :account_opportunities, :fat_free_crm_account_opportunities
     rename_table :fields,                :fat_free_crm_fields
     rename_table :groups_users,          :fat_free_crm_groups_users
+
+    # Set also the table names. We need this because in some former migrations they
+    # may be set to the old names. This is to avoid problems with further migrations.
+    FatFreeCrm::Campaign.table_name           = 'fat_free_crm_campaigns'
+    FatFreeCrm::User.table_name               = 'fat_free_crm_users'
+    FatFreeCrm::Group.table_name              = 'fat_free_crm_groups'
+    FatFreeCrm::Preference.table_name         = 'fat_free_crm_preferences'
+    FatFreeCrm::Email.table_name              = 'fat_free_crm_emails'
+    FatFreeCrm::AccountContact.table_name     = 'fat_free_crm_account_contacts'
+    FatFreeCrm::Setting.table_name            = 'fat_free_crm_settings'
+    FatFreeCrm::Task.table_name               = 'fat_free_crm_tasks'
+    FatFreeCrm::Contact.table_name            = 'fat_free_crm_contacts'
+    FatFreeCrm::Address.table_name            = 'fat_free_crm_addresses'
+    FatFreeCrm::Lead.table_name               = 'fat_free_crm_leads'
+    FatFreeCrm::Tagging.table_name            = 'fat_free_crm_taggings'
+    FatFreeCrm::ContactOpportunity.table_name = 'fat_free_crm_contact_opportunities'
+    FatFreeCrm::Opportunity.table_name        = 'fat_free_crm_opportunities'
+    FatFreeCrm::FieldGroup.table_name         = 'fat_free_crm_field_groups'
+    FatFreeCrm::Comment.table_name            = 'fat_free_crm_comments'
+    FatFreeCrm::Tag.table_name                = 'fat_free_crm_tags'
+    FatFreeCrm::Avatar.table_name             = 'fat_free_crm_avatars'
+    FatFreeCrm::List.table_name               = 'fat_free_crm_lists'
+    FatFreeCrm::Permission.table_name         = 'fat_free_crm_permissions'
+    FatFreeCrm::Account.table_name            = 'fat_free_crm_accounts'
+    FatFreeCrm::AccountOpportunity.table_name = 'fat_free_crm_account_opportunities'
+    FatFreeCrm::Field.table_name              = 'fat_free_crm_fields'
   end
 end

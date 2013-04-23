@@ -22,11 +22,8 @@ before continuing any further.
 This message will self-destruct in 10 seconds...
 
 """
-    $BEFORE_NAMESPACE = true
-
+    FatFreeCrm::Setting.table_name = 'settings'
     puts message unless FatFreeCrm::Setting.have_run_country_migration
-
-    $BEFORE_NAMESPACE = false
   end
 
   def down
