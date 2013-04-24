@@ -1,11 +1,11 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe "/opportunities/index" do
-  include OpportunitiesHelper
+  include FatFreeCrm::OpportunitiesHelper
 
   before do
     login_and_assign
-    assign(:stage, Setting.unroll(:opportunity_stage))
+    assign(:stage, FatFreeCrm::Setting.unroll(:opportunity_stage))
   end
 
   it "should render [opportunity] template with @opportunities collection if there are opportunities" do

@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe "/opportunities/edit" do
-  include OpportunitiesHelper
+  include FatFreeCrm::OpportunitiesHelper
 
   before do
     login_and_assign
@@ -10,7 +10,7 @@ describe "/opportunities/edit" do
     assign(:users, [ current_user ])
     assign(:account, @account = FactoryGirl.create(:account))
     assign(:accounts, [ @account ])
-    assign(:stage, Setting.unroll(:opportunity_stage))
+    assign(:stage, FatFreeCrm::Setting.unroll(:opportunity_stage))
   end
 
   it "cancel from opportunity index page: should replace [Edit Opportunity] form with opportunity partial" do

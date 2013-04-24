@@ -1,13 +1,13 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe "/campaigns/index" do
-  include CampaignsHelper
+  include FatFreeCrm::CampaignsHelper
 
   before do
     view.lookup_context.prefixes << 'entities'
-    assign :per_page, Campaign.per_page
-    assign :sort_by,  Campaign.sort_by
-    assign :ransack_search, Campaign.search
+    assign :per_page, FatFreeCrm::Campaign.per_page
+    assign :sort_by,  FatFreeCrm::Campaign.sort_by
+    assign :ransack_search, FatFreeCrm::Campaign.search
     login_and_assign
   end
 

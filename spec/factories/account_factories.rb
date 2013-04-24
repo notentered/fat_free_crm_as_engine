@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :account do
+  factory :account, class: FatFreeCrm::Account do
     user
     assigned_to         nil
     name                { Faker::Company.name + rand(100).to_s }

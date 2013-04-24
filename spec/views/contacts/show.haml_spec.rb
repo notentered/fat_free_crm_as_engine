@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe "/contacts/show" do
-  include ContactsHelper
+  include FatFreeCrm::ContactsHelper
 
   before do
     login_and_assign
@@ -9,7 +9,7 @@ describe "/contacts/show" do
       :opportunities => [ FactoryGirl.create(:opportunity) ])
     assign(:contact, @contact)
     assign(:users, [ current_user ])
-    assign(:comment, Comment.new)
+    assign(:comment, FatFreeCrm::Comment.new)
     assign(:timeline, [ FactoryGirl.create(:comment, :commentable => @contact) ])
   end
 

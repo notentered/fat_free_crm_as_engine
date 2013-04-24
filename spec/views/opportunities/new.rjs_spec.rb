@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe "/opportunities/new" do
-  include OpportunitiesHelper
+  include FatFreeCrm::OpportunitiesHelper
 
   before do
     login_and_assign
@@ -10,7 +10,7 @@ describe "/opportunities/new" do
     assign(:users, [ current_user ])
     assign(:account, @account)
     assign(:accounts, [ @account ])
-    assign(:stage, Setting.unroll(:opportunity_stage))
+    assign(:stage, FatFreeCrm::Setting.unroll(:opportunity_stage))
   end
 
   it "should toggle empty message div if it exists" do

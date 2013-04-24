@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe "/leads/index" do
-  include LeadsHelper
+  include FatFreeCrm::LeadsHelper
 
   before do
     view.lookup_context.prefixes << 'entities'

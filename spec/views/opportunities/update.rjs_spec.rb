@@ -8,7 +8,7 @@ describe "/opportunities/update" do
     assign(:users, [ current_user ])
     assign(:account, @account = FactoryGirl.create(:account))
     assign(:accounts, [ @account ])
-    assign(:stage, Setting.unroll(:opportunity_stage))
+    assign(:stage, FatFreeCrm::Setting.unroll(:opportunity_stage))
     assign(:opportunity_stage_total, Hash.new(1))
   end
 

@@ -1,11 +1,11 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe "/accounts/new" do
-  include AccountsHelper
+  include FatFreeCrm::AccountsHelper
 
   before do
     login_and_assign
-    assign(:account, Account.new(:user => current_user))
+    assign(:account, FatFreeCrm::Account.new(:user => current_user))
     assign(:users, [ current_user ])
   end
 

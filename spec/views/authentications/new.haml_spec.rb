@@ -1,11 +1,11 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe "/authentications/new" do
-  include AuthenticationsHelper
+  include FatFreeCrm::AuthenticationsHelper
 
   before do
     activate_authlogic
-    assign(:authentication, @authentication = Authentication.new)
+    assign(:authentication, @authentication = FatFreeCrm::Authentication.new)
   end
 
   it "renders the login form without signup link" do

@@ -1,12 +1,12 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe "/leads/new" do
-  include LeadsHelper
+  include FatFreeCrm::LeadsHelper
 
   before do
     login_and_assign
     @campaign = FactoryGirl.create(:campaign)
-    assign(:lead, Lead.new(:user => current_user))
+    assign(:lead, FatFreeCrm::Lead.new(:user => current_user))
     assign(:users, [ current_user ])
     assign(:campaign, @campaign)
     assign(:campaigns, [ @campaign ])

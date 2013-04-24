@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe "/home/index" do
-  include HomeHelper
+  include FatFreeCrm::HomeHelper
 
   before do
     login_and_assign

@@ -1,11 +1,11 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe "/campaigns/new" do
-  include CampaignsHelper
+  include FatFreeCrm::CampaignsHelper
 
   before do
     login_and_assign
-    assign(:campaign, Campaign.new(:user => current_user))
+    assign(:campaign, FatFreeCrm::Campaign.new(:user => current_user))
     assign(:users, [ current_user ])
   end
 

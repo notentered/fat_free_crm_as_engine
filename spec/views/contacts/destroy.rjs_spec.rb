@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe "/contacts/destroy" do
-  include ContactsHelper
+  include FatFreeCrm::ContactsHelper
 
   before do
     login_and_assign

@@ -4,7 +4,7 @@ describe "/opportunities/destroy" do
   before do
     login_and_assign
     assign(:opportunity, @opportunity = FactoryGirl.create(:opportunity))
-    assign(:stage, Setting.unroll(:opportunity_stage))
+    assign(:stage, FatFreeCrm::Setting.unroll(:opportunity_stage))
     assign(:opportunity_stage_total, Hash.new(1))
   end
 

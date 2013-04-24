@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe "/campaigns/edit" do
-  include CampaignsHelper
+  include FatFreeCrm::CampaignsHelper
 
   before do
     login_and_assign

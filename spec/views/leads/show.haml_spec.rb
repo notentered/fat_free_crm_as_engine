@@ -1,13 +1,13 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe "/leads/show" do
-  include LeadsHelper
+  include FatFreeCrm::LeadsHelper
 
   before do
     login_and_assign
     assign(:lead, @lead = FactoryGirl.create(:lead, :id => 42))
     assign(:users, [ current_user ])
-    assign(:comment, Comment.new)
+    assign(:comment, FatFreeCrm::Comment.new)
     assign(:timeline, [ FactoryGirl.create(:comment, :commentable => @lead) ])
   end
 

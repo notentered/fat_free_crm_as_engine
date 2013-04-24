@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe "/leads/_convert" do
-  include LeadsHelper
+  include FatFreeCrm::LeadsHelper
 
   before do
     login_and_assign

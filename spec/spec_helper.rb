@@ -16,6 +16,9 @@ Dir["./spec/support/**/*.rb"].sort.each {|f| require f}
 # Load shared behavior modules to be included by Runner config.
 Dir["./spec/shared/**/*.rb"].sort.each {|f| require f}
 
+FactoryGirl.definition_file_paths = ['spec/factories']
+FactoryGirl.find_definitions
+
 TASK_STATUSES = %w(pending assigned completed).freeze
 
 I18n.locale = 'en-US'

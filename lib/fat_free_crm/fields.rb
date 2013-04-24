@@ -59,7 +59,7 @@ module FatFreeCrm
     module InstanceMethods
       def field_groups
         field_groups = self.class.field_groups
-        respond_to?(:tag_ids) ? field_groups.with_tags(tag_ids) : field_groups
+        respond_to?(:tag_ids) && field_groups.present? ? field_groups.with_tags(tag_ids) : field_groups
       end
       
       # run custom field validations on this object

@@ -1,12 +1,12 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe "/contacts/new" do
-  include ContactsHelper
+  include FatFreeCrm::ContactsHelper
 
   before do
     login_and_assign
     @account = FactoryGirl.create(:account)
-    assign(:contact, Contact.new(:user => current_user))
+    assign(:contact, FatFreeCrm::Contact.new(:user => current_user))
     assign(:users, [ current_user ])
     assign(:account, @account)
     assign(:accounts, [ @account ])

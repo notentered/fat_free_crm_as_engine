@@ -1,15 +1,15 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe "/opportunities/index" do
-  include OpportunitiesHelper
+  include FatFreeCrm::OpportunitiesHelper
 
   before do
     login_and_assign
     view.lookup_context.prefixes << 'entities'
-    assign :stage, Setting.unroll(:opportunity_stage)
-    assign :per_page, Opportunity.per_page
-    assign :sort_by,  Opportunity.sort_by
-    assign :ransack_search, Opportunity.search
+    assign :stage, FatFreeCrm::Setting.unroll(:opportunity_stage)
+    assign :per_page, FatFreeCrm::Opportunity.per_page
+    assign :sort_by,  FatFreeCrm::Opportunity.sort_by
+    assign :ransack_search, FatFreeCrm::Opportunity.search
   end
 
   it "should render list of accounts if list of opportunities is not empty" do

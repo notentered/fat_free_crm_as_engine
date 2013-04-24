@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe ContactsController do
+describe FatFreeCrm::ContactsController do
   describe "routing" do
 
     it "recognizes and generates #index" do

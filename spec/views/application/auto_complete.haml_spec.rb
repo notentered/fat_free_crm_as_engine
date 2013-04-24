@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe "/application/_auto_complete" do
-  include AccountsHelper
+  include FatFreeCrm::AccountsHelper
 
   before do
     login_and_assign

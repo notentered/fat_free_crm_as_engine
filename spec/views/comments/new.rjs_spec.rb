@@ -1,10 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe "/comments/new" do
-  include CommentsHelper
+  include FatFreeCrm::CommentsHelper
 
   before do
-    assign(:comment, stub_model(Comment,
+    assign(:comment, stub_model(FatFreeCrm::Comment,
       :new_record? => true
     ))
     assign(:commentable, "contact")

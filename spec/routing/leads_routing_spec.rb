@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe LeadsController do
+describe FatFreeCrm::LeadsController do
   describe "routing" do
 
     it "recognizes and generates #index" do

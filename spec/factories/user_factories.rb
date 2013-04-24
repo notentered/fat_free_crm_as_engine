@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :user do
+  factory :user, class: FatFreeCrm::User do
     username            { FactoryGirl.generate(:username) }
     email               { Faker::Internet.email }
     first_name          { Faker::Name.first_name }

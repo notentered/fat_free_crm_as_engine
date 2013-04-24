@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe "/campaigns/show" do
-  include CampaignsHelper
+  include FatFreeCrm::CampaignsHelper
 
   before do
     login_and_assign
@@ -10,7 +10,7 @@ describe "/campaigns/show" do
       :opportunities => [ FactoryGirl.create(:opportunity) ])
     assign(:campaign, @campaign)
     assign(:users, [ current_user ])
-    assign(:comment, Comment.new)
+    assign(:comment, FatFreeCrm::Comment.new)
     assign(:timeline, [ FactoryGirl.create(:comment, :commentable => @campaign) ])
     view.stub(:params) { {:id => 123} }
   end
