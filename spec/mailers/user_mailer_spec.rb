@@ -3,7 +3,7 @@ require 'spec_helper'
 describe FatFreeCrm::UserMailer do
   describe "password_reset_instructions" do
     let(:user) { FactoryGirl.create(:user, :email => "forgot_my_password@example.com") }
-    let(:mail) { UserMailer.password_reset_instructions(user) }
+    let(:mail) { FatFreeCrm::UserMailer.password_reset_instructions(user) }
 
     before(:each) do
       I18n.stub(:t).with(:password_reset_instruction).and_return("Password Reset Instructions")
@@ -33,7 +33,7 @@ describe FatFreeCrm::UserMailer do
 
     context "for an account" do
       let(:account) { FactoryGirl.create(:account, :id => 16, :name => 'Ghostbusters', :user => assigner, :assignee => assignee) }
-      let(:mail) { UserMailer.assigned_entity_notification(account, assigner) }
+      let(:mail) { FatFreeCrm::UserMailer.assigned_entity_notification(account, assigner) }
 
       it "sets fatfree as the sender" do
         mail.from.should eql(["notifications@fatfreecrm.com"])
@@ -58,7 +58,7 @@ describe FatFreeCrm::UserMailer do
 
     context "for a contact" do
       let(:contact) { FactoryGirl.create(:contact, :id => 56, :first_name => 'Harold', :last_name => 'Ramis', :user => assigner, :assignee => assignee) }
-      let(:mail) { UserMailer.assigned_entity_notification(contact, assigner) }
+      let(:mail) { FatFreeCrm::UserMailer.assigned_entity_notification(contact, assigner) }
 
       it "sets fatfree as the sender" do
         mail.from.should eql(["notifications@fatfreecrm.com"])
@@ -83,7 +83,7 @@ describe FatFreeCrm::UserMailer do
 
     context "for a lead" do
       let(:lead) { FactoryGirl.create(:lead, :id => 42, :first_name => 'Bill', :last_name => 'Murray', :user => assigner, :assignee => assignee) }
-      let(:mail) { UserMailer.assigned_entity_notification(lead, assigner) }
+      let(:mail) { FatFreeCrm::UserMailer.assigned_entity_notification(lead, assigner) }
 
       it "sets fatfree as the sender" do
         mail.from.should eql(["notifications@fatfreecrm.com"])
@@ -108,7 +108,7 @@ describe FatFreeCrm::UserMailer do
 
     context "for an opportunity" do
       let(:opportunity) { FactoryGirl.create(:opportunity, :id => 24, :name => 'Big', :user => assigner, :assignee => assignee) }
-      let(:mail) { UserMailer.assigned_entity_notification(opportunity, assigner) }
+      let(:mail) { FatFreeCrm::UserMailer.assigned_entity_notification(opportunity, assigner) }
 
       it "sets fatfree as the sender" do
         mail.from.should eql(["notifications@fatfreecrm.com"])

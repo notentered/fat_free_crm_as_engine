@@ -34,7 +34,7 @@ class FatFreeCrm::Avatar < ActiveRecord::Base
 
   STYLES = { :large => "75x75#", :medium => "50x50#", :small => "25x25#", :thumb => "16x16#" }.freeze
 
-  belongs_to :user
+  belongs_to :user, :class_name => "FatFreeCrm::User"
   belongs_to :entity, :polymorphic => true
 
   # We want to store avatars in separate directories based on entity type

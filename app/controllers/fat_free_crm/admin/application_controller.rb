@@ -15,16 +15,28 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-class Admin::FatFreeCrm::PluginsController < Admin::FatFreeCrm::ApplicationController
-  before_filter "set_current_tab('admin/plugins')", :only => [ :index ]
+class FatFreeCrm::Admin::ApplicationController < FatFreeCrm::ApplicationController
+  before_filter :require_admin_user
 
-  # GET /admin/plugins
-  # GET /admin/plugins.xml
+  layout "fat_free_crm/admin/application"
+  helper "fat_free_crm/admin/field_groups"
+
+  # Autocomplete handler for all admin controllers.
   #----------------------------------------------------------------------------
-  def index
-    @plugins = FatFreeCrm::Plugin.list
+  def auto_complete
+    @query = params[:auto_complete_query]
+    @auto_complete = klass.text_search(@query).limit(10)
+    render :partial => 'auto_complete'
+  end
 
-    respond_with(@plugins)
+private
+
+  #----------------------------------------------------------------------------
+  def require_admin_user
+    require_user
+    if current_user && !current_user.admin?
+      flash[:notice] = t(:msg_require_admin)
+      redirect_to root_path
+    end
   end
 end
-

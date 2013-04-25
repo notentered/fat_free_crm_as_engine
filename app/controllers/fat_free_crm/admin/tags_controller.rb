@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-class Admin::FatFreeCrm::TagsController < Admin::FatFreeCrm::ApplicationController
+class FatFreeCrm::Admin::TagsController < FatFreeCrm::Admin::ApplicationController
   before_filter "set_current_tab('admin/tags')", :only => [ :index, :show ]
 
   load_resource

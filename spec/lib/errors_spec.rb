@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe 'ActiveModel Validation Errors' do
   it 'should render explicit error message if it starts with a caret' do
-    class Adam < User
+    class Adam < FatFreeCrm::User
       validates_presence_of :title, :message => '^Missing title'
     end
 
@@ -13,7 +13,7 @@ describe 'ActiveModel Validation Errors' do
   end
 
   it 'should exhibit default behavior' do
-    class Eve < User
+    class Eve < FatFreeCrm::User
       validates_presence_of :title, :message => 'missing'
     end
 

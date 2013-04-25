@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-class Admin::FatFreeCrm::FieldGroupsController < Admin::FatFreeCrm::ApplicationController
+class FatFreeCrm::Admin::FieldGroupsController < FatFreeCrm::Admin::ApplicationController
 
   helper 'fat_free_crm/admin/fields'
 

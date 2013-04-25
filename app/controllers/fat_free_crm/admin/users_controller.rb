@@ -15,10 +15,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-class Admin::FatFreeCrm::UsersController < Admin::FatFreeCrm::ApplicationController
+class FatFreeCrm::Admin::UsersController < FatFreeCrm::Admin::ApplicationController
   before_filter "set_current_tab('admin/users')", :only => [ :index, :show ]
 
-  load_resource :except => [:create]
+  load_resource :except => [:create], class: 'FatFreeCrm::User'
 
   # GET /admin/users
   # GET /admin/users.xml                                                   HTML
@@ -46,7 +46,7 @@ class Admin::FatFreeCrm::UsersController < Admin::FatFreeCrm::ApplicationControl
   #----------------------------------------------------------------------------
   def edit
     if params[:previous].to_s =~ /(\d+)\z/
-      @previous = User.find_by_id($1) || $1.to_i
+      @previous = FatFreeCrm::User.find_by_id($1) || $1.to_i
     end
 
     respond_with(@user)
@@ -58,7 +58,7 @@ class Admin::FatFreeCrm::UsersController < Admin::FatFreeCrm::ApplicationControl
   def create
     params[:user][:password_confirmation] = nil if params[:user][:password_confirmation].blank?
     admin = params[:user].delete(:admin)
-    @user = User.new(params[:user])
+    @user = FatFreeCrm::User.new(params[:user])
     @user.admin = (admin == "1") unless admin.nil?
     @user.save_without_session_maintenance
 
@@ -71,7 +71,7 @@ class Admin::FatFreeCrm::UsersController < Admin::FatFreeCrm::ApplicationControl
   def update
     params[:user][:password_confirmation] = nil if params[:user][:password_confirmation].blank?
     admin = params[:user].delete(:admin)
-    @user = User.find(params[:id])
+    @user = FatFreeCrm::User.find(params[:id])
     @user.attributes = params[:user]
     @user.admin = (admin == "1") unless admin.nil?
     @user.save_without_session_maintenance
@@ -129,7 +129,7 @@ private
     @search.build_grouping unless @search.groupings.any?
 
     wants = request.format
-    scope = User.by_id
+    scope = FatFreeCrm::User.by_id
     scope = scope.merge(@search.result)
     scope = scope.text_search(current_query)      if current_query.present?
     scope = scope.paginate(:page => current_page) if wants.html? || wants.js? || wants.xml?

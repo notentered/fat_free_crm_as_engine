@@ -96,7 +96,7 @@ describe FatFreeCrm::HomeController do
       assigns[:asset].should == "tasks"
       assigns[:user].should == "Billy Bones"
       assigns[:duration].should == "two days"
-      assigns[:all_users].should == User.order("first_name, last_name").all
+      assigns[:all_users].should == FatFreeCrm::User.order("first_name, last_name").all
     end
 
     it "should not assign instance variables when hiding options" do
@@ -152,35 +152,35 @@ describe FatFreeCrm::HomeController do
   describe "activity_user" do
   
     before(:each) do
-      @user = mock(User, :id => 1, :is_a? => true)
-      @cur_user = mock(User)
+      @user = mock(FatFreeCrm::User, :id => 1, :is_a? => true)
+      @cur_user = mock(FatFreeCrm::User)
     end
   
     it "should find a user by email" do
       @cur_user.stub!(:pref).and_return(:activity_user => 'billy@example.com')
       controller.instance_variable_set(:@current_user, @cur_user)
-      User.should_receive(:where).with(:email => 'billy@example.com').and_return([@user])
+      FatFreeCrm::User.should_receive(:where).with(:email => 'billy@example.com').and_return([@user])
       controller.send(:activity_user).should == 1
     end
     
     it "should find a user by first name or last name" do
       @cur_user.stub!(:pref).and_return(:activity_user => 'Billy')
       controller.instance_variable_set(:@current_user, @cur_user)
-      User.should_receive(:where).with("upper(first_name) LIKE upper('%Billy%') OR upper(last_name) LIKE upper('%Billy%')").and_return([@user])
+      FatFreeCrm::User.should_receive(:where).with("upper(first_name) LIKE upper('%Billy%') OR upper(last_name) LIKE upper('%Billy%')").and_return([@user])
       controller.send(:activity_user).should == 1
     end
     
     it "should find a user by first name and last name" do
       @cur_user.stub!(:pref).and_return(:activity_user => 'Billy Elliot')
       controller.instance_variable_set(:@current_user, @cur_user)
-      User.should_receive(:where).with("(upper(first_name) LIKE upper('%Billy%') AND upper(last_name) LIKE upper('%Elliot%')) OR (upper(first_name) LIKE upper('%Elliot%') AND upper(last_name) LIKE upper('%Billy%'))").and_return([@user])
+      FatFreeCrm::User.should_receive(:where).with("(upper(first_name) LIKE upper('%Billy%') AND upper(last_name) LIKE upper('%Elliot%')) OR (upper(first_name) LIKE upper('%Elliot%') AND upper(last_name) LIKE upper('%Billy%'))").and_return([@user])
       controller.send(:activity_user).should == 1
     end
     
     it "should return nil when 'all_users' is specified" do
       @cur_user.stub!(:pref).and_return(:activity_user => 'all_users')
       controller.instance_variable_set(:@current_user, @cur_user)
-      User.should_not_receive(:where)
+      FatFreeCrm::User.should_not_receive(:where)
       controller.send(:activity_user).should == nil
     end
     

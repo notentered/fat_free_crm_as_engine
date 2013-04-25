@@ -28,7 +28,7 @@
 #
 
 class FatFreeCrm::Permission < ActiveRecord::Base
-  belongs_to :user
+  belongs_to :user, :class_name => "FatFreeCrm::User"
   belongs_to :group
   belongs_to :asset, :polymorphic => true
 

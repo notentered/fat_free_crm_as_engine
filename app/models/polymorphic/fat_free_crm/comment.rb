@@ -32,7 +32,7 @@
 #
 
 class FatFreeCrm::Comment < ActiveRecord::Base
-  belongs_to  :user
+  belongs_to  :user, :class_name => "FatFreeCrm::User"
   belongs_to  :commentable, :polymorphic => true
 
   scope :created_by, lambda { |user| where(:user_id => user.id) }

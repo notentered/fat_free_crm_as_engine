@@ -11,9 +11,9 @@ end
 # Note: Authentication is NOT ActiveRecord model, so we mock and stub it using RSpec.
 #----------------------------------------------------------------------------
 def login(user_stubs = {}, session_stubs = {})
-  User.current_user = @current_user = FactoryGirl.create(:user, user_stubs)
-  @current_user_session = mock(Authentication, {:record => current_user}.merge(session_stubs))
-  Authentication.stub!(:find).and_return(@current_user_session)
+  FatFreeCrm::User.current_user = @current_user = FactoryGirl.create(:user, user_stubs)
+  @current_user_session = mock(FatFreeCrm::Authentication, {:record => current_user}.merge(session_stubs))
+  FatFreeCrm::Authentication.stub!(:find).and_return(@current_user_session)
   #set_timezone
 end
 alias :require_user :login
@@ -28,7 +28,7 @@ end
 def logout
   @current_user = nil
   @current_user_session = nil
-  Authentication.stub!(:find).and_return(nil)
+  FatFreeCrm::Authentication.stub!(:find).and_return(nil)
 end
 alias :require_no_user :logout
 

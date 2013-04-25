@@ -31,7 +31,7 @@ module FatFreeCrm::UsersHelper
   end
   
   def all_users
-    User.by_name
+    FatFreeCrm::User.by_name
   end
 
   def user_select(asset, users, myself)

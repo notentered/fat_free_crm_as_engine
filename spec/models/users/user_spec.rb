@@ -38,7 +38,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe FatFreeCrm::User do
   it "should create a new instance given valid attributes" do
-    User.create!(
+    FatFreeCrm::User.create!(
       :username => "username",
       :email    => "user@example.com",
       :password => "password",
@@ -55,14 +55,14 @@ describe FatFreeCrm::User do
       it "should not destroy the user if she owns #{asset}" do
         FactoryGirl.create(asset, :user => @user)
         @user.destroy
-        lambda { User.find(@user) }.should_not raise_error(ActiveRecord::RecordNotFound)
+        lambda { FatFreeCrm::User.find(@user) }.should_not raise_error(ActiveRecord::RecordNotFound)
         @user.destroyed?.should == false
       end
 
       it "should not destroy the user if she has #{asset} assigned" do
         FactoryGirl.create(asset, :assignee => @user)
         @user.destroy
-        lambda { User.find(@user) }.should_not raise_error(ActiveRecord::RecordNotFound)
+        lambda { FatFreeCrm::User.find(@user) }.should_not raise_error(ActiveRecord::RecordNotFound)
         @user.destroyed?.should == false
       end
     end
@@ -72,7 +72,7 @@ describe FatFreeCrm::User do
       account = FactoryGirl.create(:account, :user => current_user)
       FactoryGirl.create(:comment, :user => @user, :commentable => account)
       @user.destroy
-      lambda { User.find(@user) }.should_not raise_error(ActiveRecord::RecordNotFound)
+      lambda { FatFreeCrm::User.find(@user) }.should_not raise_error(ActiveRecord::RecordNotFound)
       @user.destroyed?.should == false
     end
 
@@ -85,7 +85,7 @@ describe FatFreeCrm::User do
 
     it "should destroy the user" do
       @user.destroy
-      lambda { User.find(@user) }.should raise_error(ActiveRecord::RecordNotFound)
+      lambda { FatFreeCrm::User.find(@user) }.should raise_error(ActiveRecord::RecordNotFound)
       @user.should be_destroyed
     end
 
@@ -134,16 +134,16 @@ describe FatFreeCrm::User do
       end
 
       it "includes users with assigned opportunities" do
-        User.have_assigned_opportunities.should include(@user1)
+        FatFreeCrm::User.have_assigned_opportunities.should include(@user1)
       end
 
       it "excludes users without any assigned opportunities" do
-        User.have_assigned_opportunities.should_not include(@user2)
+        FatFreeCrm::User.have_assigned_opportunities.should_not include(@user2)
       end
 
       it "excludes users with opportunities that have been won or lost" do
-        User.have_assigned_opportunities.should_not include(@user3)
-        User.have_assigned_opportunities.should_not include(@user4)
+        FatFreeCrm::User.have_assigned_opportunities.should_not include(@user3)
+        FatFreeCrm::User.have_assigned_opportunities.should_not include(@user4)
       end
     end
   end

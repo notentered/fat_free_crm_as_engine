@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-class Admin::FatFreeCrm::FieldsController < Admin::FatFreeCrm::ApplicationController
+class FatFreeCrm::Admin::FieldsController < FatFreeCrm::Admin::ApplicationController
   before_filter "set_current_tab('admin/fields')", :only => [ :index ]
 
   load_resource :except => [:create, :subform]

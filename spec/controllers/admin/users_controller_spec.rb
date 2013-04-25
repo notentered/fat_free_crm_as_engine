@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-describe Admin::FatFreeCrm::UsersController do
+describe FatFreeCrm::Admin::UsersController do
 
   before(:each) do
     require_user(:admin => true)
@@ -14,7 +14,7 @@ describe Admin::FatFreeCrm::UsersController do
     it "assigns all users as @users and renders [index] template" do
       @users = [ current_user, FactoryGirl.create(:user) ]
 
-      get :index
+      get :index, use_route: 'admin/users'
       assigns[:users].first.should == @users.last # get_users() sorts by id DESC
       assigns[:users].last.should == @users.first
       response.should render_template("admin/users/index")

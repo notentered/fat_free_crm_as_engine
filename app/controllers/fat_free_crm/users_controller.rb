@@ -150,8 +150,8 @@ class FatFreeCrm::UsersController < FatFreeCrm::ApplicationController
   end
 
   def opportunities_overview
-    @users_with_opportunities = User.have_assigned_opportunities.order(:first_name)
-    @unassigned_opportunities = Opportunity.unassigned.pipeline.order(:stage)
+    @users_with_opportunities = FatFreeCrm::User.have_assigned_opportunities.order(:first_name)
+    @unassigned_opportunities = FatFreeCrm::Opportunity.unassigned.pipeline.order(:stage)
   end
 
   private
@@ -163,6 +163,6 @@ class FatFreeCrm::UsersController < FatFreeCrm::ApplicationController
   end
 
   def assign_given_or_current_user
-    @user = params[:id] ? User.find(params[:id]) : current_user
+    @user = params[:id] ? FatFreeCrm::User.find(params[:id]) : current_user
   end
 end

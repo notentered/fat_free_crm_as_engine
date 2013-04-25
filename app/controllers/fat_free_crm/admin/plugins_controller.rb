@@ -15,13 +15,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-class Admin::FatFreeCrm::SettingsController < Admin::FatFreeCrm::ApplicationController
-  before_filter "set_current_tab('admin/settings')", :only => [ :index ]
+class FatFreeCrm::Admin::PluginsController < FatFreeCrm::Admin::ApplicationController
+  before_filter "set_current_tab('admin/plugins')", :only => [ :index ]
 
-  # GET /admin/settings
-  # GET /admin/settings.xml
+  # GET /admin/plugins
+  # GET /admin/plugins.xml
   #----------------------------------------------------------------------------
   def index
+    @plugins = FatFreeCrm::Plugin.list
+
+    respond_with(@plugins)
   end
 end
 

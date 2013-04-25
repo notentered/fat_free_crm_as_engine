@@ -41,7 +41,7 @@
 
 class FatFreeCrm::Email < ActiveRecord::Base
   belongs_to :mediator, :polymorphic => true
-  belongs_to :user
+  belongs_to :user, :class_name => "FatFreeCrm::User"
 
   has_paper_trail :meta => { :related => :mediator },
                   :ignore => [:state]

@@ -67,7 +67,7 @@ describe FatFreeCrm::ApplicationHelper do
   describe "current_view_name" do
   
     before(:each) do
-      @user = mock_model(User)
+      @user = mock_model(FatFreeCrm::User)
       helper.stub!(:current_user).and_return(@user)
       controller.stub!(:params).and_return({'action' => 'show', 'controller' => 'contacts'})
     end

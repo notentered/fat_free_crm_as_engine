@@ -171,7 +171,7 @@ module FatFreeCrm
 
       #------------------------------------------------------------------------------
       def find_sender(email_address)
-        if @sender = User.first(:conditions => [ "(lower(email) = ? OR lower(alt_email) = ?) AND suspended_at IS NULL", email_address.downcase, email_address.downcase ])
+        if @sender = FatFreeCrm::User.first(:conditions => [ "(lower(email) = ? OR lower(alt_email) = ?) AND suspended_at IS NULL", email_address.downcase, email_address.downcase ])
           # Set the PaperTrail user for versions (if user is found)
           PaperTrail.whodunnit = @sender.id.to_s
         end

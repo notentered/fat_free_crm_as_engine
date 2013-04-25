@@ -28,7 +28,7 @@
 #
 
 class FatFreeCrm::Preference < ActiveRecord::Base
-  belongs_to :user
+  belongs_to :user, :class_name => "FatFreeCrm::User"
 
   #-------------------------------------------------------------------
   def [] (name)

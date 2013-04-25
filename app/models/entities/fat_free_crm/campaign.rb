@@ -42,8 +42,8 @@
 #
 
 class FatFreeCrm::Campaign < ActiveRecord::Base
-  belongs_to  :user
-  belongs_to  :assignee, :class_name => "User", :foreign_key => :assigned_to
+  belongs_to  :user, :class_name => "FatFreeCrm::User"
+  belongs_to  :assignee, :class_name => "FatFreeCrm::User", :foreign_key => :assigned_to
   has_many    :tasks, :as => :asset, :dependent => :destroy#, :order => 'created_at DESC'
   has_many    :leads, :dependent => :destroy, :order => "id DESC"
   has_many    :opportunities, :dependent => :destroy, :order => "id DESC"

@@ -15,8 +15,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 describe FatFreeCrm::Permission do
   before(:each) do
     @valid_attributes = {
-      :user => mock_model(User),
-      :asset => mock_model(Account)
+      :user => mock_model(FatFreeCrm::User),
+      :asset => mock_model(FatFreeCrm::Account)
     }
   end
 

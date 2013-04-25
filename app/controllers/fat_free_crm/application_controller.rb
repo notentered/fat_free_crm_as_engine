@@ -55,6 +55,9 @@ class FatFreeCrm::ApplicationController < ActionController::Base
     end
   end
 
+  def current_ability
+    @current_ability ||= FatFreeCrm::Ability.new(current_user)
+  end
 private
 
   #
@@ -76,7 +79,7 @@ private
 
   #----------------------------------------------------------------------------
   def klass
-    @klass ||= controller_name.classify.constantize
+    @klass ||= ('fat_free_crm/'+controller_name).classify.constantize
   end
 
   #----------------------------------------------------------------------------
