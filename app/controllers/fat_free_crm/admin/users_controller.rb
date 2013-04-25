@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-class FatFreeCrm::Admin::UsersController < FatFreeCrm::Admin::ApplicationController
+class FatFreeCrm::Admin::UsersController < FatFreeCrm::ApplicationController
   before_filter "set_current_tab('admin/users')", :only => [ :index, :show ]
 
   load_resource :except => [:create], class: 'FatFreeCrm::User'

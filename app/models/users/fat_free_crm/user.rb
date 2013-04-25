@@ -65,10 +65,10 @@ class FatFreeCrm::User < ActiveRecord::Base
   has_many    :leads
   has_many    :contacts
   has_many    :opportunities
-  has_many    :assigned_opportunities, :class_name => 'Opportunity', :foreign_key => 'assigned_to'
+  has_many    :assigned_opportunities, :class_name => 'FatFreeCrm::Opportunity', :foreign_key => 'assigned_to'
   has_many    :permissions, :dependent => :destroy
   has_many    :preferences, :dependent => :destroy
-  has_and_belongs_to_many :groups
+  has_and_belongs_to_many :groups, :class_name => 'FatFreeCrm::Group', :join_table => 'fat_free_crm_groups_users'
 
   has_paper_trail :ignore => [:last_request_at, :perishable_token]
 
@@ -176,9 +176,9 @@ class FatFreeCrm::User < ActiveRecord::Base
   # Prevent deleting a user unless she has no artifacts left.
   #----------------------------------------------------------------------------
   def check_if_has_related_assets
-    artifacts = [FatFreeCrm::Account, FatFreeCrm::Campaign, FatFreeCrm::Lead, FatFreeCrm::Contact, FatFreeCrm::Opportunity, FatFreeCrm::Comment].inject(0) do |sum, asset|
+    artifacts = %w(FatFreeCrm::Account FatFreeCrm::Campaign FatFreeCrm::Lead FatFreeCrm::Contact FatFreeCrm::Opportunity FatFreeCrm::Comment).inject(0) do |sum, asset|
       klass = asset.constantize
-      sum += klass.assigned_to(self).count if asset != "Comment"
+      sum += klass.assigned_to(self).count if asset != 'FatFreeCrm::Comment'
       sum += klass.created_by(self).count
     end
     artifacts == 0

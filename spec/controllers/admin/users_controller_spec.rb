@@ -14,7 +14,7 @@ describe FatFreeCrm::Admin::UsersController do
     it "assigns all users as @users and renders [index] template" do
       @users = [ current_user, FactoryGirl.create(:user) ]
 
-      get :index, use_route: 'admin/users'
+      get :index, :use_route => 'admin/users'
       assigns[:users].first.should == @users.last # get_users() sorts by id DESC
       assigns[:users].last.should == @users.first
       response.should render_template("admin/users/index")
@@ -24,7 +24,7 @@ describe FatFreeCrm::Admin::UsersController do
       @amy = FactoryGirl.create(:user, :username => "amy_anderson")
       @bob = FactoryGirl.create(:user, :username => "bob_builder")
 
-      get :index, :query => "amy_anderson"
+      get :index, :query => "amy_anderson", :use_route => 'admin/users'
       assigns[:users].should == [ @amy ]
       assigns[:current_query].should == "amy_anderson"
       session[:users_current_query].should == "amy_anderson"
@@ -38,7 +38,7 @@ describe FatFreeCrm::Admin::UsersController do
     it "assigns the requested user as @user and renders [show] template" do
       @user = FactoryGirl.create(:user)
 
-      get :show, :id => @user.id
+      get :show, :id => @user.id, :use_route => 'admin/users'
       assigns[:user].should == @user
       response.should render_template("admin/users/show")
     end
@@ -49,9 +49,9 @@ describe FatFreeCrm::Admin::UsersController do
   #----------------------------------------------------------------------------
   describe "GET new" do
     it "assigns a new user as @user and renders [new] template" do
-      @user = User.new
+      @user = FatFreeCrm::User.new
 
-      xhr :get, :new
+      xhr :get, :new, :use_route => 'admin/users'
       assigns[:user].attributes.should == @user.attributes
       response.should render_template("admin/users/new")
     end
@@ -63,7 +63,7 @@ describe FatFreeCrm::Admin::UsersController do
     it "assigns the requested user as @user and renders [edit] template" do
       @user = FactoryGirl.create(:user)
 
-      xhr :get, :edit, :id => @user.id
+      xhr :get, :edit, :id => @user.id, :use_route => 'admin/users'
       assigns[:user].should == @user
       assigns[:previous].should == nil
       response.should render_template("admin/users/edit")
@@ -73,7 +73,7 @@ describe FatFreeCrm::Admin::UsersController do
       @user = FactoryGirl.create(:user)
       @previous = FactoryGirl.create(:user)
 
-      xhr :get, :edit, :id => @user.id, :previous => @previous.id
+      xhr :get, :edit, :id => @user.id, :previous => @previous.id, :use_route => 'admin/users'
       assigns[:previous].should == @previous
     end
 
@@ -81,7 +81,7 @@ describe FatFreeCrm::Admin::UsersController do
       @user = FactoryGirl.create(:user)
       @user.destroy
 
-      xhr :get, :edit, :id => @user.id
+      xhr :get, :edit, :id => @user.id, :use_route => 'admin/users'
       flash[:warning].should_not == nil
       response.body.should == "window.location.reload();"
     end
@@ -91,7 +91,7 @@ describe FatFreeCrm::Admin::UsersController do
       @previous = FactoryGirl.create(:user)
       @previous.destroy
 
-      xhr :get, :edit, :id => @user.id, :previous => @previous.id
+      xhr :get, :edit, :id => @user.id, :previous => @previous.id, :use_route => 'admin/users'
       flash[:warning].should == nil # no warning, just silently remove the div
       assigns[:previous].should == @previous.id
       response.should render_template("admin/users/edit")
@@ -112,21 +112,21 @@ describe FatFreeCrm::Admin::UsersController do
 
       it "assigns a newly created user as @user and renders [create] template" do
         @user = FactoryGirl.build(:user, :username => @username, :email => @email)
-        User.stub!(:new).and_return(@user)
+        FatFreeCrm::User.stub!(:new).and_return(@user)
 
-        xhr :post, :create, :user => { :username => @username, :email => @email, :password => @password, :password_confirmation => @password }
+        xhr :post, :create, :user => { :username => @username, :email => @email, :password => @password, :password_confirmation => @password }, :use_route => 'admin/users'
         assigns[:user].should == @user
         response.should render_template("admin/users/create")
       end
 
       it "creates admin user when requested so" do
-        xhr :post, :create, :user => { :username => @username, :email => @email, :admin => "1", :password => @password, :password_confirmation => @password }
+        xhr :post, :create, :user => { :username => @username, :email => @email, :admin => "1", :password => @password, :password_confirmation => @password }, :use_route => 'admin/users'
         assigns[:user].admin.should == true
         response.should render_template("admin/users/create")
       end
 
       it "doesn't create admin user unless requested so" do
-        xhr :post, :create, :user => { :username => @username, :email => @email, :admin => "0", :password => @password, :password_confirmation => @password }
+        xhr :post, :create, :user => { :username => @username, :email => @email, :admin => "0", :password => @password, :password_confirmation => @password }, :use_route => 'admin/users'
         assigns[:user].admin.should == false
         response.should render_template("admin/users/create")
       end
@@ -135,9 +135,9 @@ describe FatFreeCrm::Admin::UsersController do
     describe "with invalid params" do
       it "assigns a newly created but unsaved user as @user and re-renders [create] template" do
         @user = FactoryGirl.build(:user, :username => "", :email => "")
-        User.stub!(:new).and_return(@user)
+        FatFreeCrm::User.stub!(:new).and_return(@user)
 
-        xhr :post, :create, :user => {}
+        xhr :post, :create, :user => {}, :use_route => 'admin/users'
         assigns[:user].should == @user
         response.should render_template("admin/users/create")
       end
@@ -153,7 +153,7 @@ describe FatFreeCrm::Admin::UsersController do
       it "updates the requested user, assigns it to @user, and renders [update] template" do
         @user = FactoryGirl.create(:user, :username => "flip", :email => "flip@example.com")
 
-        xhr :put, :update, :id => @user.id, :user => { :username => "flop", :email => "flop@example.com" }
+        xhr :put, :update, :id => @user.id, :user => { :username => "flop", :email => "flop@example.com" }, :use_route => 'admin/users'
         assigns[:user].should == @user.reload
         assigns[:user].username.should == "flop"
         response.should render_template("admin/users/update")
@@ -163,14 +163,14 @@ describe FatFreeCrm::Admin::UsersController do
         @user = FactoryGirl.create(:user)
         @user.destroy
 
-        xhr :put, :update, :id => @user.id, :user => { :username => "flop", :email => "flop@example.com" }
+        xhr :put, :update, :id => @user.id, :user => { :username => "flop", :email => "flop@example.com" }, :use_route => 'admin/users'
         flash[:warning].should_not == nil
         response.body.should == "window.location.reload();"
       end
 
       it "assigns admin rights when requested so" do
         @user = FactoryGirl.create(:user, :admin => false)
-        xhr :put, :update, :id => @user.id, :user => { :admin => "1", :username => @user.username, :email => @user.email }
+        xhr :put, :update, :id => @user.id, :user => { :admin => "1", :username => @user.username, :email => @user.email }, :use_route => 'admin/users'
         assigns[:user].should == @user.reload
         assigns[:user].admin.should == true
         response.should render_template("admin/users/update")
@@ -178,7 +178,7 @@ describe FatFreeCrm::Admin::UsersController do
 
       it "revokes admin rights when requested so" do
         @user = FactoryGirl.create(:user, :admin => true)
-        xhr :put, :update, :id => @user.id, :user => { :admin => "0", :username => @user.username, :email => @user.email }
+        xhr :put, :update, :id => @user.id, :user => { :admin => "0", :username => @user.username, :email => @user.email }, :use_route => 'admin/users'
         assigns[:user].should == @user.reload
         assigns[:user].admin.should == false
         response.should render_template("admin/users/update")
@@ -189,7 +189,7 @@ describe FatFreeCrm::Admin::UsersController do
       it "doesn't update the requested user, but assigns it to @user and renders [update] template" do
         @user = FactoryGirl.create(:user, :username => "flip", :email => "flip@example.com")
 
-        xhr :put, :update, :id => @user.id, :user => {}
+        xhr :put, :update, :id => @user.id, :user => {}, :use_route => 'admin/users'
         assigns[:user].should == @user.reload
         assigns[:user].username.should == "flip"
         response.should render_template("admin/users/update")
@@ -203,7 +203,7 @@ describe FatFreeCrm::Admin::UsersController do
     it "assigns the requested user as @user and renders [confirm] template" do
       @user = FactoryGirl.create(:user)
 
-      xhr :get, :confirm, :id => @user.id
+      xhr :get, :confirm, :id => @user.id, :use_route => 'admin/users'
       assigns[:user].should == @user
       response.should render_template("admin/users/confirm")
     end
@@ -212,7 +212,7 @@ describe FatFreeCrm::Admin::UsersController do
       @user = FactoryGirl.create(:user)
       @user.destroy
 
-      xhr :get, :confirm, :id => @user.id
+      xhr :get, :confirm, :id => @user.id, :use_route => 'admin/users'
       flash[:warning].should_not == nil
       response.body.should == "window.location.reload();"
     end
@@ -225,8 +225,8 @@ describe FatFreeCrm::Admin::UsersController do
     it "destroys the requested user and renders [destroy] template" do
       @user = FactoryGirl.create(:user)
 
-      xhr :delete, :destroy, :id => @user.id
-      lambda { User.find(@user) }.should raise_error(ActiveRecord::RecordNotFound)
+      xhr :delete, :destroy, :id => @user.id, :use_route => 'admin/users'
+      lambda { FatFreeCrm::User.find(@user) }.should raise_error(ActiveRecord::RecordNotFound)
       response.should render_template("admin/users/destroy")
     end
 
@@ -234,9 +234,9 @@ describe FatFreeCrm::Admin::UsersController do
       @user = FactoryGirl.create(:user)
       @account = FactoryGirl.create(:account, :user => @user) # Plant artifact to prevent the user from being deleted.
 
-      xhr :delete, :destroy, :id => @user.id
+      xhr :delete, :destroy, :id => @user.id, :use_route => 'admin/users'
       flash[:warning].should_not == nil
-      lambda { User.find(@user) }.should_not raise_error(ActiveRecord::RecordNotFound)
+      lambda { FatFreeCrm::User.find(@user) }.should_not raise_error(ActiveRecord::RecordNotFound)
       response.should render_template("admin/users/destroy")
     end
   end
@@ -248,7 +248,7 @@ describe FatFreeCrm::Admin::UsersController do
       @auto_complete_matches = [ FactoryGirl.create(:user, :first_name => "Hello") ]
     end
 
-    it_should_behave_like("auto complete")
+    it_should_behave_like("auto complete", 'admin/users')
   end
 
   # PUT /admin/users/1/suspend
@@ -258,7 +258,7 @@ describe FatFreeCrm::Admin::UsersController do
     it "suspends the requested user" do
       @user = FactoryGirl.create(:user)
 
-      xhr :put, :suspend, :id => @user.id
+      xhr :put, :suspend, :id => @user.id, :use_route => 'admin/users'
       assigns[:user].suspended?.should == true
       response.should render_template("admin/users/suspend")
     end
@@ -266,7 +266,7 @@ describe FatFreeCrm::Admin::UsersController do
     it "doesn't suspend current user" do
       @user = current_user
 
-      xhr :put, :suspend, :id => @user.id
+      xhr :put, :suspend, :id => @user.id, :use_route => 'admin/users'
       assigns[:user].suspended?.should == false
       response.should render_template("admin/users/suspend")
     end
@@ -275,7 +275,7 @@ describe FatFreeCrm::Admin::UsersController do
       @user = FactoryGirl.create(:user)
       @user.destroy
 
-      xhr :put, :suspend, :id => @user.id
+      xhr :put, :suspend, :id => @user.id, :use_route => 'admin/users'
       flash[:warning].should_not == nil
       response.body.should == "window.location.reload();"
     end
@@ -288,7 +288,7 @@ describe FatFreeCrm::Admin::UsersController do
     it "re-activates the requested user" do
       @user = FactoryGirl.create(:user, :suspended_at => Time.now.yesterday)
 
-      xhr :put, :reactivate, :id => @user.id
+      xhr :put, :reactivate, :id => @user.id, :use_route => 'admin/users'
       assigns[:user].suspended?.should == false
       response.should render_template("admin/users/reactivate")
     end
@@ -297,7 +297,7 @@ describe FatFreeCrm::Admin::UsersController do
       @user = FactoryGirl.create(:user)
       @user.destroy
 
-      xhr :put, :reactivate, :id => @user.id
+      xhr :put, :reactivate, :id => @user.id, :use_route => 'admin/users'
       flash[:warning].should_not == nil
       response.body.should == "window.location.reload();"
     end

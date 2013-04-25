@@ -1,18 +1,18 @@
 module SharedControllerSpecs
 
-  shared_examples "auto complete" do
+  shared_examples "auto complete" do |route|
     before(:each) do
       @query = "Hello"
     end
 
     it "should do the search and find records that match autocomplete query" do
-      post :auto_complete, :auto_complete_query => @query
+      post :auto_complete, :auto_complete_query => @query, :use_route => route
       assigns[:query].should == @query
       assigns[:auto_complete].should == @auto_complete_matches # Each controller must define it.
     end
 
     it "should save current autocomplete controller in a session" do
-      post :auto_complete, :auto_complete_query => @query
+      post :auto_complete, :auto_complete_query => @query, :use_route => route
 
       # We don't save Admin/Users autocomplete controller in a session since Users are not
       # exposed through the Jumpbox.
@@ -22,7 +22,7 @@ module SharedControllerSpecs
     end
 
     it "should render application/_auto_complete template" do
-      post :auto_complete, :auto_complete_query => @query
+      post :auto_complete, :auto_complete_query => @query, :use_route => routeg
       response.should render_template("application/_auto_complete")
     end
   end
