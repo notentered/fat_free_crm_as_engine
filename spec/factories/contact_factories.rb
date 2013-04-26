@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :contact do
+  factory :contact, class: FatFreeCrm::Contact do
     user                
     lead                
     assigned_to         nil

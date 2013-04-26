@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :campaign do
+  factory :campaign, class: FatFreeCrm::Campaign do
     user
     name                { Faker::Lorem.sentence[0,64] }
     assigned_to         nil

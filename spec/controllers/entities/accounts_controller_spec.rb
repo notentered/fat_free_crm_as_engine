@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe FatFreeCrm::AccountsController do
   def get_data_for_sidebar
-    @category = Setting.account_category.dup
+    @category = FatFreeCrm::Setting.account_category.dup
   end
 
   before do
@@ -120,8 +120,8 @@ describe FatFreeCrm::AccountsController do
     describe "with mime type of HTML" do
       before do
         @account = FactoryGirl.create(:account, :user => current_user)
-        @stage = Setting.unroll(:opportunity_stage)
-        @comment = Comment.new
+        @stage = FatFreeCrm::Setting.unroll(:opportunity_stage)
+        @comment = FatFreeCrm::Comment.new
       end
 
       it "should expose the requested account as @account and render [show] template" do
@@ -141,7 +141,7 @@ describe FatFreeCrm::AccountsController do
     describe "with mime type of JSON" do
       it "should render the requested account as json" do
         @account = FactoryGirl.create(:account, :user => current_user)
-        Account.should_receive(:find).and_return(@account)
+        FatFreeCrm::Account.should_receive(:find).and_return(@account)
         @account.should_receive(:to_json).and_return("generated JSON")
 
         request.env["HTTP_ACCEPT"] = "application/json"
@@ -153,7 +153,7 @@ describe FatFreeCrm::AccountsController do
     describe "with mime type of XML" do
       it "should render the requested account as xml" do
         @account = FactoryGirl.create(:account, :user => current_user)
-        Account.should_receive(:find).and_return(@account)
+        FatFreeCrm::Account.should_receive(:find).and_return(@account)
         @account.should_receive(:to_xml).and_return("generated XML")
 
         request.env["HTTP_ACCEPT"] = "application/xml"
@@ -207,8 +207,8 @@ describe FatFreeCrm::AccountsController do
   describe "responding to GET new" do
 
     it "should expose a new account as @account and render [new] template" do
-      @account = Account.new(:user => current_user,
-                             :access => Setting.default_access)
+      @account = FatFreeCrm::Account.new(:user => current_user,
+                             :access => FatFreeCrm::Setting.default_access)
       xhr :get, :new
       assigns[:account].attributes.should == @account.attributes
       assigns[:contact].should == nil
@@ -299,7 +299,7 @@ describe FatFreeCrm::AccountsController do
 
       it "should expose a newly created account as @account and render [create] template" do
         @account = FactoryGirl.build(:account, :name => "Hello world", :user => current_user)
-        Account.stub!(:new).and_return(@account)
+        FatFreeCrm::Account.stub!(:new).and_return(@account)
 
         xhr :post, :create, :account => { :name => "Hello world" }
         assigns(:account).should == @account
@@ -309,7 +309,7 @@ describe FatFreeCrm::AccountsController do
       # Note: [Create Account] is shown only on Accounts index page.
       it "should reload accounts to update pagination" do
         @account = FactoryGirl.build(:account, :user => current_user)
-        Account.stub!(:new).and_return(@account)
+        FatFreeCrm::Account.stub!(:new).and_return(@account)
 
         xhr :post, :create, :account => { :name => "Hello" }
         assigns[:accounts].should == [ @account ]
@@ -317,7 +317,7 @@ describe FatFreeCrm::AccountsController do
 
       it "should get data to update account sidebar" do
         @account = FactoryGirl.build(:account, :name => "Hello", :user => current_user)
-        Campaign.stub!(:new).and_return(@account)
+        FatFreeCrm::Account.stub!(:new).and_return(@account)
 
         xhr :post, :create, :account => { :name => "Hello" }
         assigns[:account_category_total].should be_instance_of(HashWithIndifferentAccess)
@@ -325,7 +325,7 @@ describe FatFreeCrm::AccountsController do
 
       it "should add a new comment to the newly created account when specified" do
         @account = FactoryGirl.build(:account, :name => "Hello world", :user => current_user)
-        Account.stub!(:new).and_return(@account)
+        FatFreeCrm::Account.stub!(:new).and_return(@account)
 
         xhr :post, :create, :account => { :name => "Hello world" }, :comment_body => "Awesome comment is awesome"
         assigns[:account].comments.map(&:comment).should include("Awesome comment is awesome")
@@ -335,7 +335,7 @@ describe FatFreeCrm::AccountsController do
     describe "with invalid params" do
       it "should expose a newly created but unsaved account as @account and still render [create] template" do
         @account = FactoryGirl.build(:account, :name => nil, :user => nil)
-        Account.stub!(:new).and_return(@account)
+        FatFreeCrm::Account.stub!(:new).and_return(@account)
 
         xhr :post, :create, :account => {}
         assigns(:account).should == @account
@@ -422,7 +422,7 @@ describe FatFreeCrm::AccountsController do
         @another_account = FactoryGirl.create(:account, :user => current_user)
         xhr :delete, :destroy, :id => @account.id
 
-        lambda { Account.find(@account) }.should raise_error(ActiveRecord::RecordNotFound)
+        lambda { FatFreeCrm::Account.find(@account) }.should raise_error(ActiveRecord::RecordNotFound)
         assigns[:accounts].should == [ @another_account ] # @account got deleted
         response.should render_template("accounts/destroy")
       end

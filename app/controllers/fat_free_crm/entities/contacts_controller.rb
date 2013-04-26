@@ -43,7 +43,7 @@ class FatFreeCrm::ContactsController < FatFreeCrm::EntitiesController
   #----------------------------------------------------------------------------
   def new
     @contact.attributes = {:user => current_user, :access => Setting.default_access, :assigned_to => nil}
-    @account = Account.new(:user => current_user)
+    @account = FatFreeCrm::Account.new(:user => current_user)
 
     if params[:related]
       model, id = params[:related].split('_')
@@ -60,7 +60,7 @@ class FatFreeCrm::ContactsController < FatFreeCrm::EntitiesController
   # GET /contacts/1/edit                                                   AJAX
   #----------------------------------------------------------------------------
   def edit
-    @account = @contact.account || Account.new(:user => current_user)
+    @account = @contact.account || FatFreeCrm::Account.new(:user => current_user)
     if params[:previous].to_s =~ /(\d+)\z/
       @previous = Contact.my.find_by_id($1) || $1.to_i
     end
@@ -78,12 +78,12 @@ class FatFreeCrm::ContactsController < FatFreeCrm::EntitiesController
         @contacts = get_contacts if called_from_index_page?
       else
         unless params[:account][:id].blank?
-          @account = Account.find(params[:account][:id])
+          @account = FatFreeCrm::Account.find(params[:account][:id])
         else
           if request.referer =~ /\/accounts\/(.+)$/
-            @account = Account.find($1) # related account
+            @account = FatFreeCrm::Account.find($1) # related account
           else
-            @account = Account.new(:user => current_user)
+            @account = FatFreeCrm::Account.new(:user => current_user)
           end
         end
         @opportunity = Opportunity.my.find(params[:opportunity]) unless params[:opportunity].blank?
@@ -97,9 +97,9 @@ class FatFreeCrm::ContactsController < FatFreeCrm::EntitiesController
     respond_with(@contact) do |format|
       unless @contact.update_with_account_and_permissions(params)
         if @contact.account
-          @account = Account.find(@contact.account.id)
+          @account = FatFreeCrm::Account.find(@contact.account.id)
         else
-          @account = Account.new(:user => current_user)
+          @account = FatFreeCrm::Account.new(:user => current_user)
         end
       end
     end
@@ -159,7 +159,7 @@ class FatFreeCrm::ContactsController < FatFreeCrm::EntitiesController
 
   #----------------------------------------------------------------------------
   def get_accounts
-    @accounts = Account.my.order('name')
+    @accounts = FatFreeCrm::Account.my.order('name')
   end
 
   def set_options

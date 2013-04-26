@@ -33,8 +33,8 @@ class FatFreeCrm::AccountsController < FatFreeCrm::EntitiesController
   # AJAX /accounts/1
   #----------------------------------------------------------------------------
   def show
-    @stage = Setting.unroll(:opportunity_stage)
-    @comment = Comment.new
+    @stage = FatFreeCrm::Setting.unroll(:opportunity_stage)
+    @comment = FatFreeCrm::Comment.new
     @timeline = timeline(@account)
     respond_with(@account)
   end
@@ -42,11 +42,11 @@ class FatFreeCrm::AccountsController < FatFreeCrm::EntitiesController
   # GET /accounts/new
   #----------------------------------------------------------------------------
   def new
-    @account.attributes = {:user => current_user, :access => Setting.default_access, :assigned_to => nil}
+    @account.attributes = {:user => current_user, :access => FatFreeCrm::Setting.default_access, :assigned_to => nil}
 
     if params[:related]
       model, id = params[:related].split('_')
-      instance_variable_set("@#{model}", model.classify.constantize.find(id))
+      instance_variable_set("@#{model}", ('fat_free_crm/'+model).classify.constantize.find(id))
     end
 
     respond_with(@account)
@@ -56,7 +56,7 @@ class FatFreeCrm::AccountsController < FatFreeCrm::EntitiesController
   #----------------------------------------------------------------------------
   def edit
     if params[:previous].to_s =~ /(\d+)\z/
-      @previous = Account.my.find_by_id($1) || $1.to_i
+      @previous = FatFreeCrm::Account.my.find_by_id($1) || $1.to_i
     end
 
     respond_with(@account)
@@ -114,10 +114,10 @@ class FatFreeCrm::AccountsController < FatFreeCrm::EntitiesController
   #----------------------------------------------------------------------------
   def redraw
     current_user.pref[:accounts_per_page] = params[:per_page] if params[:per_page]
-    current_user.pref[:accounts_sort_by]  = Account::sort_by_map[params[:sort_by]] if params[:sort_by]
+    current_user.pref[:accounts_sort_by]  = FatFreeCrm::Account::sort_by_map[params[:sort_by]] if params[:sort_by]
     @accounts = get_accounts(:page => 1, :per_page => params[:per_page])
     set_options # Refresh options
-    
+
     respond_with(@accounts) do |format|
       format.js { render :index }
     end
@@ -128,7 +128,7 @@ class FatFreeCrm::AccountsController < FatFreeCrm::EntitiesController
   def filter
     session[:accounts_filter] = params[:category]
     @accounts = get_accounts(:page => 1, :per_page => params[:per_page])
-    
+
     respond_with(@accounts) do |format|
       format.js { render :index }
     end
@@ -159,12 +159,12 @@ private
   #----------------------------------------------------------------------------
   def get_data_for_sidebar
     @account_category_total = Hash[
-      Setting.account_category.map do |key|
-        [ key, Account.my.where(:category => key.to_s).count ]
+        FatFreeCrm::Setting.account_category.map do |key|
+        [ key, FatFreeCrm::Account.my.where(:category => key.to_s).count ]
       end
     ]
     categorized = @account_category_total.values.sum
-    @account_category_total[:all] = Account.my.count
+    @account_category_total[:all] = FatFreeCrm::Account.my.count
     @account_category_total[:other] = @account_category_total[:all] - categorized
   end
 end

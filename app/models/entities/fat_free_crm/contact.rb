@@ -53,7 +53,7 @@ class FatFreeCrm::Contact < ActiveRecord::Base
   belongs_to  :lead
   belongs_to  :assignee, :class_name => "FatFreeCrm::User", :foreign_key => :assigned_to
   has_one     :account_contact, :dependent => :destroy
-  has_one     :account, :through => :account_contact
+  has_one     :account, :through => :account_contact, :class_name => 'FatFreeCrm::Account'
   has_many    :contact_opportunities, :dependent => :destroy
   has_many    :opportunities, :through => :contact_opportunities, :uniq => true, :order => "fat_free_crm_opportunities.id DESC"
   has_many    :tasks, :as => :asset, :dependent => :destroy#, :order => 'created_at DESC'

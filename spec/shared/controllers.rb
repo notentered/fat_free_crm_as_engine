@@ -30,23 +30,23 @@ module SharedControllerSpecs
   shared_examples "attach" do
     it "should attach existing asset to the parent asset of different type" do
       xhr :put, :attach, :id => @model.id, :assets => @attachment.class.name.tableize, :asset_id => @attachment.id
-      @model.send(@attachment.class.name.tableize).should include(@attachment)
+      @model.send(@attachment.class.name.demodulize.tableize).should include(@attachment)
       assigns[:attachment].should == @attachment
       assigns[:attached].should == [ @attachment ]
-      if @model.is_a?(Campaign) && (@attachment.is_a?(Lead) || @attachment.is_a?(Opportunity))
+      if @model.is_a?(FatFreeCrm::Campaign) && (@attachment.is_a?(FatFreeCrm::Lead) || @attachment.is_a?(FatFreeCrm::Opportunity))
         assigns[:campaign].should == @attachment.reload.campaign
       end
-      if @model.is_a?(Account) && @attachment.respond_to?(:account) # Skip Tasks...
+      if @model.is_a?(FatFreeCrm::Account) && @attachment.respond_to?(:account) # Skip Tasks...
         assigns[:account].should == @attachment.reload.account
       end
       response.should render_template("entities/attach")
     end
 
     it "should not attach the asset that is already attached" do
-      if @model.is_a?(Campaign) && (@attachment.is_a?(Lead) || @attachment.is_a?(Opportunity))
+      if @model.is_a?(FatFreeCrm::Campaign) && (@attachment.is_a?(FatFreeCrm::Lead) || @attachment.is_a?(FatFreeCrm::Opportunity))
         @attachment.update_attribute(:campaign_id, @model.id)
       else
-        @model.send(@attachment.class.name.tableize) << @attachment
+        @model.send(@attachment.class.name.demodulize.tableize) << @attachment
       end
 
       xhr :put, :attach, :id => @model.id, :assets => @attachment.class.name.tableize, :asset_id => @attachment.id
@@ -74,9 +74,9 @@ module SharedControllerSpecs
     it "should discard the attachment without deleting it" do
       xhr :post, :discard, :id => @model.id, :attachment => @attachment.class.name, :attachment_id => @attachment.id
       assigns[:attachment].should == @attachment.reload                     # The attachment should still exist.
-      @model.reload.send("#{@attachment.class.name.tableize}").should == [] # But no longer associated with the model.
-      assigns[:account].should == @model if @model.is_a?(Account)
-      assigns[:campaign].should == @model if @model.is_a?(Campaign)
+      @model.reload.send("#{@attachment.class.name.demodulize.tableize}").should == [] # But no longer associated with the model.
+      assigns[:account].should == @model if @model.is_a?(FatFreeCrm::Account)
+      assigns[:campaign].should == @model if @model.is_a?(FatFreeCrm::Campaign)
 
       response.should render_template("entities/discard")
     end

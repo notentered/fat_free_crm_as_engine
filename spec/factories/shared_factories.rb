@@ -7,7 +7,7 @@ FactoryGirl.define do
   end
 
 
-  factory :comment do
+  factory :comment, class: FatFreeCrm::Comment do
     user
     commentable         { raise "Please specify :commentable for the comment" }
     title               { FactoryGirl.generate(:title) }
@@ -19,7 +19,7 @@ FactoryGirl.define do
   end
 
 
-  factory :email do
+  factory :email, class: FatFreeCrm::Email do
     imap_message_id     { "%08x" % rand(0xFFFFFFFF) }
     user
     mediator            { raise "Please specify :mediator for the email" }
@@ -39,7 +39,7 @@ FactoryGirl.define do
   end
 
 
-  factory :address do
+  factory :address, class: FatFreeCrm::Address do
     addressable         { raise "Please specify :addressable for the address" }
     street1             { Faker::Address.street_address }
     street2             { Faker::Address.street_address }
@@ -55,7 +55,7 @@ FactoryGirl.define do
   end
 
 
-  factory :avatar do
+  factory :avatar, class: FatFreeCrm::Avatar do
     user
     entity              { raise "Please specify :entity for the avatar" }
     image_file_size     nil

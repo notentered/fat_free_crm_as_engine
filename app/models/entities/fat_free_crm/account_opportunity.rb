@@ -28,7 +28,7 @@
 #
 
 class FatFreeCrm::AccountOpportunity < ActiveRecord::Base
-  belongs_to :account
+  belongs_to :account, :class_name => 'FatFreeCrm::Account'
   belongs_to :opportunity
   validates_presence_of :account_id, :opportunity_id
 

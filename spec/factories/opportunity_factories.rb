@@ -8,7 +8,7 @@ FactoryGirl.define do
     %w(prospecting analysis presentation proposal negotiation final_review).sample
   end
 
-  factory :opportunity do
+  factory :opportunity, class: FatFreeCrm::Opportunity do
     user
     campaign
     account             { FactoryGirl.create(:account) }

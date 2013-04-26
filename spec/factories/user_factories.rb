@@ -39,7 +39,7 @@ FactoryGirl.define do
   end
 
 
-  factory :permission do
+  factory :permission, class: FatFreeCrm::Permissions do
     user
     asset               { raise "Please specify :asset for the permission" }
     updated_at          { FactoryGirl.generate(:time) }
@@ -47,7 +47,7 @@ FactoryGirl.define do
   end
 
 
-  factory :preference do
+  factory :preference, class: FatFreeCrm::Preference do
     user
     name                { raise "Please specify :name for the preference" }
     value               { raise "Please specify :value for the preference" }
@@ -56,7 +56,7 @@ FactoryGirl.define do
   end
 
 
-  factory :group do
+  factory :group, class: FatFreeCrm::Group do
     name                { Faker::Company.name }
     updated_at          { FactoryGirl.generate(:time) }
     created_at          { FactoryGirl.generate(:time) }

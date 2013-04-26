@@ -28,7 +28,7 @@
 #
 
 class FatFreeCrm::AccountContact < ActiveRecord::Base
-  belongs_to :account
+  belongs_to :account, :class_name => 'FatFreeCrm::Account'
   belongs_to :contact
   
   has_paper_trail :meta => { :related => :contact }, :ignore => [ :id, :created_at, :updated_at, :contact_id ]

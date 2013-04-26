@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :lead do
+  factory :lead, class: FatFreeCrm::Lead do
     user                
     campaign            
     assigned_to         nil

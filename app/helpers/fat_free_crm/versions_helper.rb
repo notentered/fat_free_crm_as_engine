@@ -32,10 +32,10 @@ module FatFreeCrm::VersionsHelper
 
     # Find account and link to it.
     if attr_name == 'account_id'
-      if first.present? and (account = Account.find_by_id(first))
+      if first.present? and (account = FatFreeCrm::Account.find_by_id(first))
         first = link_to(h(account.name), account_path(account))
       end
-      if second.present? and (account = Account.find_by_id(second))
+      if second.present? and (account = FatFreeCrm::Account.find_by_id(second))
         second  = link_to(h(account.name), account_path(account))
       end
     end

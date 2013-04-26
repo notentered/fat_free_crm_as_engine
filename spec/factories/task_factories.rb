@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :task do
+  factory :task, class: FatFreeCrm::Task do
     user                
     asset               nil
     assigned_to         nil

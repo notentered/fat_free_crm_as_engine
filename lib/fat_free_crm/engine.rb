@@ -19,7 +19,7 @@ module FatFreeCrm
   class Engine < ::Rails::Engine
     isolate_namespace FatFreeCrm
     config.autoload_paths += Dir[root.join("app/models/**")] +
-                             Dir[root.join("app/controllers/entities")]
+                             Dir[root.join("app/controllers/fat_free_crm/entities")]
 
     # CODE SMELL
     # After the observers are namespaced, we cannot run rake db:migrate because the tables are missing (Catch-22)

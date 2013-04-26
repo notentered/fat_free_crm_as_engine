@@ -9,14 +9,14 @@ FactoryGirl.define do
     Faker::Internet.user_name + x.to_s
   end
 
-  factory :field_group do
+  factory :field_group, class: FatFreeCrm::FieldGroup do
     klass_name          { FactoryGirl.generate(:klass_name) }
     label               { FactoryGirl.generate(:field_label) }
     tag                 
   end
 
 
-  factory :field do
+  factory :field, class: FatFreeCrm::Field do
     type                "Field"
     field_group         { FactoryGirl.create(:field_group) }
     position            { FactoryGirl.generate(:field_position) }

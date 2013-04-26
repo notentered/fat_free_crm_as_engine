@@ -25,7 +25,7 @@ module FatFreeCrm
     module ClassMethods
 
       def uses_user_permissions
-        unless included_modules.include?(InstanceMethods)
+        unless included_modules.include?(FatFreeCrm::Permissions::InstanceMethods)
           #
           # NOTE: we're deliberately omitting :dependent => :destroy to preserve
           # permissions of deleted objects. This serves two purposes: 1) to be able

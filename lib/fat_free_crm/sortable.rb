@@ -36,7 +36,7 @@ module FatFreeCrm
 
         self.sort_by_clauses = [options[:by]].flatten
         self.sort_by_fields = self.sort_by_clauses.map(&:split).map(&:first)
-        self.sort_by = self.name.tableize + "." + (options[:default] || options[:by].first)
+        self.sort_by = self.table_name + "." + (options[:default] || options[:by].first)
       end
 
       # Return hash that maps sort options to the actual :order strings, for example:

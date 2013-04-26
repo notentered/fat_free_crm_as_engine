@@ -44,8 +44,8 @@ class FatFreeCrm::OpportunitiesController < FatFreeCrm::EntitiesController
   #----------------------------------------------------------------------------
   def new
     @opportunity.attributes = {:user => current_user, :stage => Opportunity.default_stage, :access => Setting.default_access, :assigned_to => nil}
-    @account     = Account.new(:user => current_user, :access => Setting.default_access)
-    @accounts    = Account.my.order('name')
+    @account     = FatFreeCrm::Account.new(:user => current_user, :access => Setting.default_access)
+    @accounts    = FatFreeCrm::Account.my.order('name')
 
     if params[:related]
       model, id = params[:related].split('_')
@@ -62,8 +62,8 @@ class FatFreeCrm::OpportunitiesController < FatFreeCrm::EntitiesController
   # GET /opportunities/1/edit                                              AJAX
   #----------------------------------------------------------------------------
   def edit
-    @account  = @opportunity.account || Account.new(:user => current_user)
-    @accounts = Account.my.order('name')
+    @account  = @opportunity.account || FatFreeCrm::Account.new(:user => current_user)
+    @accounts = FatFreeCrm::Account.my.order('name')
 
     if params[:previous].to_s =~ /(\d+)\z/
       @previous = Opportunity.my.find_by_id($1) || $1.to_i
@@ -88,14 +88,14 @@ class FatFreeCrm::OpportunitiesController < FatFreeCrm::EntitiesController
           get_data_for_sidebar(:campaign)
         end
       else
-        @accounts = Account.my.order('name')
+        @accounts = FatFreeCrm::Account.my.order('name')
         unless params[:account][:id].blank?
-          @account = Account.find(params[:account][:id])
+          @account = FatFreeCrm::Account.find(params[:account][:id])
         else
           if request.referer =~ /\/accounts\/(.+)$/
-            @account = Account.find($1) # related account
+            @account = FatFreeCrm::Account.find($1) # related account
           else
-            @account = Account.new(:user => current_user)
+            @account = FatFreeCrm::Account.new(:user => current_user)
           end
         end
         @contact = Contact.find(params[:contact]) unless params[:contact].blank?
@@ -117,7 +117,7 @@ class FatFreeCrm::OpportunitiesController < FatFreeCrm::EntitiesController
           get_data_for_sidebar(:campaign)
         end
       else
-        @accounts = Account.my.order('name')
+        @accounts = FatFreeCrm::Account.my.order('name')
         if @opportunity.account
           @account = Account.find(@opportunity.account.id)
         else

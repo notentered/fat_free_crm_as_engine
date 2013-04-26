@@ -116,8 +116,8 @@ class FatFreeCrm::LeadsController < FatFreeCrm::EntitiesController
   # GET /leads/1/convert
   #----------------------------------------------------------------------------
   def convert
-    @account = Account.new(:user => current_user, :name => @lead.company, :access => "Lead")
-    @accounts = Account.my.order('name')
+    @account = FatFreeCrm::Account.new(:user => current_user, :name => @lead.company, :access => "Lead")
+    @accounts = FatFreeCrm::Account.my.order('name')
     @opportunity = Opportunity.new(:user => current_user, :access => "Lead", :stage => "prospecting", :campaign => @lead.campaign, :source => @lead.source)
 
     if params[:previous].to_s =~ /(\d+)\z/

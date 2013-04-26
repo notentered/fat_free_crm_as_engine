@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :setting do
+  factory :setting, class: FatFreeCrm::Setting do
     name                "foo"
     value               nil
     updated_at          { FactoryGirl.generate(:time) }

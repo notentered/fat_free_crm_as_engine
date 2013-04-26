@@ -90,6 +90,10 @@ RSpec.configure do |config|
     end
   end
 
+  config.before :each  do
+    @routes = FatFreeCrm::Engine.routes
+  end
+
   # If true, the base class of anonymous controllers will be inferred
   # automatically. This will be the default behavior in future versions of
   # rspec-rails.
