@@ -52,7 +52,7 @@ class FatFreeCrm::EmailsController < FatFreeCrm::ApplicationController
   # DELETE /emails/1.xml                                                   AJAX
   #----------------------------------------------------------------------------
   def destroy
-    @email = Email.find(params[:id])
+    @email = FatFreeCrm::Email.find(params[:id])
     @email.destroy
 
     respond_with(@email)

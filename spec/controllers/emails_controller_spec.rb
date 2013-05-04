@@ -17,10 +17,10 @@ describe FatFreeCrm::EmailsController, "handling GET /emails" do
           it "should destroy the requested email and render [destroy] template" do
             @asset = FactoryGirl.create(asset)
             @email = FactoryGirl.create(:email, :mediator => @asset, :user => current_user)
-            Email.stub!(:new).and_return(@email)
+            FatFreeCrm::Email.stub!(:new).and_return(@email)
 
             xhr :delete, :destroy, :id => @email.id
-            lambda { Email.find(@email) }.should raise_error(ActiveRecord::RecordNotFound)
+            lambda { FatFreeCrm::Email.find(@email) }.should raise_error(ActiveRecord::RecordNotFound)
             response.should render_template("emails/destroy")
           end
         end
