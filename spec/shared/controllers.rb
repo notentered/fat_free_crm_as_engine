@@ -22,7 +22,7 @@ module SharedControllerSpecs
     end
 
     it "should render application/_auto_complete template" do
-      post :auto_complete, :auto_complete_query => @query, :use_route => routeg
+      post :auto_complete, :auto_complete_query => @query, :use_route => route
       response.should render_template("application/_auto_complete")
     end
   end
