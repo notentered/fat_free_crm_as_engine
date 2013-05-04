@@ -11,9 +11,9 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121221033947) do
+ActiveRecord::Schema.define(:version => 20130410160447) do
 
-  create_table "account_contacts", :force => true do |t|
+  create_table "fat_free_crm_account_contacts", :force => true do |t|
     t.integer  "account_id"
     t.integer  "contact_id"
     t.datetime "deleted_at"
@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(:version => 20121221033947) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "account_opportunities", :force => true do |t|
+  create_table "fat_free_crm_account_opportunities", :force => true do |t|
     t.integer  "account_id"
     t.integer  "opportunity_id"
     t.datetime "deleted_at"
@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(:version => 20121221033947) do
     t.datetime "updated_at",     :null => false
   end
 
-  create_table "accounts", :force => true do |t|
+  create_table "fat_free_crm_accounts", :force => true do |t|
     t.integer  "user_id"
     t.integer  "assigned_to"
     t.string   "name",             :limit => 64, :default => "",       :null => false
@@ -48,10 +48,10 @@ ActiveRecord::Schema.define(:version => 20121221033947) do
     t.text     "subscribed_users"
   end
 
-  add_index "accounts", ["assigned_to"], :name => "index_accounts_on_assigned_to"
-  add_index "accounts", ["user_id", "name", "deleted_at"], :name => "index_accounts_on_user_id_and_name_and_deleted_at", :unique => true
+  add_index "fat_free_crm_accounts", ["assigned_to"], :name => "index_accounts_on_assigned_to"
+  add_index "fat_free_crm_accounts", ["user_id", "name", "deleted_at"], :name => "index_accounts_on_user_id_and_name_and_deleted_at", :unique => true
 
-  create_table "activities", :force => true do |t|
+  create_table "fat_free_crm_activities", :force => true do |t|
     t.integer  "user_id"
     t.integer  "subject_id"
     t.string   "subject_type"
@@ -62,10 +62,10 @@ ActiveRecord::Schema.define(:version => 20121221033947) do
     t.datetime "updated_at",                                        :null => false
   end
 
-  add_index "activities", ["created_at"], :name => "index_activities_on_created_at"
-  add_index "activities", ["user_id"], :name => "index_activities_on_user_id"
+  add_index "fat_free_crm_activities", ["created_at"], :name => "index_activities_on_created_at"
+  add_index "fat_free_crm_activities", ["user_id"], :name => "index_activities_on_user_id"
 
-  create_table "addresses", :force => true do |t|
+  create_table "fat_free_crm_addresses", :force => true do |t|
     t.string   "street1"
     t.string   "street2"
     t.string   "city",             :limit => 64
@@ -81,9 +81,9 @@ ActiveRecord::Schema.define(:version => 20121221033947) do
     t.datetime "deleted_at"
   end
 
-  add_index "addresses", ["addressable_id", "addressable_type"], :name => "index_addresses_on_addressable_id_and_addressable_type"
+  add_index "fat_free_crm_addresses", ["addressable_id", "addressable_type"], :name => "index_addresses_on_addressable_id_and_addressable_type"
 
-  create_table "avatars", :force => true do |t|
+  create_table "fat_free_crm_avatars", :force => true do |t|
     t.integer  "user_id"
     t.integer  "entity_id"
     t.string   "entity_type"
@@ -94,7 +94,7 @@ ActiveRecord::Schema.define(:version => 20121221033947) do
     t.datetime "updated_at",         :null => false
   end
 
-  create_table "campaigns", :force => true do |t|
+  create_table "fat_free_crm_campaigns", :force => true do |t|
     t.integer  "user_id"
     t.integer  "assigned_to"
     t.string   "name",                :limit => 64,                                :default => "",       :null => false
@@ -117,10 +117,10 @@ ActiveRecord::Schema.define(:version => 20121221033947) do
     t.text     "subscribed_users"
   end
 
-  add_index "campaigns", ["assigned_to"], :name => "index_campaigns_on_assigned_to"
-  add_index "campaigns", ["user_id", "name", "deleted_at"], :name => "index_campaigns_on_user_id_and_name_and_deleted_at", :unique => true
+  add_index "fat_free_crm_campaigns", ["assigned_to"], :name => "index_campaigns_on_assigned_to"
+  add_index "fat_free_crm_campaigns", ["user_id", "name", "deleted_at"], :name => "index_campaigns_on_user_id_and_name_and_deleted_at", :unique => true
 
-  create_table "comments", :force => true do |t|
+  create_table "fat_free_crm_comments", :force => true do |t|
     t.integer  "user_id"
     t.integer  "commentable_id"
     t.string   "commentable_type"
@@ -132,7 +132,7 @@ ActiveRecord::Schema.define(:version => 20121221033947) do
     t.string   "state",            :limit => 16, :default => "Expanded", :null => false
   end
 
-  create_table "contact_opportunities", :force => true do |t|
+  create_table "fat_free_crm_contact_opportunities", :force => true do |t|
     t.integer  "contact_id"
     t.integer  "opportunity_id"
     t.string   "role",           :limit => 32
@@ -141,7 +141,7 @@ ActiveRecord::Schema.define(:version => 20121221033947) do
     t.datetime "updated_at",                   :null => false
   end
 
-  create_table "contacts", :force => true do |t|
+  create_table "fat_free_crm_contacts", :force => true do |t|
     t.integer  "user_id"
     t.integer  "lead_id"
     t.integer  "assigned_to"
@@ -171,10 +171,10 @@ ActiveRecord::Schema.define(:version => 20121221033947) do
     t.text     "subscribed_users"
   end
 
-  add_index "contacts", ["assigned_to"], :name => "index_contacts_on_assigned_to"
-  add_index "contacts", ["user_id", "last_name", "deleted_at"], :name => "id_last_name_deleted", :unique => true
+  add_index "fat_free_crm_contacts", ["assigned_to"], :name => "index_contacts_on_assigned_to"
+  add_index "fat_free_crm_contacts", ["user_id", "last_name", "deleted_at"], :name => "id_last_name_deleted", :unique => true
 
-  create_table "emails", :force => true do |t|
+  create_table "fat_free_crm_emails", :force => true do |t|
     t.string   "imap_message_id",                                       :null => false
     t.integer  "user_id"
     t.integer  "mediator_id"
@@ -194,9 +194,9 @@ ActiveRecord::Schema.define(:version => 20121221033947) do
     t.string   "state",           :limit => 16, :default => "Expanded", :null => false
   end
 
-  add_index "emails", ["mediator_id", "mediator_type"], :name => "index_emails_on_mediator_id_and_mediator_type"
+  add_index "fat_free_crm_emails", ["mediator_id", "mediator_type"], :name => "index_emails_on_mediator_id_and_mediator_type"
 
-  create_table "field_groups", :force => true do |t|
+  create_table "fat_free_crm_field_groups", :force => true do |t|
     t.string   "name",       :limit => 64
     t.string   "label",      :limit => 128
     t.integer  "position"
@@ -207,7 +207,7 @@ ActiveRecord::Schema.define(:version => 20121221033947) do
     t.string   "klass_name", :limit => 32
   end
 
-  create_table "fields", :force => true do |t|
+  create_table "fat_free_crm_fields", :force => true do |t|
     t.string   "type"
     t.integer  "field_group_id"
     t.integer  "position"
@@ -226,25 +226,25 @@ ActiveRecord::Schema.define(:version => 20121221033947) do
     t.text     "settings"
   end
 
-  add_index "fields", ["field_group_id"], :name => "index_fields_on_field_group_id"
-  add_index "fields", ["name"], :name => "index_fields_on_name"
+  add_index "fat_free_crm_fields", ["field_group_id"], :name => "index_fields_on_field_group_id"
+  add_index "fat_free_crm_fields", ["name"], :name => "index_fields_on_name"
 
-  create_table "groups", :force => true do |t|
+  create_table "fat_free_crm_groups", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
-  create_table "groups_users", :id => false, :force => true do |t|
+  create_table "fat_free_crm_groups_users", :id => false, :force => true do |t|
     t.integer "group_id"
     t.integer "user_id"
   end
 
-  add_index "groups_users", ["group_id", "user_id"], :name => "index_groups_users_on_group_id_and_user_id"
-  add_index "groups_users", ["group_id"], :name => "index_groups_users_on_group_id"
-  add_index "groups_users", ["user_id"], :name => "index_groups_users_on_user_id"
+  add_index "fat_free_crm_groups_users", ["group_id", "user_id"], :name => "index_groups_users_on_group_id_and_user_id"
+  add_index "fat_free_crm_groups_users", ["group_id"], :name => "index_groups_users_on_group_id"
+  add_index "fat_free_crm_groups_users", ["user_id"], :name => "index_groups_users_on_user_id"
 
-  create_table "leads", :force => true do |t|
+  create_table "fat_free_crm_leads", :force => true do |t|
     t.integer  "user_id"
     t.integer  "campaign_id"
     t.integer  "assigned_to"
@@ -274,17 +274,17 @@ ActiveRecord::Schema.define(:version => 20121221033947) do
     t.text     "subscribed_users"
   end
 
-  add_index "leads", ["assigned_to"], :name => "index_leads_on_assigned_to"
-  add_index "leads", ["user_id", "last_name", "deleted_at"], :name => "index_leads_on_user_id_and_last_name_and_deleted_at", :unique => true
+  add_index "fat_free_crm_leads", ["assigned_to"], :name => "index_leads_on_assigned_to"
+  add_index "fat_free_crm_leads", ["user_id", "last_name", "deleted_at"], :name => "index_leads_on_user_id_and_last_name_and_deleted_at", :unique => true
 
-  create_table "lists", :force => true do |t|
+  create_table "fat_free_crm_lists", :force => true do |t|
     t.string   "name"
     t.text     "url"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
-  create_table "opportunities", :force => true do |t|
+  create_table "fat_free_crm_opportunities", :force => true do |t|
     t.integer  "user_id"
     t.integer  "campaign_id"
     t.integer  "assigned_to"
@@ -303,10 +303,10 @@ ActiveRecord::Schema.define(:version => 20121221033947) do
     t.text     "subscribed_users"
   end
 
-  add_index "opportunities", ["assigned_to"], :name => "index_opportunities_on_assigned_to"
-  add_index "opportunities", ["user_id", "name", "deleted_at"], :name => "id_name_deleted", :unique => true
+  add_index "fat_free_crm_opportunities", ["assigned_to"], :name => "index_opportunities_on_assigned_to"
+  add_index "fat_free_crm_opportunities", ["user_id", "name", "deleted_at"], :name => "id_name_deleted", :unique => true
 
-  create_table "permissions", :force => true do |t|
+  create_table "fat_free_crm_permissions", :force => true do |t|
     t.integer  "user_id"
     t.integer  "asset_id"
     t.string   "asset_type"
@@ -315,11 +315,11 @@ ActiveRecord::Schema.define(:version => 20121221033947) do
     t.integer  "group_id"
   end
 
-  add_index "permissions", ["asset_id", "asset_type"], :name => "index_permissions_on_asset_id_and_asset_type"
-  add_index "permissions", ["group_id"], :name => "index_permissions_on_group_id"
-  add_index "permissions", ["user_id"], :name => "index_permissions_on_user_id"
+  add_index "fat_free_crm_permissions", ["asset_id", "asset_type"], :name => "index_permissions_on_asset_id_and_asset_type"
+  add_index "fat_free_crm_permissions", ["group_id"], :name => "index_permissions_on_group_id"
+  add_index "fat_free_crm_permissions", ["user_id"], :name => "index_permissions_on_user_id"
 
-  create_table "preferences", :force => true do |t|
+  create_table "fat_free_crm_preferences", :force => true do |t|
     t.integer  "user_id"
     t.string   "name",       :limit => 32, :default => "", :null => false
     t.text     "value"
@@ -327,28 +327,28 @@ ActiveRecord::Schema.define(:version => 20121221033947) do
     t.datetime "updated_at",                               :null => false
   end
 
-  add_index "preferences", ["user_id", "name"], :name => "index_preferences_on_user_id_and_name"
+  add_index "fat_free_crm_preferences", ["user_id", "name"], :name => "index_preferences_on_user_id_and_name"
 
-  create_table "sessions", :force => true do |t|
+  create_table "fat_free_crm_sessions", :force => true do |t|
     t.string   "session_id", :null => false
     t.text     "data"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
-  add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
-  add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+  add_index "fat_free_crm_sessions", ["session_id"], :name => "index_sessions_on_session_id"
+  add_index "fat_free_crm_sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
-  create_table "settings", :force => true do |t|
+  create_table "fat_free_crm_settings", :force => true do |t|
     t.string   "name",       :limit => 32, :default => "", :null => false
     t.text     "value"
     t.datetime "created_at",                               :null => false
     t.datetime "updated_at",                               :null => false
   end
 
-  add_index "settings", ["name"], :name => "index_settings_on_name"
+  add_index "fat_free_crm_settings", ["name"], :name => "index_settings_on_name"
 
-  create_table "taggings", :force => true do |t|
+  create_table "fat_free_crm_taggings", :force => true do |t|
     t.integer  "tag_id"
     t.integer  "taggable_id"
     t.integer  "tagger_id"
@@ -358,14 +358,14 @@ ActiveRecord::Schema.define(:version => 20121221033947) do
     t.datetime "created_at"
   end
 
-  add_index "taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
-  add_index "taggings", ["taggable_id", "taggable_type", "context"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_context"
+  add_index "fat_free_crm_taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
+  add_index "fat_free_crm_taggings", ["taggable_id", "taggable_type", "context"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_context"
 
-  create_table "tags", :force => true do |t|
+  create_table "fat_free_crm_tags", :force => true do |t|
     t.string "name"
   end
 
-  create_table "tasks", :force => true do |t|
+  create_table "fat_free_crm_tasks", :force => true do |t|
     t.integer  "user_id"
     t.integer  "assigned_to"
     t.integer  "completed_by"
@@ -384,10 +384,10 @@ ActiveRecord::Schema.define(:version => 20121221033947) do
     t.text     "subscribed_users"
   end
 
-  add_index "tasks", ["assigned_to"], :name => "index_tasks_on_assigned_to"
-  add_index "tasks", ["user_id", "name", "deleted_at"], :name => "index_tasks_on_user_id_and_name_and_deleted_at", :unique => true
+  add_index "fat_free_crm_tasks", ["assigned_to"], :name => "index_tasks_on_assigned_to"
+  add_index "fat_free_crm_tasks", ["user_id", "name", "deleted_at"], :name => "index_tasks_on_user_id_and_name_and_deleted_at", :unique => true
 
-  create_table "users", :force => true do |t|
+  create_table "fat_free_crm_users", :force => true do |t|
     t.string   "username",            :limit => 32, :default => "",    :null => false
     t.string   "email",               :limit => 64, :default => "",    :null => false
     t.string   "first_name",          :limit => 32
@@ -419,11 +419,11 @@ ActiveRecord::Schema.define(:version => 20121221033947) do
     t.string   "single_access_token"
   end
 
-  add_index "users", ["email"], :name => "index_users_on_email"
-  add_index "users", ["last_request_at"], :name => "index_users_on_last_request_at"
-  add_index "users", ["perishable_token"], :name => "index_users_on_perishable_token"
-  add_index "users", ["persistence_token"], :name => "index_users_on_remember_token"
-  add_index "users", ["username", "deleted_at"], :name => "index_users_on_username_and_deleted_at", :unique => true
+  add_index "fat_free_crm_users", ["email"], :name => "index_users_on_email"
+  add_index "fat_free_crm_users", ["last_request_at"], :name => "index_users_on_last_request_at"
+  add_index "fat_free_crm_users", ["perishable_token"], :name => "index_users_on_perishable_token"
+  add_index "fat_free_crm_users", ["persistence_token"], :name => "index_users_on_remember_token"
+  add_index "fat_free_crm_users", ["username", "deleted_at"], :name => "index_users_on_username_and_deleted_at", :unique => true
 
   create_table "versions", :force => true do |t|
     t.string   "item_type",                     :null => false
