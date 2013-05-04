@@ -4,11 +4,11 @@ describe FatFreeCrm::TasksController do
 
   def update_sidebar
     @task_total = { :key => :value, :pairs => :etc }
-    Task.stub!(:totals).and_return(@task_total)
+    FatFreeCrm::Task.stub!(:totals).and_return(@task_total)
   end
 
   def produce_tasks(user, view)
-    settings = (view != "completed" ? Setting.task_bucket : Setting.task_completed)
+    settings = (view != "completed" ? FatFreeCrm::Setting.task_bucket : FatFreeCrm::Setting.task_completed)
 
     settings.inject({}) do | hash, due |
       hash[due] ||= []
@@ -82,9 +82,9 @@ describe FatFreeCrm::TasksController do
 
         hash.keys.each do |key|
           hash[key].each do |attr|
-            task = Task.new(attr["task"])
-            task.should be_instance_of(Task)
-            task.valid?.should == true
+            task = FatFreeCrm::Task.new(attr["task"])
+            task.should be_instance_of(FatFreeCrm::Task)
+            task.should be_valid
           end
         end
       end
@@ -98,9 +98,9 @@ describe FatFreeCrm::TasksController do
         hash = Hash.from_xml(response.body)
         hash["hash"].keys.each do |key|
           hash["hash"][key].each do |attr|
-            task = Task.new(attr)
-            task.should be_instance_of(Task)
-            task.valid?.should == true
+            task = FatFreeCrm::Task.new(attr)
+            task.should be_instance_of(FatFreeCrm::Task)
+            task.should be_valid
           end
         end
       end
@@ -115,7 +115,7 @@ describe FatFreeCrm::TasksController do
     TASK_STATUSES.each do |view|
 
       it "should render the requested task as JSON for #{view} view" do
-        Task.stub_chain(:tracked_by, :find).and_return(task = mock("Task"))
+        FatFreeCrm::Task.stub_chain(:tracked_by, :find).and_return(task = mock("Task"))
         task.should_receive(:to_json).and_return("generated JSON")
 
         request.env["HTTP_ACCEPT"] = "application/json"
@@ -124,7 +124,7 @@ describe FatFreeCrm::TasksController do
       end
 
       it "should render the requested task as xml for #{view} view" do
-        Task.stub_chain(:tracked_by, :find).and_return(task = mock("Task"))
+        FatFreeCrm::Task.stub_chain(:tracked_by, :find).and_return(task = mock("Task"))
         task.should_receive(:to_xml).and_return("generated XML")
 
         request.env["HTTP_ACCEPT"] = "application/xml"
@@ -142,9 +142,9 @@ describe FatFreeCrm::TasksController do
     it "should expose a new task as @task and render [new] template" do
       account = FactoryGirl.create(:account, :user => current_user)
       @task = FactoryGirl.build(:task, :user => current_user, :asset => account)
-      Task.stub!(:new).and_return(@task)
-      @bucket = Setting.unroll(:task_bucket)[1..-1] << [ "On Specific Date...", :specific_time ]
-      @category = Setting.unroll(:task_category)
+      FatFreeCrm::Task.stub!(:new).and_return(@task)
+      @bucket = FatFreeCrm::Setting.unroll(:task_bucket)[1..-1] << [ "On Specific Date...", :specific_time ]
+      @category = FatFreeCrm::Setting.unroll(:task_category)
 
       xhr :get, :new
       assigns[:task].should == @task
@@ -188,8 +188,8 @@ describe FatFreeCrm::TasksController do
     it "should expose the requested task as @task and render [edit] template" do
       @asset = FactoryGirl.create(:account, :user => current_user)
       @task = FactoryGirl.create(:task, :user => current_user, :asset => @asset)
-      @bucket = Setting.unroll(:task_bucket)[1..-1] << [ "On Specific Date...", :specific_time ]
-      @category = Setting.unroll(:task_category)
+      @bucket = FatFreeCrm::Setting.unroll(:task_bucket)[1..-1] << [ "On Specific Date...", :specific_time ]
+      @category = FatFreeCrm::Setting.unroll(:task_category)
 
       xhr :get, :edit, :id => @task.id
       assigns[:task].should == @task
@@ -263,7 +263,7 @@ describe FatFreeCrm::TasksController do
 
       it "should expose a newly created task as @task and render [create] template" do
         @task = FactoryGirl.build(:task, :user => current_user)
-        Task.stub!(:new).and_return(@task)
+        FatFreeCrm::Task.stub!(:new).and_return(@task)
 
         xhr :post, :create, :task => { :name => "Hello world" }
         assigns(:task).should == @task
@@ -275,7 +275,7 @@ describe FatFreeCrm::TasksController do
       [ "", "?view=pending", "?view=assigned", "?view=completed" ].each do |view|
         it "should update tasks sidebar when [create] is being called from [/tasks#{view}] page" do
           @task = FactoryGirl.build(:task, :user => current_user)
-          Task.stub!(:new).and_return(@task)
+          FatFreeCrm::Task.stub!(:new).and_return(@task)
 
           request.env["HTTP_REFERER"] = "http://localhost/tasks#{view}"
           xhr :post, :create, :task => { :name => "Hello world" }
@@ -288,7 +288,7 @@ describe FatFreeCrm::TasksController do
 
       it "should expose a newly created but unsaved task as @lead and still render [create] template" do
         @task = FactoryGirl.build(:task, :name => nil, :user => current_user)
-        Task.stub!(:new).and_return(@task)
+        FatFreeCrm::Task.stub!(:new).and_return(@task)
 
         xhr :post, :create, :task => {}
         assigns(:task).should == @task

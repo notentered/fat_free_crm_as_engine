@@ -51,7 +51,7 @@ class FatFreeCrm::TasksController < FatFreeCrm::ApplicationController
 
     if params[:related]
       model, id = params[:related].split(/_(\d+)/)
-      if related = model.classify.constantize.my.find_by_id(id)
+      if related = "FatFreeCrm::#{model.classify}".constantize.my.find_by_id(id)
         instance_variable_set("@asset", related)
       else
         respond_to_related_not_found(model) and return
@@ -136,7 +136,7 @@ class FatFreeCrm::TasksController < FatFreeCrm::ApplicationController
   #----------------------------------------------------------------------------
   def complete
     @task = FatFreeCrm::Task.tracked_by(current_user).find(params[:id])
-    @task.update_attributes(:completed_at => FatFreeCrm::Time.now, :completed_by => current_user.id) if @task
+    @task.update_attributes(:completed_at => Time.now, :completed_by => current_user.id) if @task
 
     # Make sure bucket's div gets hidden if it's the last completed task in the bucket.
     if FatFreeCrm::Task.bucket_empty?(params[:bucket], current_user)

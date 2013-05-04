@@ -58,13 +58,13 @@ describe FatFreeCrm::AuthenticationsController do
   describe "POST authentications" do
     before(:each) do
       @login = { :username => "user", :password => "pass", :remember_me => "0" }
-      @authentication = mock(Authentication, @login)
+      @authentication = mock(FatFreeCrm::Authentication, @login)
     end
 
     describe "successful authentication " do
       before(:each) do
         @authentication.stub!(:save).and_return(true)
-        Authentication.stub!(:new).and_return(@authentication)
+        FatFreeCrm::Authentication.stub!(:new).and_return(@authentication)
       end
 
       it "displays welcome message and redirects to the home page" do
@@ -93,7 +93,7 @@ describe FatFreeCrm::AuthenticationsController do
           @user = FactoryGirl.create(:user, :username => "user", :password => "pass", :password_confirmation => "pass")
           @authentication.stub!(:user).and_return(@user)
           @authentication.stub!(:save).and_return(false) # <--- Authentication failure.
-          Authentication.stub!(:new).and_return(@authentication)
+          FatFreeCrm::Authentication.stub!(:new).and_return(@authentication)
 
           post :create, :authentication => @login
           flash[:warning].should_not == nil
@@ -104,7 +104,7 @@ describe FatFreeCrm::AuthenticationsController do
       describe "user has been suspended" do
         before(:each) do
           @authentication.stub!(:save).and_return(true)
-          Authentication.stub!(:new).and_return(@authentication)
+          FatFreeCrm::Authentication.stub!(:new).and_return(@authentication)
         end
 
         # This tests :before_save update_info callback in Authentication model.
@@ -129,7 +129,7 @@ describe FatFreeCrm::AuthenticationsController do
         end
 
         it "redirects to login page with the message if signup needs approval and user hasn't been activated yet" do
-          Setting.stub!(:user_signup).and_return(:needs_approval)
+          FatFreeCrm::Setting.stub!(:user_signup).and_return(:needs_approval)
           @user = FactoryGirl.create(:user, :username => "user", :password => "pass", :password_confirmation => "pass", :suspended_at => Date.yesterday, :login_count => 0)
           @authentication.stub!(:user).and_return(@user)
 
@@ -144,4 +144,3 @@ describe FatFreeCrm::AuthenticationsController do
   end # POST authenticate
 
 end
-

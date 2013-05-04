@@ -27,7 +27,7 @@ class FatFreeCrm::CommentsController < FatFreeCrm::ApplicationController
   def index
     @commentable = extract_commentable_name(params)
     if @commentable
-      @asset = @commentable.classify.constantize.my.find(params[:"#{@commentable}_id"])
+      @asset = "FatFreeCrm::#{@commentable.classify}".constantize.my.find(params[:"#{@commentable}_id"])
       @comments = @asset.comments.order("created_at DESC")
     end
     respond_with(@comments) do |format|
@@ -48,12 +48,12 @@ class FatFreeCrm::CommentsController < FatFreeCrm::ApplicationController
   # GET /comments/new.xml                                                  AJAX
   #----------------------------------------------------------------------------
   def new
-    @comment = Comment.new
+    @comment = FatFreeCrm::Comment.new
     @commentable = extract_commentable_name(params)
 
     if @commentable
       update_commentable_session
-      unless @commentable.classify.constantize.my.find_by_id(params[:"#{@commentable}_id"])
+      unless "FatFreeCrm::#{@commentable.classify}".constantize.my.find_by_id(params[:"#{@commentable}_id"])
         respond_to_related_not_found(@commentable) and return
       end
     end
@@ -64,7 +64,7 @@ class FatFreeCrm::CommentsController < FatFreeCrm::ApplicationController
   # GET /comments/1/edit                                                   AJAX
   #----------------------------------------------------------------------------
   def edit
-    @comment = Comment.find(params[:id])
+    @comment = FatFreeCrm::Comment.find(params[:id])
 
     model, id = @comment.commentable_type, @comment.commentable_id
     unless model.constantize.my.find_by_id(id)
@@ -79,7 +79,7 @@ class FatFreeCrm::CommentsController < FatFreeCrm::ApplicationController
   def create
     attributes = params[:comment] || {}
     attributes.merge!(:user_id => current_user.id)
-    @comment = Comment.new(attributes)
+    @comment = FatFreeCrm::Comment.new(attributes)
 
     # Make sure commentable object exists and is accessible to the current user.
     model, id = @comment.commentable_type, @comment.commentable_id
@@ -96,7 +96,7 @@ class FatFreeCrm::CommentsController < FatFreeCrm::ApplicationController
   # PUT /comments/1.xml                                          not implemened
   #----------------------------------------------------------------------------
   def update
-    @comment = Comment.find(params[:id])
+    @comment = FatFreeCrm::Comment.find(params[:id])
     @comment.update_attributes(params[:comment])
     respond_with(@comment)
   end
@@ -106,7 +106,7 @@ class FatFreeCrm::CommentsController < FatFreeCrm::ApplicationController
   # DELETE /comments/1.xml                                      not implemented
   #----------------------------------------------------------------------------
   def destroy
-    @comment = Comment.find(params[:id])
+    @comment = FatFreeCrm::Comment.find(params[:id])
     @comment.destroy
     respond_with(@comment)
   end
