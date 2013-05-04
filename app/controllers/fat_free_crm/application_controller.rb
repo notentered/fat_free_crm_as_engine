@@ -69,7 +69,7 @@ private
     return [] if related.blank?
     return [related.to_i].compact unless related.index('/')
     related_class, id = related.split('/')
-    obj = related_class.classify.constantize.find_by_id(id)
+    obj = "FatFreeCrm::#{related_class.classify}".constantize.find_by_id(id)
     if obj and obj.respond_to?(controller_name)
       obj.send(controller_name).map(&:id)
     else
