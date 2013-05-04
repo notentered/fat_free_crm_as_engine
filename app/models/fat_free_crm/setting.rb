@@ -125,6 +125,7 @@ class FatFreeCrm::Setting < ActiveRecord::Base
     # Loads settings from YAML files
     def load_settings_from_yaml(file)
       begin
+        YAML::ENGINE.yamler = 'syck'
         settings = YAML.load_file(file)
         # Merge settings into current settings hash (recursively)
         @@yaml_settings.deep_merge!(settings)
@@ -135,4 +136,3 @@ class FatFreeCrm::Setting < ActiveRecord::Base
     end
   end
 end
-

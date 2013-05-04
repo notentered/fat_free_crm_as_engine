@@ -17,5 +17,17 @@
 
 if RUBY_VERSION.to_f >= 1.9
   require 'yaml'
+  require 'syck'
   YAML::ENGINE.yamler = 'syck'
+
+  module I18n::Backend::Base
+    class_eval do
+      def load_translations_with_syck(*filenames)
+        YAML::ENGINE.yamler = 'syck'
+        load_translations_without_syck(*filenames)
+      end
+      alias_method_chain :load_translations, :syck
+    end
+  end
+
 end
