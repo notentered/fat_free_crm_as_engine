@@ -40,14 +40,14 @@ class FatFreeCrm::CampaignsController < FatFreeCrm::EntitiesController
   def show
     respond_with(@campaign) do |format|
       format.html do
-        @stage = Setting.unroll(:opportunity_stage)
-        @comment = Comment.new
+        @stage = FatFreeCrm::Setting.unroll(:opportunity_stage)
+        @comment = FatFreeCrm::Comment.new
         @timeline = timeline(@campaign)
       end
       
       format.js do
-        @stage = Setting.unroll(:opportunity_stage)
-        @comment = Comment.new
+        @stage = FatFreeCrm::Setting.unroll(:opportunity_stage)
+        @comment = FatFreeCrm::Comment.new
         @timeline = timeline(@campaign)
       end
 
@@ -77,11 +77,11 @@ class FatFreeCrm::CampaignsController < FatFreeCrm::EntitiesController
   # GET /campaigns/new.xml                                                 AJAX
   #----------------------------------------------------------------------------
   def new
-    @campaign.attributes = {:user => current_user, :access => Setting.default_access, :assigned_to => nil}
+    @campaign.attributes = {:user => current_user, :access => FatFreeCrm::Setting.default_access, :assigned_to => nil}
 
     if params[:related]
       model, id = params[:related].split('_')
-      if related = model.classify.constantize.my.find_by_id(id)
+      if related = "FatFreeCrm::#{model.classify}".constantize.my.find_by_id(id)
         instance_variable_set("@#{model}", related)
       else
         respond_to_related_not_found(model) and return
@@ -95,7 +95,7 @@ class FatFreeCrm::CampaignsController < FatFreeCrm::EntitiesController
   #----------------------------------------------------------------------------
   def edit
     if params[:previous].to_s =~ /(\d+)\z/
-      @previous = Campaign.my.find_by_id($1) || $1.to_i
+      @previous = FatFreeCrm::Campaign.my.find_by_id($1) || $1.to_i
     end
 
     respond_with(@campaign)
@@ -152,7 +152,7 @@ class FatFreeCrm::CampaignsController < FatFreeCrm::EntitiesController
   #----------------------------------------------------------------------------
   def redraw
     current_user.pref[:campaigns_per_page] = params[:per_page] if params[:per_page]
-    current_user.pref[:campaigns_sort_by]  = Campaign::sort_by_map[params[:sort_by]] if params[:sort_by]
+    current_user.pref[:campaigns_sort_by]  = FatFreeCrm::Campaign::sort_by_map[params[:sort_by]] if params[:sort_by]
     @campaigns = get_campaigns(:page => 1, :per_page => params[:per_page])
     set_options # Refresh options
     
@@ -196,9 +196,9 @@ private
 
   #----------------------------------------------------------------------------
   def get_data_for_sidebar
-    @campaign_status_total = { :all => Campaign.my.count, :other => 0 }
-    Setting.campaign_status.each do |key|
-      @campaign_status_total[key] = Campaign.my.where(:status => key.to_s).count
+    @campaign_status_total = { :all => FatFreeCrm::Campaign.my.count, :other => 0 }
+    FatFreeCrm::Setting.campaign_status.each do |key|
+      @campaign_status_total[key] = FatFreeCrm::Campaign.my.where(:status => key.to_s).count
       @campaign_status_total[:other] -= @campaign_status_total[key]
     end
     @campaign_status_total[:other] += @campaign_status_total[:all]

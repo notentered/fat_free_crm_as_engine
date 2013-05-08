@@ -83,12 +83,12 @@ class FatFreeCrm::Campaign < ActiveRecord::Base
   # Attach given attachment to the campaign if it hasn't been attached already.
   #----------------------------------------------------------------------------
   def attach!(attachment)
-    unless self.send("#{attachment.class.name.downcase}_ids").include?(attachment.id)
+    unless self.send("#{attachment.class.name.demodulize.downcase}_ids").include?(attachment.id)
       if attachment.is_a?(FatFreeCrm::Task)
-        self.send(attachment.class.name.tableize) << attachment
+        self.send(attachment.class.name.demodulize.tableize) << attachment
       else # Leads, Opportunities
         attachment.update_attribute(:campaign, self)
-        attachment.send("increment_#{attachment.class.name.tableize}_count")
+        attachment.send("increment_#{attachment.class.name.demodulize.tableize}_count")
         [ attachment ]
       end
     end
@@ -100,7 +100,7 @@ class FatFreeCrm::Campaign < ActiveRecord::Base
     if attachment.is_a?(FatFreeCrm::Task)
       attachment.update_attribute(:asset, nil)
     else # Leads, Opportunities
-      attachment.send("decrement_#{attachment.class.name.tableize}_count")
+      attachment.send("decrement_#{attachment.class.name.demodulize.tableize}_count")
       attachment.update_attribute(:campaign, nil)
     end
   end

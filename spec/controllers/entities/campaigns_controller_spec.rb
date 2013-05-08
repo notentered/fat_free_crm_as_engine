@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 describe FatFreeCrm::CampaignsController do
 
   def get_data_for_sidebar
-    @status = Setting.campaign_status.dup
+    @status = FatFreeCrm::Setting.campaign_status.dup
   end
 
   before(:each) do
@@ -125,8 +125,8 @@ describe FatFreeCrm::CampaignsController do
     describe "with mime type of HTML" do
       before(:each) do
         @campaign = FactoryGirl.create(:campaign, :id => 42, :user => current_user)
-        @stage = Setting.unroll(:opportunity_stage)
-        @comment = Comment.new
+        @stage = FatFreeCrm::Setting.unroll(:opportunity_stage)
+        @comment = FatFreeCrm::Comment.new
       end
 
       it "should expose the requested campaign as @campaign and render [show] template" do
@@ -146,7 +146,7 @@ describe FatFreeCrm::CampaignsController do
     describe "with mime type of JSON" do
       it "should render the requested campaign as JSON" do
         @campaign = FactoryGirl.create(:campaign, :id => 42, :user => current_user)
-        Campaign.should_receive(:find).and_return(@campaign)
+        FatFreeCrm::Campaign.should_receive(:find).and_return(@campaign)
         @campaign.should_receive(:to_json).and_return("generated JSON")
 
         request.env["HTTP_ACCEPT"] = "application/json"
@@ -158,7 +158,7 @@ describe FatFreeCrm::CampaignsController do
     describe "with mime type of XML" do
       it "should render the requested campaign as XML" do
         @campaign = FactoryGirl.create(:campaign, :id => 42, :user => current_user)
-        Campaign.should_receive(:find).and_return(@campaign)
+        FatFreeCrm::Campaign.should_receive(:find).and_return(@campaign)
         @campaign.should_receive(:to_xml).and_return("generated XML")
 
         request.env["HTTP_ACCEPT"] = "application/xml"
@@ -211,8 +211,8 @@ describe FatFreeCrm::CampaignsController do
   describe "responding to GET new" do
 
     it "should expose a new campaign as @campaign" do
-      @campaign = Campaign.new(:user => current_user,
-                               :access => Setting.default_access)
+      @campaign = FatFreeCrm::Campaign.new(:user => current_user,
+                               :access => FatFreeCrm::Setting.default_access)
       xhr :get, :new
       assigns[:campaign].attributes.should == @campaign.attributes
       response.should render_template("campaigns/new")
@@ -301,7 +301,7 @@ describe FatFreeCrm::CampaignsController do
 
       it "should expose a newly created campaign as @campaign and render [create] template" do
         @campaign = FactoryGirl.build(:campaign, :name => "Hello", :user => current_user)
-        Campaign.stub!(:new).and_return(@campaign)
+        FatFreeCrm::Campaign.stub!(:new).and_return(@campaign)
 
         xhr :post, :create, :campaign => { :name => "Hello" }
         assigns(:campaign).should == @campaign
@@ -310,7 +310,7 @@ describe FatFreeCrm::CampaignsController do
 
       it "should get data to update campaign sidebar" do
         @campaign = FactoryGirl.build(:campaign, :name => "Hello", :user => current_user)
-        Campaign.stub!(:new).and_return(@campaign)
+        FatFreeCrm::Campaign.stub!(:new).and_return(@campaign)
 
         xhr :post, :create, :campaign => { :name => "Hello" }
         assigns[:campaign_status_total].should be_instance_of(HashWithIndifferentAccess)
@@ -318,7 +318,7 @@ describe FatFreeCrm::CampaignsController do
 
       it "should reload campaigns to update pagination" do
         @campaign = FactoryGirl.build(:campaign, :user => current_user)
-        Campaign.stub!(:new).and_return(@campaign)
+        FatFreeCrm::Campaign.stub!(:new).and_return(@campaign)
 
         xhr :post, :create, :campaign => { :name => "Hello" }
         assigns[:campaigns].should == [ @campaign ]
@@ -326,7 +326,7 @@ describe FatFreeCrm::CampaignsController do
 
       it "should add a new comment to the newly created campaign when specified" do
         @campaign = FactoryGirl.build(:campaign, :name => "Hello world", :user => current_user)
-        Campaign.stub!(:new).and_return(@campaign)
+        FatFreeCrm::Campaign.stub!(:new).and_return(@campaign)
 
         xhr :post, :create, :campaign => { :name => "Hello world" }, :comment_body => "Awesome comment is awesome"
         @campaign.reload.comments.map(&:comment).should include("Awesome comment is awesome")
@@ -337,7 +337,7 @@ describe FatFreeCrm::CampaignsController do
 
       it "should expose a newly created but unsaved campaign as @campaign and still render [create] template" do
         @campaign = FactoryGirl.build(:campaign, :id => nil, :name => nil, :user => current_user)
-        Campaign.stub!(:new).and_return(@campaign)
+        FatFreeCrm::Campaign.stub!(:new).and_return(@campaign)
 
         xhr :post, :create, :campaign => nil
         assigns(:campaign).should == @campaign
@@ -428,7 +428,7 @@ describe FatFreeCrm::CampaignsController do
         xhr :delete, :destroy, :id => @campaign.id
 
         assigns[:campaigns].should == [ @another_campaign ]
-        lambda { Campaign.find(@campaign) }.should raise_error(ActiveRecord::RecordNotFound)
+        lambda { FatFreeCrm::Campaign.find(@campaign) }.should raise_error(ActiveRecord::RecordNotFound)
         response.should render_template("campaigns/destroy")
       end
 
@@ -607,7 +607,7 @@ describe FatFreeCrm::CampaignsController do
       xhr :post, :redraw, :per_page => 42, :view => "brief", :sort_by => "name"
       current_user.preference[:campaigns_per_page].should == "42"
       current_user.preference[:campaigns_index_view].should  == "brief"
-      current_user.preference[:campaigns_sort_by].should  == "campaigns.name ASC"
+      current_user.preference[:campaigns_sort_by].should  == "fat_free_crm_campaigns.name ASC"
     end
 
     it "should reset current page to 1" do
