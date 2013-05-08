@@ -215,7 +215,7 @@ private
   #----------------------------------------------------------------------------
   def set_view
     if params['view']
-      controller = params['controller']
+      controller = params['controller'].camelize.demodulize.underscore
       action = (params['action'] == 'show') ? 'show' : 'index' # create update redraw filter index actions all use index view
       current_user.pref[:"#{controller}_#{action}_view"] = params['view']
     end

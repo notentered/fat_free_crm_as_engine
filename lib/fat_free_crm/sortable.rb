@@ -46,7 +46,7 @@ module FatFreeCrm
       def sort_by_map
         Hash[
           self.sort_by_fields.zip(self.sort_by_clauses).map do |field, clause|
-            [ field, self.name.tableize + "." + clause ]
+            [ field, "fat_free_crm_" + self.name.demodulize.tableize + "." + clause ]
           end
         ]
       end
