@@ -16,7 +16,7 @@ FactoryGirl.define do
   end
 
 
-  factory :account_contact do
+  factory :account_contact, class: FatFreeCrm::AccountContact do
     account
     contact
     deleted_at          nil

@@ -142,8 +142,8 @@ class FatFreeCrm::Contact < ActiveRecord::Base
   # Attach given attachment to the contact if it hasn't been attached already.
   #----------------------------------------------------------------------------
   def attach!(attachment)
-    unless self.send("#{attachment.class.name.downcase}_ids").include?(attachment.id)
-      self.send(attachment.class.name.tableize) << attachment
+    unless self.send("#{attachment.class.name.demodulize.downcase}_ids").include?(attachment.id)
+      self.send(attachment.class.name.demodulize.tableize) << attachment
     end
   end
 
@@ -153,7 +153,7 @@ class FatFreeCrm::Contact < ActiveRecord::Base
     if attachment.is_a?(FatFreeCrm::Task)
       attachment.update_attribute(:asset, nil)
     else # Opportunities
-      self.send(attachment.class.name.tableize).delete(attachment)
+      self.send(attachment.class.name.demodulize.tableize).delete(attachment)
     end
   end
 

@@ -33,8 +33,8 @@ class FatFreeCrm::ContactsController < FatFreeCrm::EntitiesController
   # AJAX /contacts/1
   #----------------------------------------------------------------------------
   def show
-    @stage = Setting.unroll(:opportunity_stage)
-    @comment = Comment.new
+    @stage = FatFreeCrm::Setting.unroll(:opportunity_stage)
+    @comment = FatFreeCrm::Comment.new
     @timeline = timeline(@contact)
     respond_with(@contact)
   end
@@ -42,12 +42,12 @@ class FatFreeCrm::ContactsController < FatFreeCrm::EntitiesController
   # GET /contacts/new
   #----------------------------------------------------------------------------
   def new
-    @contact.attributes = {:user => current_user, :access => Setting.default_access, :assigned_to => nil}
+    @contact.attributes = {:user => current_user, :access => FatFreeCrm::Setting.default_access, :assigned_to => nil}
     @account = FatFreeCrm::Account.new(:user => current_user)
 
     if params[:related]
       model, id = params[:related].split('_')
-      if related = model.classify.constantize.my.find_by_id(id)
+      if related = "FatFreeCrm::#{model.classify}".constantize.my.find_by_id(id)
         instance_variable_set("@#{model}", related)
       else
         respond_to_related_not_found(model) and return
@@ -62,7 +62,7 @@ class FatFreeCrm::ContactsController < FatFreeCrm::EntitiesController
   def edit
     @account = @contact.account || FatFreeCrm::Account.new(:user => current_user)
     if params[:previous].to_s =~ /(\d+)\z/
-      @previous = Contact.my.find_by_id($1) || $1.to_i
+      @previous = FatFreeCrm::Contact.my.find_by_id($1) || $1.to_i
     end
 
     respond_with(@contact)
@@ -86,7 +86,7 @@ class FatFreeCrm::ContactsController < FatFreeCrm::EntitiesController
             @account = FatFreeCrm::Account.new(:user => current_user)
           end
         end
-        @opportunity = Opportunity.my.find(params[:opportunity]) unless params[:opportunity].blank?
+        @opportunity = FatFreeCrm::Opportunity.my.find(params[:opportunity]) unless params[:opportunity].blank?
       end
     end
   end
@@ -135,9 +135,9 @@ class FatFreeCrm::ContactsController < FatFreeCrm::EntitiesController
 
     # Sorting and naming only: set the same option for Leads if the hasn't been set yet.
     if params[:sort_by]
-      current_user.pref[:contacts_sort_by] = Contact::sort_by_map[params[:sort_by]]
-      if Lead::sort_by_fields.include?(params[:sort_by])
-        current_user.pref[:leads_sort_by] ||= Lead::sort_by_map[params[:sort_by]]
+      current_user.pref[:contacts_sort_by] = FatFreeCrm::Contact::sort_by_map[params[:sort_by]]
+      if FatFreeCrm::Lead::sort_by_fields.include?(params[:sort_by])
+        current_user.pref[:leads_sort_by] ||= FatFreeCrm::Lead::sort_by_map[params[:sort_by]]
       end
     end
     if params[:naming]
@@ -164,7 +164,7 @@ class FatFreeCrm::ContactsController < FatFreeCrm::EntitiesController
 
   def set_options
     super
-    @naming = (current_user.pref[:contacts_naming]   || Contact.first_name_position) unless params[:cancel].true?
+    @naming = (current_user.pref[:contacts_naming]   || FatFreeCrm::Contact.first_name_position) unless params[:cancel].true?
   end
 
   #----------------------------------------------------------------------------

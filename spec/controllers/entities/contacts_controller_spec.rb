@@ -94,8 +94,8 @@ describe FatFreeCrm::ContactsController do
     describe "with mime type of HTML" do
       before(:each) do
         @contact = FactoryGirl.create(:contact, :id => 42)
-        @stage = Setting.unroll(:opportunity_stage)
-        @comment = Comment.new
+        @stage = FatFreeCrm::Setting.unroll(:opportunity_stage)
+        @comment = FatFreeCrm::Comment.new
       end
 
       it "should expose the requested contact as @contact" do
@@ -115,7 +115,7 @@ describe FatFreeCrm::ContactsController do
     describe "with mime type of JSON" do
       it "should render the requested contact as JSON" do
         @contact = FactoryGirl.create(:contact, :id => 42)
-        Contact.should_receive(:find).and_return(@contact)
+        FatFreeCrm::Contact.should_receive(:find).and_return(@contact)
         @contact.should_receive(:to_json).and_return("generated JSON")
 
         request.env["HTTP_ACCEPT"] = "application/json"
@@ -127,7 +127,7 @@ describe FatFreeCrm::ContactsController do
     describe "with mime type of XML" do
       it "should render the requested contact as xml" do
         @contact = FactoryGirl.create(:contact, :id => 42)
-        Contact.should_receive(:find).and_return(@contact)
+        FatFreeCrm::Contact.should_receive(:find).and_return(@contact)
         @contact.should_receive(:to_xml).and_return("generated XML")
 
         request.env["HTTP_ACCEPT"] = "application/xml"
@@ -171,9 +171,9 @@ describe FatFreeCrm::ContactsController do
   describe "responding to GET new" do
 
     it "should expose a new contact as @contact and render [new] template" do
-      @contact = Contact.new(:user => current_user,
-                             :access => Setting.default_access)
-      @account = Account.new(:user => current_user)
+      @contact = FatFreeCrm::Contact.new(:user => current_user,
+                                         :access =>FatFreeCrm:: Setting.default_access)
+      @account = FatFreeCrm::Account.new(:user => current_user)
       @accounts = [ FactoryGirl.create(:account, :user => current_user) ]
 
       xhr :get, :new
@@ -198,7 +198,7 @@ describe FatFreeCrm::ContactsController do
 
         xhr :get, :new, :related => "account_#{@account.id}"
         flash[:warning].should_not == nil
-        response.body.should == 'window.location.href = "/accounts";'
+        response.body.should == 'window.location.href = "' + Rails.application.routes.named_routes[:fat_free_crm].path.spec.to_s + '/accounts";'
       end
 
       it "should redirect to parent asset's index page with the message if parent asset got protected" do
@@ -206,7 +206,7 @@ describe FatFreeCrm::ContactsController do
 
         xhr :get, :new, :related => "account_#{@account.id}"
         flash[:warning].should_not == nil
-        response.body.should == 'window.location.href = "/accounts";'
+        response.body.should == 'window.location.href = "' + Rails.application.routes.named_routes[:fat_free_crm].path.spec.to_s + '/accounts";'
       end
     end
   end
@@ -217,7 +217,7 @@ describe FatFreeCrm::ContactsController do
 
     it "should expose the requested contact as @contact and render [edit] template" do
       @contact = FactoryGirl.create(:contact, :id => 42, :user => current_user, :lead => nil)
-      @account = Account.new(:user => current_user)
+      @account = FatFreeCrm::Account.new(:user => current_user)
 
       xhr :get, :edit, :id => 42
       assigns[:contact].should == @contact
@@ -298,7 +298,7 @@ describe FatFreeCrm::ContactsController do
 
       it "should expose a newly created contact as @contact and render [create] template" do
         @contact = FactoryGirl.build(:contact, :first_name => "Billy", :last_name => "Bones")
-        Contact.stub!(:new).and_return(@contact)
+        FatFreeCrm::Contact.stub!(:new).and_return(@contact)
 
         xhr :post, :create, :contact => { :first_name => "Billy", :last_name => "Bones" }, :account => { :name => "Hello world" }
         assigns(:contact).should == @contact
@@ -309,7 +309,7 @@ describe FatFreeCrm::ContactsController do
       it "should be able to associate newly created contact with the opportunity" do
         @opportunity = FactoryGirl.create(:opportunity, :id => 987);
         @contact = FactoryGirl.build(:contact)
-        Contact.stub!(:new).and_return(@contact)
+        FatFreeCrm::Contact.stub!(:new).and_return(@contact)
 
         xhr :post, :create, :contact => { :first_name => "Billy"}, :account => {}, :opportunity => 987
         assigns(:contact).opportunities.should include(@opportunity)
@@ -318,7 +318,7 @@ describe FatFreeCrm::ContactsController do
 
       it "should reload contacts to update pagination if called from contacts index" do
         @contact = FactoryGirl.build(:contact, :user => current_user)
-        Contact.stub!(:new).and_return(@contact)
+        FatFreeCrm::Contact.stub!(:new).and_return(@contact)
 
         request.env["HTTP_REFERER"] = "http://localhost/contacts"
         xhr :post, :create, :contact => { :first_name => "Billy", :last_name => "Bones" }, :account => {}
@@ -327,7 +327,7 @@ describe FatFreeCrm::ContactsController do
 
       it "should add a new comment to the newly created contact when specified" do
         @contact = FactoryGirl.build(:contact, :user => current_user)
-        Contact.stub!(:new).and_return(@contact)
+        FatFreeCrm::Contact.stub!(:new).and_return(@contact)
 
         xhr :post, :create, :contact => { :first_name => "Testy", :last_name => "McTest" }, :account => { :name => "Hello world" }, :comment_body => "Awesome comment is awesome"
         assigns[:contact].comments.map(&:comment).should include("Awesome comment is awesome")
@@ -338,7 +338,7 @@ describe FatFreeCrm::ContactsController do
 
       before(:each) do
         @contact = FactoryGirl.build(:contact, :first_name => nil, :user => current_user, :lead => nil)
-        Contact.stub!(:new).and_return(@contact)
+        FatFreeCrm::Contact.stub!(:new).and_return(@contact)
       end
 
       # Redraw [create] form with selected account.
@@ -367,7 +367,7 @@ describe FatFreeCrm::ContactsController do
 
       it "should redraw [Create Contact] form with blank account" do
         @accounts = [ FactoryGirl.create(:account, :user => current_user) ]
-        @account = Account.new(:user => current_user)
+        @account = FatFreeCrm::Account.new(:user => current_user)
 
         xhr :post, :create, :contact => { :first_name => nil }, :account => { :name => nil, :user_id => current_user.id }
         assigns(:contact).should == @contact
@@ -453,7 +453,7 @@ describe FatFreeCrm::ContactsController do
 
       it "should not update the contact, but still expose it as @contact and render [update] template" do
         @contact = FactoryGirl.create(:contact, :id => 42, :user => current_user, :first_name => "Billy", :lead => nil)
-        @account = Account.new(:user => current_user)
+        @account = FatFreeCrm::Account.new(:user => current_user)
 
         xhr :put, :update, :id => 42, :contact => { :first_name => nil }, :account => {}
         assigns[:contact].reload.first_name.should == "Billy"
@@ -486,7 +486,7 @@ describe FatFreeCrm::ContactsController do
       it "should destroy the requested contact and render [destroy] template" do
         xhr :delete, :destroy, :id => @contact.id
 
-        lambda { Contact.find(@contact) }.should raise_error(ActiveRecord::RecordNotFound)
+        lambda { FatFreeCrm::Contact.find(@contact) }.should raise_error(ActiveRecord::RecordNotFound)
         response.should render_template("contacts/destroy")
       end
 
@@ -650,13 +650,13 @@ describe FatFreeCrm::ContactsController do
       xhr :post, :redraw, :per_page => 42, :view => "long", :sort_by => "first_name", :naming => "after"
       current_user.preference[:contacts_per_page].to_i.should == 42
       current_user.preference[:contacts_index_view].should  == "long"
-      current_user.preference[:contacts_sort_by].should  == "contacts.first_name ASC"
+      current_user.preference[:contacts_sort_by].should  == "fat_free_crm_contacts.first_name ASC"
       current_user.preference[:contacts_naming].should   == "after"
     end
 
     it "should set similar options for Leads" do
       xhr :post, :redraw, :sort_by => "first_name", :naming => "after"
-      current_user.pref[:leads_sort_by].should == "leads.first_name ASC"
+      current_user.pref[:leads_sort_by].should == "fat_free_crm_leads.first_name ASC"
       current_user.pref[:leads_naming].should == "after"
     end
 
