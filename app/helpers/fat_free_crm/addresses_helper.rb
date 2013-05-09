@@ -25,7 +25,7 @@ module FatFreeCrm::AddressesHelper
   end
   
   def priority_countries
-    Setting[:priority_countries]
+    FatFreeCrm::Setting[:priority_countries]
   end
 
 end

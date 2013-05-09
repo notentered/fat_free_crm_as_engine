@@ -13,7 +13,7 @@ else # <----------------------------------------  Show [Edit Account] form.
 
   if params[:cancel].blank?                       # Called from accounts list item...
     if @previous                                  # Hide open [Edit Account] form if any.
-      if @previous.is_a?(Account)
+      if @previous.is_a?(FatFreeCrm::Account)
         page[dom_id(@previous)].replace :partial => "account", :collection => [ @previous ]
       else
         page.call "crm.flick", "account_#{@previous}", :remove

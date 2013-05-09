@@ -58,7 +58,7 @@ xml.Worksheet 'ss:Name' => I18n.t(:tab_campaigns) do
                      campaign.updated_at]
           
           # Append custom field values.
-          Campaign.fields.each do |field|
+          FatFreeCrm::Campaign.fields.each do |field|
             data << campaign.send(field.name)
           end
           

@@ -101,7 +101,7 @@ module FatFreeCrm::TasksHelper
     update_page do |page|
       page[id].replace ""
 
-      if Task.bucket_empty?(bucket, current_user, @view)
+      if FatFreeCrm::Task.bucket_empty?(bucket, current_user, @view)
         page["list_#{bucket}"].visual_effect :fade, :duration => 0.5
       end
     end

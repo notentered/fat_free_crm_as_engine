@@ -13,7 +13,7 @@ else # <----------------------------------------- Show requested [Edit Opportuni
 
   if params[:cancel].blank?                       # Called from opportunities list item...
     if @previous                                  # Hide open [Edit Opportunity] form if any.
-      if @previous.is_a?(Opportunity)
+      if @previous.is_a?(FatFreeCrm::Opportunity)
         page[dom_id(@previous)].replace :partial => "opportunity", :collection => [ @previous ]
       else
         page.call "crm.flick", "opportunity_#{@previous}", :remove

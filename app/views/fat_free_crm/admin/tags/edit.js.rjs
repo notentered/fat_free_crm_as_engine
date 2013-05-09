@@ -6,7 +6,7 @@ if params[:cancel].true?     # <----------------- Hide [Edit Tag]
 else # <----------------------------------------  Show [Edit Tag] form.
 
   if @previous                                    # Hide open [Edit Tag] form if any.
-    if @previous.is_a?(Tag)                      # Previous tag still exists?
+    if @previous.is_a?(FatFreeCrm::Tag)                      # Previous tag still exists?
       page[dom_id(@previous)].replace :partial => "tag", :collection => [ @previous ]
     else
       page.call "crm.flick", "tag_#{@previous}", :remove

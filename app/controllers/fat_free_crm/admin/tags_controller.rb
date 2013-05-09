@@ -24,7 +24,7 @@ class FatFreeCrm::Admin::TagsController < FatFreeCrm::Admin::ApplicationControll
   # GET /admin/tags.xml                                                   HTML
   #----------------------------------------------------------------------------
   def index
-    @tags = Tag.all
+    @tags = FatFreeCrm::Tag.all
     respond_with(@tags)
   end
 
@@ -39,7 +39,7 @@ class FatFreeCrm::Admin::TagsController < FatFreeCrm::Admin::ApplicationControll
   #----------------------------------------------------------------------------
   def edit
     if params[:previous].to_s =~ /(\d+)\z/
-      @previous = Tag.find_by_id($1) || $1.to_i
+      @previous = FatFreeCrm::Tag.find_by_id($1) || $1.to_i
     end
   end
 

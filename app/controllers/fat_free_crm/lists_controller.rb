@@ -21,10 +21,10 @@ class FatFreeCrm::ListsController < FatFreeCrm::ApplicationController
   #----------------------------------------------------------------------------
   def create
     # Find any existing list with the same name (case insensitive)
-    if @list = List.find(:first, :conditions => ["lower(name) = ?", params[:list][:name].downcase])
+    if @list = FatFreeCrm::List.find(:first, :conditions => ["lower(name) = ?", params[:list][:name].downcase])
       @list.update_attributes(params[:list])
     else
-      @list = List.create(params[:list])
+      @list = FatFreeCrm::List.create(params[:list])
     end
 
     respond_with(@list)
@@ -33,7 +33,7 @@ class FatFreeCrm::ListsController < FatFreeCrm::ApplicationController
   # DELETE /lists/1
   #----------------------------------------------------------------------------
   def destroy
-    @list = List.find(params[:id])
+    @list = FatFreeCrm::List.find(params[:id])
     @list.destroy
 
     respond_with(@list)

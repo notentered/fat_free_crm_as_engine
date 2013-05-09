@@ -394,7 +394,7 @@ module FatFreeCrm::ApplicationHelper
   end
 
   def group_options
-    Group.all.map {|g| [g.name, g.id]}
+    FatFreeCrm::Group.all.map {|g| [g.name, g.id]}
   end
 
   def list_of_entities

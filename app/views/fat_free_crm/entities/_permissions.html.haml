@@ -34,7 +34,7 @@
             :javascript
               new Chosen($('#{model}_group_ids'));
 
-    - if !edit and entity.is_a?(Lead)
+    - if !edit and entity.is_a?(FatFreeCrm::Lead)
       .radio_box
         = f.radio_button :access, t(:campaign), :onclick => "$('people').hide(); $('lead_access_campaign').value = 'Campaign'", :disabled => true
         %font{ :id => :copy_permissions, :color => :grey }

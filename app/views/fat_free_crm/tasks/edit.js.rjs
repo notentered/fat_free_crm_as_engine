@@ -9,7 +9,7 @@ else # <----------------------------------------  Show [Edit Task] form.
 
   page.call "crm.hide_form", :create_task         # Hide [Create Task] form if it's open.
   if @previous                                    # Hide open [Edit Lead] form if any.
-    if @previous.is_a?(Task)
+    if @previous.is_a?(FatFreeCrm::Task)
       partial = (@previous.assigned_to && @previous.assigned_to != current_user.id) ? "assigned" : "pending"
       page[dom_id(@previous)].replace :partial => partial, :collection => [ @previous ], :locals => { :bucket => nil }
     else

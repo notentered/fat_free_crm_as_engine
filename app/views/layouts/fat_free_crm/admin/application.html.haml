@@ -19,7 +19,7 @@
     = render "layouts/tabbed"
     = render "layouts/footer"
     %script{:type => "text/javascript"}
-      = "crm.base_url = '#{Setting.base_url}';" unless Setting.base_url.blank?
+      = "crm.base_url = '#{FatFreeCrm::Setting.base_url}';" unless FatFreeCrm::Setting.base_url.blank?
       = get_browser_timezone_offset
       = yield :javascript_epilogue
 

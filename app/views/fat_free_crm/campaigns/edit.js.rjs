@@ -13,7 +13,7 @@ else # <----------------------------------------  Show [Edit Campaign] form.
 
   if params[:cancel].blank?                       # Called from campaigns list item...
     if @previous                                  # Hide open [Edit Campaign] form if any.
-      if @previous.is_a?(Campaign)
+      if @previous.is_a?(FatFreeCrm::Campaign)
         page[dom_id(@previous)].replace :partial => "campaign", :collection => [ @previous ]
       else
         page.call "crm.flick", "campaign_#{@previous}", :remove

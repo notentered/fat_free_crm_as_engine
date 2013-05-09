@@ -12,7 +12,7 @@
   = render "entities/permissions",  :f => f, :entity => @account
 
   .buttonbar
-    - if Setting.compound_address
+    - if FatFreeCrm::Setting.compound_address
       = f.submit t(:create_account), :onclick => "crm.clear_all_hints()"
     - else
       = f.submit t(:create_account)

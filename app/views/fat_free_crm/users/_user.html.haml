@@ -1,4 +1,4 @@
-- if @user == current_user && Setting.per_user_locale
+- if @user == current_user && FatFreeCrm::Setting.per_user_locale
   %div#options(style="float:right")
     #{t :profile_language}: #{link_to(language_for(current_user), "#", :id => :locale)}
 
@@ -24,5 +24,5 @@
         = "#{t :phone}: <b>#{@user.phone}</b>" unless @user.phone.blank?
         = "#{t :mobile}: <b>#{@user.mobile}</b>" unless @user.mobile.blank?
 
-- if Setting.per_user_locale
+- if FatFreeCrm::Setting.per_user_locale
   %script= render "languages"

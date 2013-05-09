@@ -8,7 +8,7 @@
       %td
         .label.req #{t :due}:
         - bucket = (params[:bucket].blank? ? @task.bucket : params[:bucket]) || "due_asap"
-        - with_time = Setting.task_calendar_with_time
+        - with_time = FatFreeCrm::Setting.task_calendar_with_time
         - if @task.bucket != "specific_time"
           = f.select :bucket, @bucket, { :selected => bucket.to_sym }, { :style => "width:160px;", :onchange => "crm.flip_calendar(this.value)" }
           = f.text_field :calendar, :style => "width:160px; display:none;", :autocomplete => :off, :class => (with_time ? 'datetime' : 'date')
@@ -25,7 +25,7 @@
         .label.req #{t :category}:
         = f.select :category, @category, { :selected => @task.category.blank? ? nil : @task.category.to_sym, :include_blank => t(:select_blank) }, { :style => "width:160px" }
 
-    - if Setting.background_info && Setting.background_info.include?(:task)
+    - if FatFreeCrm::Setting.background_info && FatFreeCrm::Setting.background_info.include?(:task)
       %tr
         %td(colspan="5")
           .label= t(:extra_info).capitalize << ':'

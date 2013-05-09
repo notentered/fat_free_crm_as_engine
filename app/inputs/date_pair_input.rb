@@ -62,7 +62,7 @@ class DatePairInput < SimpleForm::Inputs::Base
   # Returns the pair as [field1, field2]
   #------------------------------------------------------------------------------
   def get_fields
-    @field1 ||= Field.where(:name => attribute_name).first
+    @field1 ||= FatFreeCrm::Field.where(:name => attribute_name).first
     @field2 ||= @field1.try(:paired_with)
     [@field1, @field2]
   end

@@ -50,6 +50,6 @@
     %tr
       %td
         .label #{t :groups}:
-        = f.select :group_ids, Group.all.map {|g| [g.name, g.id]}, {}, :multiple => true
+        = f.select :group_ids, FatFreeCrm::Group.all.map {|g| [g.name, g.id]}, {}, :multiple => true
         :javascript
           new Chosen($('user_group_ids'));

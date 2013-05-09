@@ -16,9 +16,9 @@
         %td= spacer
         %td
           .label #{t :status}:
-          = f.select :status, Setting.unroll(:campaign_status), { :selected => (@campaign.status || "planned").to_sym }, { :style => "width:250px" }
+          = f.select :status, FatFreeCrm::Setting.unroll(:campaign_status), { :selected => (@campaign.status || "planned").to_sym }, { :style => "width:250px" }
 
-      - if Setting.background_info && Setting.background_info.include?(:campaign)
+      - if FatFreeCrm::Setting.background_info && FatFreeCrm::Setting.background_info.include?(:campaign)
         %tr
           %td(colspan="5")
             .label= t(:background_info) << ':'

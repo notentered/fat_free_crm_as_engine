@@ -44,7 +44,7 @@
             .label.req #{t :assigned_to}:
             = user_select(:opportunity, all_users, current_user)
 
-        - if Setting.background_info && Setting.background_info.include?(:opportunity)
+        - if FatFreeCrm::Setting.background_info && FatFreeCrm::Setting.background_info.include?(:opportunity)
           %tr
             %td(colspan="3")
               .label= t(:background_info) << ':'

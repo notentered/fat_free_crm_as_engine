@@ -4,11 +4,11 @@
     %table
       %tr
         %td
-          .label.top{ :class => "#{Setting.require_first_names ? 'req' : nil}" } #{t :first_name}:
+          .label.top{ :class => "#{FatFreeCrm::Setting.require_first_names ? 'req' : nil}" } #{t :first_name}:
           = f.text_field :first_name
         %td= spacer
         %td
-          .label.top{ :class => "#{Setting.require_last_names ? 'req' : nil}" } #{t :last_name}:
+          .label.top{ :class => "#{FatFreeCrm::Setting.require_last_names ? 'req' : nil}" } #{t :last_name}:
           = f.text_field :last_name
       %tr
         %td
@@ -19,7 +19,7 @@
           .label #{t :phone}:
           = f.text_field :phone
 
-      - if Setting.background_info && Setting.background_info.include?(:lead)
+      - if FatFreeCrm::Setting.background_info && FatFreeCrm::Setting.background_info.include?(:lead)
         %tr
           %td(colspan="3")
             .label= t(:background_info) << ':'

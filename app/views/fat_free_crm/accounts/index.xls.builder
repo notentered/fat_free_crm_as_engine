@@ -65,7 +65,7 @@ xml.Worksheet 'ss:Name' => I18n.t(:tab_accounts) do
                      address.try(:full_address)]
                      
           # Append custom field values.
-          Account.fields.each do |field|
+          FatFreeCrm::Account.fields.each do |field|
             data << account.send(field.name)
           end
           

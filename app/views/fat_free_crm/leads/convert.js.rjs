@@ -13,7 +13,7 @@ else # <----------------------------------------  Show [Convert Lead] form.
 
   if params[:cancel].blank?                       # Called from leads list item...
     if @previous                                  # Hide open [Convert Lead] form if any.
-      if @previous.is_a?(Lead)
+      if @previous.is_a?(FatFreeCrm::Lead)
         page[dom_id(@previous)].replace :partial => "lead", :collection => [ @previous ]
       else
         page.call "crm.flick", "lead_#{@previous}", :remove

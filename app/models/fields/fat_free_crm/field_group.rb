@@ -65,7 +65,7 @@ class FatFreeCrm::FieldGroup < ActiveRecord::Base
   
   # When deleted, transfer fields to default field group
   def move_fields_to_default_field_group
-    default_group = FieldGroup.find_by_name_and_klass_name("custom_fields", klass_name)
+    default_group = FatFreeCrm::FieldGroup.find_by_name_and_klass_name("custom_fields", klass_name)
     default_group.fields << fields
     self.reload
   end

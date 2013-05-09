@@ -21,6 +21,6 @@
         %th= t(:web_presence)
         %td= web_presence_icons(contact)
         = col(t(:permissions), (contact.permissions.empty? ? t(:shared_with_everyone) : contact.permissions.join(", ")))
-      - if Setting.background_info && Setting.background_info.include?(:contact)
+      - if FatFreeCrm::Setting.background_info && FatFreeCrm::Setting.background_info.include?(:contact)
         %tr
           = col(t(:background_info), contact.background_info)

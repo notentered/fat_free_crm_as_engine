@@ -6,7 +6,7 @@ if params[:cancel].true?     # <----------------- Hide [Edit Group]
 else # <----------------------------------------  Show [Edit Group] form.
 
   if @previous                                    # Hide open [Edit Group] form if any.
-    if @previous.is_a?(Group)                      # Previous group still exists?
+    if @previous.is_a?(FatFreeCrm::Group)                      # Previous group still exists?
       page[dom_id(@previous)].replace :partial => "group", :collection => [ @previous ]
     else
       page.call "crm.flick", "group_#{@previous}", :remove

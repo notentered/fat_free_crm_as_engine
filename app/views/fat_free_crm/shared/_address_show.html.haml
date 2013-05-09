@@ -3,7 +3,7 @@
 - title ||= nil
 
 - unless address.blank?
-  - if Setting.compound_address
+  - if FatFreeCrm::Setting.compound_address
     %div
       - if title
         %b #{t title}

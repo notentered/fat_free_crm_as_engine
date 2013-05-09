@@ -37,14 +37,14 @@ class FatFreeCrm::Admin::FieldsController < FatFreeCrm::Admin::ApplicationContro
   # GET /fields/new.xml                                                  AJAX
   #----------------------------------------------------------------------------
   def new
-    @field = Field.new
+    @field = FatFreeCrm::Field.new
     respond_with(@field)
   end
 
   # GET /fields/1/edit                                                   AJAX
   #----------------------------------------------------------------------------
   def edit
-    @field = Field.find(params[:id])
+    @field = FatFreeCrm::Field.find(params[:id])
     respond_with(@field)    
   end
 
@@ -55,12 +55,12 @@ class FatFreeCrm::Admin::FieldsController < FatFreeCrm::Admin::ApplicationContro
     as = params[:field][:as]
     @field = 
       if as =~ /pair/
-        CustomFieldPair.create_pair(params).first
+        FatFreeCrm::CustomFieldPair.create_pair(params).first
       elsif as.present?
-        klass = Field.lookup_class(as).classify.constantize
+        klass = FatFreeCrm::Field.lookup_class(as).classify.constantize
         klass.create(params[:field])
       else
-        Field.new(params[:field]).tap(&:valid?)
+        FatFreeCrm::Field.new(params[:field]).tap(&:valid?)
       end
 
     respond_with(@field)
@@ -72,9 +72,9 @@ class FatFreeCrm::Admin::FieldsController < FatFreeCrm::Admin::ApplicationContro
   #----------------------------------------------------------------------------
   def update
     if (params[:field][:as] =~ /pair/)
-      @field = CustomFieldPair.update_pair(params).first
+      @field = FatFreeCrm::CustomFieldPair.update_pair(params).first
     else
-      @field = Field.find(params[:id])
+      @field = FatFreeCrm::Field.find(params[:id])
       @field.update_attributes(params[:field])
     end
 
@@ -85,7 +85,7 @@ class FatFreeCrm::Admin::FieldsController < FatFreeCrm::Admin::ApplicationContro
   # DELETE /fields/1.xml                                        HTML and AJAX
   #----------------------------------------------------------------------------
   def destroy
-    @field = Field.find(params[:id])
+    @field = FatFreeCrm::Field.find(params[:id])
     @field.destroy
 
     respond_with(@field)
@@ -98,7 +98,7 @@ class FatFreeCrm::Admin::FieldsController < FatFreeCrm::Admin::ApplicationContro
     field_ids = params["fields_field_group_#{field_group_id}"] || []
 
     field_ids.each_with_index do |id, index|
-      Field.update_all({:position => index+1, :field_group_id => field_group_id}, {:id => id})
+      FatFreeCrm::Field.update_all({:position => index+1, :field_group_id => field_group_id}, {:id => id})
     end
 
     render :nothing => true
@@ -111,10 +111,10 @@ class FatFreeCrm::Admin::FieldsController < FatFreeCrm::Admin::ApplicationContro
     as = field[:as]
 
     @field = if (id = field[:id]).present?
-        Field.find(id).tap{|f| f.as = as}
+        FatFreeCrm::Field.find(id).tap{|f| f.as = as}
       else
         field_group_id = field[:field_group_id]
-        klass = Field.lookup_class(as).classify.constantize
+        klass = FatFreeCrm::Field.lookup_class(as).classify.constantize
         klass.new(:field_group_id => field_group_id, :as => as)
       end
 
