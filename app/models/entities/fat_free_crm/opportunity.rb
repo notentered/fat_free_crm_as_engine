@@ -44,7 +44,7 @@ class FatFreeCrm::Opportunity < ActiveRecord::Base
   has_one     :account_opportunity, :dependent => :destroy
   has_one     :account, :through => :account_opportunity, :class_name => 'FatFreeCrm::Account'
   has_many    :contact_opportunities, :dependent => :destroy
-  has_many    :contacts, :through => :contact_opportunities, :uniq => true, :order => "contacts.id DESC"
+  has_many    :contacts, :through => :contact_opportunities, :uniq => true, :order => "fat_free_crm_contacts.id DESC"
   has_many    :tasks, :as => :asset, :dependent => :destroy#, :order => 'created_at DESC'
   has_many    :emails, :as => :mediator
 
@@ -151,8 +151,8 @@ class FatFreeCrm::Opportunity < ActiveRecord::Base
   # Attach given attachment to the opportunity if it hasn't been attached already.
   #----------------------------------------------------------------------------
   def attach!(attachment)
-    unless self.send("#{attachment.class.name.downcase}_ids").include?(attachment.id)
-      self.send(attachment.class.name.tableize) << attachment
+    unless self.send("#{attachment.class.name.demodulize.downcase}_ids").include?(attachment.id)
+      self.send(attachment.class.name.demodulize.tableize) << attachment
     end
   end
 
@@ -162,7 +162,7 @@ class FatFreeCrm::Opportunity < ActiveRecord::Base
     if attachment.is_a?(FatFreeCrm::Task)
       attachment.update_attribute(:asset, nil)
     else # Contacts
-      self.send(attachment.class.name.tableize).delete(attachment)
+      self.send(attachment.class.name.demodulize.tableize).delete(attachment)
     end
   end
 

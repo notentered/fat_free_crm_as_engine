@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 describe FatFreeCrm::OpportunitiesController do
 
   def get_data_for_sidebar
-    @stage = Setting.unroll(:opportunity_stage)
+    @stage = FatFreeCrm::Setting.unroll(:opportunity_stage)
   end
 
   before do
@@ -134,8 +134,8 @@ describe FatFreeCrm::OpportunitiesController do
     describe "with mime type of HTML" do
       before do
         @opportunity = FactoryGirl.create(:opportunity, :id => 42)
-        @stage = Setting.unroll(:opportunity_stage)
-        @comment = Comment.new
+        @stage = FatFreeCrm::Setting.unroll(:opportunity_stage)
+        @comment = FatFreeCrm::Comment.new
       end
 
       it "should expose the requested opportunity as @opportunity and render [show] template" do
@@ -155,7 +155,7 @@ describe FatFreeCrm::OpportunitiesController do
     describe "with mime type of JSON" do
       it "should render the requested opportunity as JSON" do
         @opportunity = FactoryGirl.create(:opportunity, :id => 42)
-        Opportunity.should_receive(:find).and_return(@opportunity)
+        FatFreeCrm::Opportunity.should_receive(:find).and_return(@opportunity)
         @opportunity.should_receive(:to_json).and_return("generated JSON")
 
         request.env["HTTP_ACCEPT"] = "application/json"
@@ -167,7 +167,7 @@ describe FatFreeCrm::OpportunitiesController do
     describe "with mime type of XML" do
       it "should render the requested opportunity as xml" do
         @opportunity = FactoryGirl.create(:opportunity, :id => 42)
-        Opportunity.should_receive(:find).and_return(@opportunity)
+        FatFreeCrm::Opportunity.should_receive(:find).and_return(@opportunity)
         @opportunity.should_receive(:to_xml).and_return("generated XML")
 
         request.env["HTTP_ACCEPT"] = "application/xml"
@@ -220,8 +220,8 @@ describe FatFreeCrm::OpportunitiesController do
   describe "responding to GET new" do
 
     it "should expose a new opportunity as @opportunity and render [new] template" do
-      @opportunity = Opportunity.new(:user => current_user, :access => Setting.default_access, :stage => "prospecting")
-      @account = Account.new(:user => current_user, :access => Setting.default_access)
+      @opportunity = FatFreeCrm::Opportunity.new(:user => current_user, :access => FatFreeCrm::Setting.default_access, :stage => "prospecting")
+      @account = FatFreeCrm::Account.new(:user => current_user, :access => FatFreeCrm::Setting.default_access)
       @accounts = [ FactoryGirl.create(:account, :user => current_user) ]
 
       xhr :get, :new
@@ -245,7 +245,7 @@ describe FatFreeCrm::OpportunitiesController do
 
         xhr :get, :new, :related => "account_#{@account.id}"
         flash[:warning].should_not == nil
-        response.body.should == 'window.location.href = "/accounts";'
+        response.body.should == 'window.location.href = "' + Rails.application.routes.named_routes[:fat_free_crm].path.spec.to_s + '/accounts";'
       end
 
       it "should redirect to parent asset's index page with the message if parent asset got protected" do
@@ -253,7 +253,7 @@ describe FatFreeCrm::OpportunitiesController do
 
         xhr :get, :new, :related => "account_#{@account.id}"
         flash[:warning].should_not == nil
-        response.body.should == 'window.location.href = "/accounts";'
+        response.body.should == 'window.location.href = "' + Rails.application.routes.named_routes[:fat_free_crm].path.spec.to_s + '/accounts";'
       end
     end
   end
@@ -268,7 +268,7 @@ describe FatFreeCrm::OpportunitiesController do
       @account = FactoryGirl.create(:account, :user => current_user)
       @opportunity = FactoryGirl.create(:opportunity, :id => 42, :user => current_user, :campaign => nil,
                              :account => @account)
-      @stage = Setting.unroll(:opportunity_stage)
+      @stage = FatFreeCrm::Setting.unroll(:opportunity_stage)
       @accounts = [ @account ]
 
       xhr :get, :edit, :id => 42
@@ -343,8 +343,8 @@ describe FatFreeCrm::OpportunitiesController do
 
       before do
         @opportunity = FactoryGirl.build(:opportunity, :user => current_user)
-        Opportunity.stub!(:new).and_return(@opportunity)
-        @stage = Setting.unroll(:opportunity_stage)
+        FatFreeCrm::Opportunity.stub!(:new).and_return(@opportunity)
+        @stage = FatFreeCrm::Setting.unroll(:opportunity_stage)
       end
 
       it "should expose a newly created opportunity as @opportunity and render [create] template" do
@@ -421,7 +421,7 @@ describe FatFreeCrm::OpportunitiesController do
       it "should update related campaign revenue if won" do
         @campaign = FactoryGirl.create(:campaign, :revenue => 0)
         @opportunity = FactoryGirl.build(:opportunity, :user => current_user, :stage => "won", :amount => 1100, :discount => 100)
-        Opportunity.stub!(:new).and_return(@opportunity)
+        FatFreeCrm::Opportunity.stub!(:new).and_return(@opportunity)
 
         xhr :post, :create, :opportunity => { :name => "Hello world" }, :campaign => @campaign.id, :account => { :name => "Test Account" }
         assigns(:opportunity).should == @opportunity
@@ -431,7 +431,7 @@ describe FatFreeCrm::OpportunitiesController do
 
       it "should add a new comment to the newly created opportunity when specified" do
         @opportunity = FactoryGirl.build(:opportunity, :user => current_user)
-        Opportunity.stub!(:new).and_return(@opportunity)
+        FatFreeCrm::Opportunity.stub!(:new).and_return(@opportunity)
 
         xhr :post, :create, :opportunity => { :name => "Opportunity Knocks" }, :account => { :name => "My Account" }, :comment_body => "Awesome comment is awesome"
         @opportunity.reload.comments.map(&:comment).should include("Awesome comment is awesome")
@@ -441,11 +441,11 @@ describe FatFreeCrm::OpportunitiesController do
     describe "with invalid params" do
 
       it "should expose a newly created but unsaved opportunity as @opportunity with blank @account and render [create] template" do
-        @account = Account.new(:user => current_user)
+        @account = FatFreeCrm::Account.new(:user => current_user)
         @opportunity = FactoryGirl.build(:opportunity, :name => nil, :campaign => nil, :user => current_user,
                                      :account => @account)
-        Opportunity.stub!(:new).and_return(@opportunity)
-        @stage = Setting.unroll(:opportunity_stage)
+        FatFreeCrm::Opportunity.stub!(:new).and_return(@opportunity)
+        @stage = FatFreeCrm::Setting.unroll(:opportunity_stage)
         @accounts = [ FactoryGirl.create(:account, :user => current_user) ]
 
         # Expect to redraw [create] form with blank account.
@@ -460,8 +460,8 @@ describe FatFreeCrm::OpportunitiesController do
         @account = FactoryGirl.create(:account, :id => 42, :user => current_user)
         @opportunity = FactoryGirl.build(:opportunity, :name => nil, :campaign => nil, :user => current_user,
                                      :account => @account)
-        Opportunity.stub!(:new).and_return(@opportunity)
-        @stage = Setting.unroll(:opportunity_stage)
+        FatFreeCrm::Opportunity.stub!(:new).and_return(@opportunity)
+        @stage = FatFreeCrm::Setting.unroll(:opportunity_stage)
 
         # Expect to redraw [create] form with selected account.
         xhr :post, :create, :opportunity => {}, :account => { :id => 42, :user_id => current_user.id }
@@ -502,7 +502,7 @@ describe FatFreeCrm::OpportunitiesController do
 
       it "should update the requested opportunity, expose it as @opportunity, and render [update] template" do
         @opportunity = FactoryGirl.create(:opportunity, :id => 42)
-        @stage = Setting.unroll(:opportunity_stage)
+        @stage = FatFreeCrm::Setting.unroll(:opportunity_stage)
 
         xhr :put, :update, :id => 42, :opportunity => { :name => "Hello world" }, :account => { :name => "Test Account" }
         @opportunity.reload.name.should == "Hello world"
@@ -698,7 +698,7 @@ describe FatFreeCrm::OpportunitiesController do
       it "should destroy the requested opportunity and render [destroy] template" do
         xhr :delete, :destroy, :id => @opportunity.id
 
-        lambda { Opportunity.find(@opportunity) }.should raise_error(ActiveRecord::RecordNotFound)
+        lambda { FatFreeCrm::Opportunity.find(@opportunity) }.should raise_error(ActiveRecord::RecordNotFound)
         assigns(:opportunity_stage_total).should == nil
         response.should render_template("opportunities/destroy")
       end
@@ -866,7 +866,7 @@ describe FatFreeCrm::OpportunitiesController do
       xhr :post, :redraw, :per_page => 42, :view => "brief", :sort_by => "name"
       current_user.preference[:opportunities_per_page].should == "42"
       current_user.preference[:opportunities_index_view].should  == "brief"
-      current_user.preference[:opportunities_sort_by].should  == "opportunities.name ASC"
+      current_user.preference[:opportunities_sort_by].should  == "fat_free_crm_opportunities.name ASC"
     end
 
     it "should reset current page to 1" do
@@ -893,7 +893,7 @@ describe FatFreeCrm::OpportunitiesController do
     it "should expose filtered opportunities as @opportunity and render [filter] template" do
       session[:opportunities_filter] = "negotiation,analysis"
       @opportunities = [ FactoryGirl.create(:opportunity, :stage => "prospecting", :user => current_user) ]
-      @stage = Setting.unroll(:opportunity_stage)
+      @stage = FatFreeCrm::Setting.unroll(:opportunity_stage)
 
       xhr :get, :filter, :stage => "prospecting"
       assigns(:opportunities).should == @opportunities

@@ -35,7 +35,7 @@ class FatFreeCrm::OpportunitiesController < FatFreeCrm::EntitiesController
   # AJAX /opportunities/1
   #----------------------------------------------------------------------------
   def show
-    @comment = Comment.new
+    @comment = FatFreeCrm::Comment.new
     @timeline = timeline(@opportunity)
     respond_with(@opportunity)
   end
@@ -43,13 +43,13 @@ class FatFreeCrm::OpportunitiesController < FatFreeCrm::EntitiesController
   # GET /opportunities/new
   #----------------------------------------------------------------------------
   def new
-    @opportunity.attributes = {:user => current_user, :stage => Opportunity.default_stage, :access => Setting.default_access, :assigned_to => nil}
-    @account     = FatFreeCrm::Account.new(:user => current_user, :access => Setting.default_access)
+    @opportunity.attributes = {:user => current_user, :stage => FatFreeCrm::Opportunity.default_stage, :access => FatFreeCrm::Setting.default_access, :assigned_to => nil}
+    @account     = FatFreeCrm::Account.new(:user => current_user, :access => FatFreeCrm::Setting.default_access)
     @accounts    = FatFreeCrm::Account.my.order('name')
 
     if params[:related]
       model, id = params[:related].split('_')
-      if related = model.classify.constantize.my.find_by_id(id)
+      if related = "FatFreeCrm::#{model.classify}".constantize.my.find_by_id(id)
         instance_variable_set("@#{model}", related)
       else
         respond_to_related_not_found(model) and return
@@ -66,7 +66,7 @@ class FatFreeCrm::OpportunitiesController < FatFreeCrm::EntitiesController
     @accounts = FatFreeCrm::Account.my.order('name')
 
     if params[:previous].to_s =~ /(\d+)\z/
-      @previous = Opportunity.my.find_by_id($1) || $1.to_i
+      @previous = FatFreeCrm::Opportunity.my.find_by_id($1) || $1.to_i
     end
 
     respond_with(@opportunity)
@@ -98,8 +98,8 @@ class FatFreeCrm::OpportunitiesController < FatFreeCrm::EntitiesController
             @account = FatFreeCrm::Account.new(:user => current_user)
           end
         end
-        @contact = Contact.find(params[:contact]) unless params[:contact].blank?
-        @campaign = Campaign.find(params[:campaign]) unless params[:campaign].blank?
+        @contact = FatFreeCrm::Contact.find(params[:contact]) unless params[:contact].blank?
+        @campaign = FatFreeCrm::Campaign.find(params[:campaign]) unless params[:campaign].blank?
       end
     end
   end
@@ -119,9 +119,9 @@ class FatFreeCrm::OpportunitiesController < FatFreeCrm::EntitiesController
       else
         @accounts = FatFreeCrm::Account.my.order('name')
         if @opportunity.account
-          @account = Account.find(@opportunity.account.id)
+          @account = FatFreeCrm::Account.find(@opportunity.account.id)
         else
-          @account = Account.new(:user => current_user)
+          @account = FatFreeCrm::Account.new(:user => current_user)
         end
       end
     end
@@ -206,9 +206,9 @@ private
     if related
       instance_variable_set("@#{related}", @opportunity.send(related)) if called_from_landing_page?(related.to_s.pluralize)
     else
-      @opportunity_stage_total = { :all => Opportunity.my.count, :other => 0 }
+      @opportunity_stage_total = { :all => FatFreeCrm::Opportunity.my.count, :other => 0 }
       @stage.each do |value, key|
-        @opportunity_stage_total[key] = Opportunity.my.where(:stage => key.to_s).count
+        @opportunity_stage_total[key] = FatFreeCrm::Opportunity.my.where(:stage => key.to_s).count
         @opportunity_stage_total[:other] -= @opportunity_stage_total[key]
       end
       @opportunity_stage_total[:other] += @opportunity_stage_total[:all]
@@ -217,13 +217,13 @@ private
 
   #----------------------------------------------------------------------------
   def load_settings
-    @stage = Setting.unroll(:opportunity_stage)
+    @stage = FatFreeCrm::Setting.unroll(:opportunity_stage)
   end
 
   #----------------------------------------------------------------------------
   def set_params
     current_user.pref[:opportunities_per_page] = params[:per_page] if params[:per_page]
-    current_user.pref[:opportunities_sort_by]  = Opportunity::sort_by_map[params[:sort_by]] if params[:sort_by]
+    current_user.pref[:opportunities_sort_by]  = FatFreeCrm::Opportunity::sort_by_map[params[:sort_by]] if params[:sort_by]
     session[:opportunities_filter] = params[:stage] if params[:stage]
   end
 end

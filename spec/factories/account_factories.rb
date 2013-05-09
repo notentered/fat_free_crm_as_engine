@@ -25,7 +25,7 @@ FactoryGirl.define do
   end
 
 
-  factory :account_opportunity do
+  factory :account_opportunity, class: FatFreeCrm::AccountOpportunity do
     account
     opportunity
     deleted_at          nil
