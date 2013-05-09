@@ -27,7 +27,7 @@ describe FatFreeCrm::Account do
   before { login }
 
   it "should create a new instance given valid attributes" do
-    Account.create!(:name => "Test Account", :user => FactoryGirl.create(:user))
+    FatFreeCrm::Account.create!(:name => "Test Account", :user => FactoryGirl.create(:user))
   end
 
   describe "Attach" do
@@ -98,23 +98,23 @@ describe FatFreeCrm::Account do
   describe "Exportable" do
     describe "assigned account" do
       before do
-        Account.delete_all
+        FatFreeCrm::Account.delete_all
         FactoryGirl.create(:account, :user => FactoryGirl.create(:user), :assignee => FactoryGirl.create(:user))
         FactoryGirl.create(:account, :user => FactoryGirl.create(:user, :first_name => nil, :last_name => nil), :assignee => FactoryGirl.create(:user, :first_name => nil, :last_name => nil))
       end
       it_should_behave_like("exportable") do
-        let(:exported) { Account.all }
+        let(:exported) { FatFreeCrm::Account.all }
       end
     end
 
     describe "unassigned account" do
       before do
-        Account.delete_all
+        FatFreeCrm::Account.delete_all
         FactoryGirl.create(:account, :user => FactoryGirl.create(:user), :assignee => nil)
         FactoryGirl.create(:account, :user => FactoryGirl.create(:user, :first_name => nil, :last_name => nil), :assignee => nil)
       end
       it_should_behave_like("exportable") do
-        let(:exported) { Account.all }
+        let(:exported) { FatFreeCrm::Account.all }
       end
     end
   end
@@ -149,19 +149,19 @@ describe FatFreeCrm::Account do
       end
 
       it "should show accounts which have been created by the user and are unassigned" do
-        Account.visible_on_dashboard(@user).should include(@a1)
+        FatFreeCrm::Account.visible_on_dashboard(@user).should include(@a1)
       end
 
       it "should show accounts which are assigned to the user" do
-        Account.visible_on_dashboard(@user).should include(@a3, @a5)
+        FatFreeCrm::Account.visible_on_dashboard(@user).should include(@a3, @a5)
       end
 
       it "should not show accounts which are not assigned to the user" do
-        Account.visible_on_dashboard(@user).should_not include(@a4)
+        FatFreeCrm::Account.visible_on_dashboard(@user).should_not include(@a4)
       end
 
       it "should not show accounts which are created by the user but assigned" do
-        Account.visible_on_dashboard(@user).should_not include(@a2)
+        FatFreeCrm::Account.visible_on_dashboard(@user).should_not include(@a2)
       end
     end
 
@@ -173,7 +173,7 @@ describe FatFreeCrm::Account do
         @a4 = FactoryGirl.create(:account, :name => "Account X")
         @a5 = FactoryGirl.create(:account, :name => "Account L")
 
-        Account.by_name.should == [@a1, @a3, @a5, @a4, @a2]
+        FatFreeCrm::Account.by_name.should == [@a1, @a3, @a5, @a4, @a2]
       end
     end
   end

@@ -14,38 +14,38 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe FatFreeCrm::Setting do
 
   it "should create a new instance given valid attributes" do
-    Setting.create!(:name => "name", :value => "value")
+    FatFreeCrm::Setting.create!(:name => "name", :value => "value")
   end
 
   it "should find existing setting by its name using [] or method notations, and cache settings" do
     @setting = FactoryGirl.create(:setting, :name => "thingymabob", :value => "magoody")
-    Setting.cache.has_key?("thingymabob").should == false
-    Setting[:thingymabob].should == "magoody"
-    Setting.cache.has_key?("thingymabob").should == true
-    Setting.thingymabob.should == "magoody"
+    FatFreeCrm::Setting.cache.has_key?("thingymabob").should == false
+    FatFreeCrm::Setting[:thingymabob].should == "magoody"
+    FatFreeCrm::Setting.cache.has_key?("thingymabob").should == true
+    FatFreeCrm::Setting.thingymabob.should == "magoody"
   end
 
   it "should use value from YAML if setting is missing from database" do
     @setting = FactoryGirl.create(:setting, :name => "magoody", :value => nil)
-    Setting.yaml_settings.merge!(:magoody => "thingymabob")
-    Setting[:magoody].should == "thingymabob"
-    Setting.magoody.should == "thingymabob"
+    FatFreeCrm::Setting.yaml_settings.merge!(:magoody => "thingymabob")
+    FatFreeCrm::Setting[:magoody].should == "thingymabob"
+    FatFreeCrm::Setting.magoody.should == "thingymabob"
   end
 
   it "should save a new value of a setting using []= or method notation" do
-    Setting[:hello] = "world"
-    Setting[:hello].should == "world"
-    Setting.hello.should == "world"
+    FatFreeCrm::Setting[:hello] = "world"
+    FatFreeCrm::Setting[:hello].should == "world"
+    FatFreeCrm::Setting.hello.should == "world"
 
-    Setting.world = "hello"
-    Setting.world.should == "hello"
-    Setting[:world].should == "hello"
+    FatFreeCrm::Setting.world = "hello"
+    FatFreeCrm::Setting.world.should == "hello"
+    FatFreeCrm::Setting[:world].should == "hello"
   end
   
   it "should handle false and nil values correctly" do
-    Setting[:hello] = false
-    Setting[:hello].should == false
-    Setting.hello.should == false
+    FatFreeCrm::Setting[:hello] = false
+    FatFreeCrm::Setting[:hello].should == false
+    FatFreeCrm::Setting.hello.should == false
   end
 end
 

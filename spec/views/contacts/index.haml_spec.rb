@@ -5,9 +5,9 @@ describe "/contacts/index" do
 
   before do
     view.lookup_context.prefixes << 'entities'
-    assign :per_page, Contact.per_page
-    assign :sort_by,  Contact.sort_by
-    assign :ransack_search, Contact.search
+    assign :per_page, FatFreeCrm::Contact.per_page
+    assign :sort_by,  FatFreeCrm::Contact.sort_by
+    assign :ransack_search, FatFreeCrm::Contact.search
     login_and_assign
   end
 

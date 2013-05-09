@@ -49,7 +49,7 @@ describe "/contacts/_edit" do
   it "should render background info field if settings require so" do
     assign(:users, [ current_user ])
     assign(:contact, FactoryGirl.create(:contact))
-    Setting.background_info = [ :contact ]
+    FatFreeCrm::Setting.background_info = [ :contact ]
 
     render
     rendered.should have_tag("textarea[id=contact_background_info]")
@@ -58,7 +58,7 @@ describe "/contacts/_edit" do
   it "should not render background info field if settings do not require so" do
     assign(:users, [ current_user ])
     assign(:contact, FactoryGirl.create(:contact))
-    Setting.background_info = []
+    FatFreeCrm::Setting.background_info = []
 
     render
     rendered.should_not have_tag("textarea[id=contact_background_info]")

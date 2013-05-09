@@ -15,13 +15,13 @@ describe FatFreeCrm::CommentExtensions do
     end
 
     it "should create a comment for user" do
-      entity = CommentableEntity.create
+      entity = FatFreeCrm::CommentableEntity.create
       entity.add_comment_by_user("I will handle this one", user)
       entity.reload.comments.map(&:comment).should include("I will handle this one")
     end
 
     it "should not create a comment if body is blank" do
-      entity = CommentableEntity.create
+      entity = FatFreeCrm::CommentableEntity.create
       entity.add_comment_by_user("", user)
       entity.reload.comments.should be_empty
     end

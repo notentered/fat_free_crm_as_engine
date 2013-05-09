@@ -19,7 +19,7 @@ describe FatFreeCrm::Preference do
   end
 
   it "should create a new instance given valid attributes" do
-    Preference.create!(:user => @user, :name => "name", :value => "value")
+    FatFreeCrm::Preference.create!(:user => @user, :name => "name", :value => "value")
   end
 
   describe "get user preference" do

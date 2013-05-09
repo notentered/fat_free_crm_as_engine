@@ -38,7 +38,7 @@ describe FatFreeCrm::Contact do
   before { login }
 
   it "should create a new instance given valid attributes" do
-    Contact.create!(:first_name => "Billy", :last_name => "Bones")
+    FatFreeCrm::Contact.create!(:first_name => "Billy", :last_name => "Bones")
   end
 
   describe "Update existing contact" do
@@ -51,8 +51,8 @@ describe FatFreeCrm::Contact do
       lambda { @contact.update_with_account_and_permissions({
         :account => { :name => "New account" },
         :contact => { :first_name => "Billy" }
-      })}.should change(Account, :count).by(1)
-      Account.last.name.should == "New account"
+      })}.should change(FatFreeCrm::Account, :count).by(1)
+      FatFreeCrm::Account.last.name.should == "New account"
       @contact.first_name.should == "Billy"
     end
 
@@ -61,7 +61,7 @@ describe FatFreeCrm::Contact do
       lambda { @contact.update_with_account_and_permissions({
         :account => { :id => @another_account.id },
         :contact => { :first_name => "Billy" }
-      })}.should_not change(Account, :count)
+      })}.should_not change(FatFreeCrm::Account, :count)
       @contact.account.should == @another_account
       @contact.first_name.should == "Billy"
     end
@@ -70,7 +70,7 @@ describe FatFreeCrm::Contact do
       lambda { @contact.update_with_account_and_permissions({
         :account => { :name => "" },
         :contact => { :first_name => "Billy" }
-      })}.should_not change(Account, :count)
+      })}.should_not change(FatFreeCrm::Account, :count)
       @contact.account.should == nil
       @contact.first_name.should == "Billy"
     end
@@ -79,7 +79,7 @@ describe FatFreeCrm::Contact do
       lambda { @contact.update_with_account_and_permissions({
         :account => { :id => "" },
         :contact => { :first_name => "Billy" }
-      })}.should_not change(Account, :count)
+      })}.should_not change(FatFreeCrm::Account, :count)
       @contact.account.should == nil
       @contact.first_name.should == "Billy"
     end
@@ -136,23 +136,23 @@ describe FatFreeCrm::Contact do
   describe "Exportable" do
     describe "assigned contact" do
       before do
-        Contact.delete_all
+        FatFreeCrm::Contact.delete_all
         FactoryGirl.create(:contact, :user => FactoryGirl.create(:user), :assignee => FactoryGirl.create(:user))
         FactoryGirl.create(:contact, :user => FactoryGirl.create(:user, :first_name => nil, :last_name => nil), :assignee => FactoryGirl.create(:user, :first_name => nil, :last_name => nil))
       end
       it_should_behave_like("exportable") do
-        let(:exported) { Contact.all }
+        let(:exported) { FatFreeCrm::Contact.all }
       end
     end
 
     describe "unassigned contact" do
       before do
-        Contact.delete_all
+        FatFreeCrm::Contact.delete_all
         FactoryGirl.create(:contact, :user => FactoryGirl.create(:user), :assignee => nil)
         FactoryGirl.create(:contact, :user => FactoryGirl.create(:user, :first_name => nil, :last_name => nil), :assignee => nil)
       end
       it_should_behave_like("exportable") do
-        let(:exported) { Contact.all }
+        let(:exported) { FatFreeCrm::Contact.all }
       end
     end
   end
@@ -168,36 +168,36 @@ describe FatFreeCrm::Contact do
     end
     
     it "should search first_name" do
-      Contact.text_search('Bob').should == [@contact]
+      FatFreeCrm::Contact.text_search('Bob').should == [@contact]
     end
 
     it "should search last_name" do
-      Contact.text_search('Dillion').should == [@contact]
+      FatFreeCrm::Contact.text_search('Dillion').should == [@contact]
     end
     
     it "should search whole name" do
-      Contact.text_search('Bob Dillion').should == [@contact]
+      FatFreeCrm::Contact.text_search('Bob Dillion').should == [@contact]
     end
     
     it "should search whole name reversed" do
-      Contact.text_search('Dillion Bob').should == [@contact]
+      FatFreeCrm::Contact.text_search('Dillion Bob').should == [@contact]
     end
 
     it "should search email" do
-      Contact.text_search('example').should == [@contact]
+      FatFreeCrm::Contact.text_search('example').should == [@contact]
     end
     
     it "should search phone" do
-      Contact.text_search('123').should == [@contact]
+      FatFreeCrm::Contact.text_search('123').should == [@contact]
     end
     
     it "should not break with a single quote" do
       contact2 = FactoryGirl.create(:contact, :first_name => "Shamus", :last_name => "O'Connell", :email => 'bob_dillion@example.com', :phone => '+1 123 456 789')
-      Contact.text_search("O'Connell").should == [contact2]
+      FatFreeCrm::Contact.text_search("O'Connell").should == [contact2]
     end
     
     it "should not break on special characters" do
-      Contact.text_search('@$%#^@!').should == []
+      FatFreeCrm::Contact.text_search('@$%#^@!').should == []
     end
   
   end

@@ -38,7 +38,7 @@ describe FatFreeCrm::Lead do
   before { login }
 
   it "should create a new instance given valid attributes" do
-    Lead.create!(:first_name => "Billy", :last_name => "Bones")
+    FatFreeCrm::Lead.create!(:first_name => "Billy", :last_name => "Bones")
   end
 
   describe "Attach" do
@@ -77,23 +77,23 @@ describe FatFreeCrm::Lead do
   describe "Exportable" do
     describe "assigned lead" do
       before do
-        Lead.delete_all
+        FatFreeCrm::Lead.delete_all
         FactoryGirl.create(:lead, :user => FactoryGirl.create(:user), :assignee => FactoryGirl.create(:user))
         FactoryGirl.create(:lead, :user => FactoryGirl.create(:user, :first_name => nil, :last_name => nil), :assignee => FactoryGirl.create(:user, :first_name => nil, :last_name => nil))
       end
       it_should_behave_like("exportable") do
-        let(:exported) { Lead.all }
+        let(:exported) { FatFreeCrm::Lead.all }
       end
     end
 
     describe "unassigned lead" do
       before do
-        Lead.delete_all
+        FatFreeCrm::Lead.delete_all
         FactoryGirl.create(:lead, :user => FactoryGirl.create(:user), :assignee => nil)
         FactoryGirl.create(:lead, :user => FactoryGirl.create(:user, :first_name => nil, :last_name => nil), :assignee => nil)
       end
       it_should_behave_like("exportable") do
-        let(:exported) { Lead.all }
+        let(:exported) { FatFreeCrm::Lead.all }
       end
     end
   end

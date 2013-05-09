@@ -16,7 +16,7 @@ end
 
 #----------------------------------------------------------------------------
 def stub_task_total(view = "pending")
-  settings = (view == "completed" ? Setting.task_completed : Setting.task_bucket)
+  settings = (view == "completed" ? FatFreeCrm::Setting.task_completed : FatFreeCrm::Setting.task_bucket)
   settings.inject({ :all => 0 }) { |hash, key| hash[key] = 1; hash }
 end
 

@@ -23,14 +23,14 @@ describe "/leads/_new" do
   end
 
   it "should render background info field if settings require so" do
-    Setting.background_info = [ :lead ]
+    FatFreeCrm::Setting.background_info = [ :lead ]
 
     render
     rendered.should have_tag("textarea[id=lead_background_info]")
   end
 
   it "should not render background info field if settings do not require so" do
-    Setting.background_info = []
+    FatFreeCrm::Setting.background_info = []
 
     render
     rendered.should_not have_tag("textarea[id=lead_background_info]")

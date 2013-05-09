@@ -23,7 +23,7 @@ describe FatFreeCrm::Comment do
   end
 
   it "should create a new instance given valid attributes" do
-    Comment.create!(:comment => "Hello", :user => FactoryGirl.create(:user), :commentable => FactoryGirl.create(:lead))
+    FatFreeCrm::Comment.create!(:comment => "Hello", :user => FactoryGirl.create(:user), :commentable => FactoryGirl.create(:lead))
   end
 
   it "should subscribe users mentioned in the comment to the entity, and notify them via email" do
@@ -32,7 +32,7 @@ describe FatFreeCrm::Comment do
       FactoryGirl.create(:user, :username => "another_user")
     ]
     entity = FactoryGirl.create(:lead)
-    Comment.create!(:comment => "Hey @test_user, take a look at this. Also show @another_user",
+    FatFreeCrm::Comment.create!(:comment => "Hey @test_user, take a look at this. Also show @another_user",
                     :user => FactoryGirl.create(:user),
                     :commentable => entity)
 

@@ -5,9 +5,9 @@ describe "/accounts/index" do
 
   before do
     view.lookup_context.prefixes << 'entities'
-    assign :per_page, Account.per_page
-    assign :sort_by,  Account.sort_by
-    assign :ransack_search, Account.search
+    assign :per_page, FatFreeCrm::Account.per_page
+    assign :sort_by,  FatFreeCrm::Account.sort_by
+    assign :ransack_search, FatFreeCrm::Account.search
     login_and_assign
   end
 

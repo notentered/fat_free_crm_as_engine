@@ -67,8 +67,8 @@ describe FatFreeCrm::MailProcessor::Dropbox do
       @crawler.should_not_receive(:with_recipients)
       @crawler.run
 
-      @campaign = Campaign.first(:conditions => "name = 'Got milk'")
-      @campaign.should be_instance_of(Campaign)
+      @campaign = FatFreeCrm::Campaign.first(:conditions => "name = 'Got milk'")
+      @campaign.should be_instance_of(FatFreeCrm::Campaign)
       @campaign.emails.size.should == 1
       @campaign.emails.first.mediator.should == @campaign
     end
@@ -90,7 +90,7 @@ describe FatFreeCrm::MailProcessor::Dropbox do
       @crawler.should_not_receive(:with_recipients)
       @crawler.run
 
-      @lead = Lead.first(:conditions => "first_name = 'Cindy' AND last_name = 'Cluster'")
+      @lead = FatFreeCrm::Lead.first(:conditions => "first_name = 'Cindy' AND last_name = 'Cluster'")
       @lead.should be_instance_of(Lead)
       @lead.status.should == "contacted"
       @lead.emails.size.should == 1
@@ -114,8 +114,8 @@ describe FatFreeCrm::MailProcessor::Dropbox do
       @crawler.should_not_receive(:with_recipients)
       @crawler.run
 
-      @contact = Contact.first(:conditions => "first_name = 'Cindy' AND last_name = 'Cluster'")
-      @contact.should be_instance_of(Contact)
+      @contact = FatFreeCrm::Contact.first(:conditions => "first_name = 'Cindy' AND last_name = 'Cluster'")
+      @contact.should be_instance_of(FatFreeCrm::Contact)
       @contact.emails.size.should == 1
       @contact.emails.first.mediator.should == @contact
     end
@@ -149,9 +149,9 @@ describe FatFreeCrm::MailProcessor::Dropbox do
 
     it "should create the asset and attach the email message" do
       @crawler.should_receive(:archive).once
-      lambda { @crawler.run }.should change(Contact, :count).by(1)
+      lambda { @crawler.run }.should change(FatFreeCrm::Contact, :count).by(1)
 
-      @contact = Contact.last
+      @contact = FatFreeCrm::Contact.last
       @contact.emails.size.should == 1
       @contact.emails.first.mediator.should == @contact
     end
@@ -252,7 +252,7 @@ describe FatFreeCrm::MailProcessor::Dropbox do
       @crawler.should_receive(:archive).once
       @crawler.run
 
-      @contact = Contact.first
+      @contact = FatFreeCrm::Contact.first
       @contact.email.should == "ben@example.com"
       @contact.emails.size.should == 1
       @contact.emails.first.mediator.should == @contact
@@ -283,17 +283,17 @@ describe FatFreeCrm::MailProcessor::Dropbox do
     describe "'access'" do
 
       it "should be 'Private' if default setting is 'Private'" do
-        Setting.stub!(:default_access).and_return('Private')
+        FatFreeCrm::Setting.stub!(:default_access).and_return('Private')
         @crawler.send(:default_access).should == "Private"
       end
 
       it "should be 'Public' if default setting is 'Public'" do
-        Setting.stub!(:default_access).and_return('Public')
+        FatFreeCrm::Setting.stub!(:default_access).and_return('Public')
         @crawler.send(:default_access).should == "Public"
       end
 
       it "should be 'Private' if default setting is 'Shared'" do
-        Setting.stub!(:default_access).and_return('Shared')
+        FatFreeCrm::Setting.stub!(:default_access).and_return('Shared')
         @crawler.send(:default_access).should == "Private"
       end
 

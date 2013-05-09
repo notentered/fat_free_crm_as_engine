@@ -107,13 +107,13 @@ describe FatFreeCrm::User do
   end
 
   it "should set suspended timestamp upon creation if signups need approval and the user is not an admin" do
-    Setting.stub(:user_signup).and_return(:needs_approval)
+    FatFreeCrm::Setting.stub(:user_signup).and_return(:needs_approval)
     @user = FactoryGirl.create(:user, :suspended_at => nil)
     @user.should be_suspended
   end
 
   it "should not set suspended timestamp upon creation if signups need approval and the user is an admin" do
-    Setting.stub(:user_signup).and_return(:needs_approval)
+    FatFreeCrm::Setting.stub(:user_signup).and_return(:needs_approval)
     @user = FactoryGirl.create(:user, :admin => true, :suspended_at => nil)
     @user.should_not be_suspended
   end

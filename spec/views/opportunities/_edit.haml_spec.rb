@@ -7,7 +7,7 @@ describe "/opportunities/_edit" do
     login_and_assign
     assign(:account, @account = FactoryGirl.create(:account))
     assign(:accounts, [ @account ])
-    assign(:stage, Setting.unroll(:opportunity_stage))
+    assign(:stage, FatFreeCrm::Setting.unroll(:opportunity_stage))
   end
 
   it "should render [edit opportunity] form" do
@@ -46,7 +46,7 @@ describe "/opportunities/_edit" do
   it "should render background info field if settings require so" do
     assign(:users, [ current_user ])
     assign(:opportunity, FactoryGirl.create(:opportunity))
-    Setting.background_info = [ :opportunity ]
+    FatFreeCrm::Setting.background_info = [ :opportunity ]
 
     render
     rendered.should have_tag("textarea[id=opportunity_background_info]")
@@ -55,7 +55,7 @@ describe "/opportunities/_edit" do
   it "should not render background info field if settings do not require so" do
     assign(:users, [ current_user ])
     assign(:opportunity, FactoryGirl.create(:opportunity))
-    Setting.background_info = []
+    FatFreeCrm::Setting.background_info = []
 
     render
     rendered.should_not have_tag("textarea[id=opportunity_background_info]")

@@ -36,7 +36,7 @@ describe 'FatFreeCrm::Fields' do
       ActiveRecord::Base.connection.should_receive(:table_exists?).with('field_groups').and_return(true)
       dummy_scope = mock
       dummy_scope.should_receive(:order).with(:position)
-      FieldGroup.should_receive(:where).and_return(dummy_scope)
+      FatFreeCrm::FieldGroup.should_receive(:where).and_return(dummy_scope)
       Foo.new.field_groups
     end
     
@@ -88,8 +88,8 @@ describe 'FatFreeCrm::Fields' do
   describe "custom_fields_validator" do
   
     before(:each) do
-      @f1 = mock(Field)
-      @field_groups = [ mock(FieldGroup, :fields => [@f1]) ]
+      @f1 = mock(FatFreeCrm::Field)
+      @field_groups = [ mock(FatFreeCrm::FieldGroup, :fields => [@f1]) ]
     end
   
     it "should call custom_validator on each custom field" do

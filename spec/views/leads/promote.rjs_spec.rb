@@ -64,7 +64,7 @@ describe "/leads/promote" do
       before do
         controller.request.env["HTTP_REFERER"] = "http://localhost/campaigns/123"
         assign(:campaign, FactoryGirl.create(:campaign))
-        assign(:stage, Setting.unroll(:opportunity_stage))
+        assign(:stage, FatFreeCrm::Setting.unroll(:opportunity_stage))
         assign(:opportunity, @opportunity = FactoryGirl.create(:opportunity))
       end
 

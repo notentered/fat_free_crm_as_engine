@@ -15,13 +15,13 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 describe FatFreeCrm::AccountContact do
   before(:each) do
     @valid_attributes = {
-      :account => mock_model(Account),
-      :contact => mock_model(Contact)
+      :account => mock_model(FatFreeCrm::Account),
+      :contact => mock_model(FatFreeCrm::Contact)
     }
   end
 
   it "should create a new instance given valid attributes" do
-    AccountContact.create!(@valid_attributes)
+    FatFreeCrm::AccountContact.create!(@valid_attributes)
   end
 end
 

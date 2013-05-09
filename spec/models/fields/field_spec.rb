@@ -24,7 +24,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 describe FatFreeCrm::Field do
 
   it "should create a new instance given valid attributes" do
-    Field.create!(
+    FatFreeCrm::Field.create!(
       :name      => 'skype_address',
       :label     => 'Skype address',
       :as        => 'string',
@@ -35,15 +35,15 @@ describe FatFreeCrm::Field do
 
 
   it "should return a list of field types" do
-    Field.field_types['string'].should == {'klass' => 'CustomField', 'type' => 'string'}
+    FatFreeCrm::Field.field_types['string'].should == {'klass' => 'CustomField', 'type' => 'string'}
   end
 
   it "should return a hash of input options" do
-    Field.new.input_options.should be_a(Hash)
+    FatFreeCrm::Field.new.input_options.should be_a(Hash)
   end
 
   it "should be able to display a empty multi_select value" do
-    field = Field.new(
+    field = FatFreeCrm::Field.new(
       :label => "Availability",
       :name  => "availability"
     )

@@ -5,7 +5,7 @@ describe "/campaigns/update" do
     login_and_assign
     assign(:campaign, @campaign = FactoryGirl.create(:campaign, :user => current_user))
     assign(:users, [ current_user ])
-    assign(:status, Setting.campaign_status)
+    assign(:status, FatFreeCrm::Setting.campaign_status)
     assign(:campaign_status_total, Hash.new(1))
   end
 

@@ -10,7 +10,7 @@ describe "/opportunities/_new" do
     assign(:account, @account)
     assign(:accounts, [ @account ])
     assign(:users, [ current_user ])
-    assign(:stage, Setting.unroll(:opportunity_stage))
+    assign(:stage, FatFreeCrm::Setting.unroll(:opportunity_stage))
   end
 
   it "should render [create opportunity] form" do
@@ -29,14 +29,14 @@ describe "/opportunities/_new" do
   end
 
   it "should render background info field if settings require so" do
-    Setting.background_info = [ :opportunity ]
+    FatFreeCrm::Setting.background_info = [ :opportunity ]
 
     render
     rendered.should have_tag("textarea[id=opportunity_background_info]")
   end
 
   it "should not render background info field if settings do not require so" do
-    Setting.background_info = []
+    FatFreeCrm::Setting.background_info = []
 
     render
     rendered.should_not have_tag("textarea[id=opportunity_background_info]")

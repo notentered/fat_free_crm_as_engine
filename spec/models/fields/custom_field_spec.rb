@@ -25,10 +25,10 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 describe FatFreeCrm::CustomField do
 
   it "should add a column to the database" do
-    CustomField.connection.should_receive(:add_column).
+    FatFreeCrm::CustomField.connection.should_receive(:add_column).
                 with("contacts", "cf_test_field", 'string', {})
-    Contact.should_receive(:reset_column_information)
-    Contact.should_receive(:serialize_custom_fields!)
+    FatFreeCrm::Contact.should_receive(:reset_column_information)
+    FatFreeCrm::Contact.should_receive(:serialize_custom_fields!)
 
     FactoryGirl.create(:custom_field,
                        :as => "string",
@@ -70,12 +70,12 @@ describe FatFreeCrm::CustomField do
   end
 
   it "should change a column's type for safe transitions" do
-    CustomField.connection.should_receive(:add_column).
+    FatFreeCrm::CustomField.connection.should_receive(:add_column).
                 with("contacts", "cf_test_field", 'string', {})
-    CustomField.connection.should_receive(:change_column).
+    FatFreeCrm::CustomField.connection.should_receive(:change_column).
                 with("contacts", "cf_test_field", 'text', {})
-    Contact.should_receive(:reset_column_information).twice
-    Contact.should_receive(:serialize_custom_fields!).twice
+    FatFreeCrm::Contact.should_receive(:reset_column_information).twice
+    FatFreeCrm::Contact.should_receive(:serialize_custom_fields!).twice
     
     field_group = FactoryGirl.create(:field_group, :klass_name => "Contact")
     c = FactoryGirl.create(:custom_field,
@@ -89,14 +89,14 @@ describe FatFreeCrm::CustomField do
 
   describe "in case a new custom field was added by a different instance" do
     it "should refresh column info and retry on assignment error" do
-      Contact.should_receive(:reset_column_information)
+      FatFreeCrm::Contact.should_receive(:reset_column_information)
 
-      lambda { Contact.new :cf_unknown_field => 123 }.should raise_error(ActiveRecord::UnknownAttributeError)
+      lambda { FatFreeCrm::Contact.new :cf_unknown_field => 123 }.should raise_error(ActiveRecord::UnknownAttributeError)
     end
 
     it "should refresh column info and retry on attribute error" do
-      Contact.should_receive(:reset_column_information)
-      Contact.should_receive(:serialize_custom_fields!)
+      FatFreeCrm::Contact.should_receive(:reset_column_information)
+      FatFreeCrm::Contact.should_receive(:serialize_custom_fields!)
 
       contact = FactoryGirl.build(:contact)
       contact.cf_another_new_field.should == nil
@@ -106,7 +106,7 @@ describe FatFreeCrm::CustomField do
   describe "validation" do
   
     it "should have errors if custom field is required" do
-      event = CustomField.new(:name => 'cf_event', :required => true)
+      event = FatFreeCrm::CustomField.new(:name => 'cf_event', :required => true)
       foo = mock(:cf_event => nil)
       err = mock(:errors); err.stub(:add)
       foo.should_receive(:errors).and_return(err)
@@ -114,7 +114,7 @@ describe FatFreeCrm::CustomField do
     end
     
     it "should have errors if custom field is longer than maxlength" do
-      event = CustomField.new(:name => 'cf_event', :maxlength => 5)
+      event = FatFreeCrm::CustomField.new(:name => 'cf_event', :maxlength => 5)
       foo = mock(:cf_event => "This is too long")
       err = mock(:errors); err.stub(:add)
       foo.should_receive(:errors).and_return(err)

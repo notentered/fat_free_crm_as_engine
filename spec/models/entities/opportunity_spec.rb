@@ -27,7 +27,7 @@ describe FatFreeCrm::Opportunity do
   before { login }
 
   it "should create a new instance given valid attributes" do
-    Opportunity.create!(:name => "Opportunity", :stage => 'analysis')
+    FatFreeCrm::Opportunity.create!(:name => "Opportunity", :stage => 'analysis')
   end
 
   it "should be possible to create opportunity with the same name" do
@@ -36,12 +36,12 @@ describe FatFreeCrm::Opportunity do
   end
 
   it "have a default stage" do
-    Setting.should_receive(:[]).with(:opportunity_default_stage).and_return('default')
-    Opportunity.default_stage.should eql('default')
+    FatFreeCrm::Setting.should_receive(:[]).with(:opportunity_default_stage).and_return('default')
+    FatFreeCrm::Opportunity.default_stage.should eql('default')
   end
 
   it "have a fallback default stage" do
-    Opportunity.default_stage.should eql('prospecting')
+    FatFreeCrm::Opportunity.default_stage.should eql('prospecting')
   end
 
   describe "Update existing opportunity" do
@@ -54,8 +54,8 @@ describe FatFreeCrm::Opportunity do
       lambda { @opportunity.update_with_account_and_permissions({
         :account => { :name => "New account" },
         :opportunity => { :name => "Hello" }
-      })}.should change(Account, :count).by(1)
-      Account.last.name.should == "New account"
+      })}.should change(FatFreeCrm::Account, :count).by(1)
+      FatFreeCrm::Account.last.name.should == "New account"
       @opportunity.name.gsub(/#\d+ /,'').should == "Hello"
     end
 
@@ -64,7 +64,7 @@ describe FatFreeCrm::Opportunity do
       lambda { @opportunity.update_with_account_and_permissions({
         :account => { :id => @another_account.id },
         :opportunity => { :name => "Hello" }
-      })}.should_not change(Account, :count)
+      })}.should_not change(FatFreeCrm::Account, :count)
       @opportunity.account.should == @another_account
       @opportunity.name.gsub(/#\d+ /,'').should == "Hello"
     end
@@ -73,7 +73,7 @@ describe FatFreeCrm::Opportunity do
       lambda { @opportunity.update_with_account_and_permissions({
         :account => { :name => "" },
         :opportunity => { :name => "Hello" }
-      })}.should_not change(Account, :count)
+      })}.should_not change(FatFreeCrm::Account, :count)
       @opportunity.account.should be_nil
       @opportunity.name.gsub(/#\d+ /,'').should == "Hello"
     end
@@ -82,7 +82,7 @@ describe FatFreeCrm::Opportunity do
       lambda { @opportunity.update_with_account_and_permissions({
         :account => { :id => "" },
         :opportunity => { :name => "Hello" }
-      })}.should_not change(Account, :count)
+      })}.should_not change(FatFreeCrm::Account, :count)
       @opportunity.account.should be_nil
       @opportunity.name.gsub(/#\d+ /,'').should == "Hello"
     end
@@ -104,7 +104,7 @@ describe FatFreeCrm::Opportunity do
 
   describe "Scopes" do
     it "should find non-closed opportunities" do
-      Opportunity.delete_all
+      FatFreeCrm::Opportunity.delete_all
       @opportunities = [
         FactoryGirl.create(:opportunity, :stage => "prospecting", :amount => 1),
         FactoryGirl.create(:opportunity, :stage => "analysis", :amount => 1),
@@ -113,10 +113,10 @@ describe FatFreeCrm::Opportunity do
         FactoryGirl.create(:opportunity, :stage => "lost",     :amount => 3),
         FactoryGirl.create(:opportunity, :stage => "lost",     :amount => 3)
       ]
-      Opportunity.pipeline.sum(:amount).should ==  2
-      Opportunity.won.sum(:amount).should      ==  4
-      Opportunity.lost.sum(:amount).should     ==  6
-      Opportunity.sum(:amount).should          == 12
+      FatFreeCrm::Opportunity.pipeline.sum(:amount).should ==  2
+      FatFreeCrm::Opportunity.won.sum(:amount).should      ==  4
+      FatFreeCrm::Opportunity.lost.sum(:amount).should     ==  6
+      FatFreeCrm::Opportunity.sum(:amount).should          == 12
     end
 
     context "unassigned" do
@@ -124,11 +124,11 @@ describe FatFreeCrm::Opportunity do
       let(:assigned_opportunity){ FactoryGirl.create(:opportunity, :assignee => FactoryGirl.create(:user))}
 
       it "includes unassigned opportunities" do
-        Opportunity.unassigned.should include(unassigned_opportunity)
+        FatFreeCrm::Opportunity.unassigned.should include(unassigned_opportunity)
       end
 
       it "does not include opportunities assigned to a user" do
-        Opportunity.unassigned.should_not include(assigned_opportunity)
+        FatFreeCrm::Opportunity.unassigned.should_not include(assigned_opportunity)
       end
     end
   end
@@ -184,23 +184,23 @@ describe FatFreeCrm::Opportunity do
   describe "Exportable" do
     describe "assigned opportunity" do
       before do
-        Opportunity.delete_all
+        FatFreeCrm::Opportunity.delete_all
         FactoryGirl.create(:opportunity, :user => FactoryGirl.create(:user), :assignee => FactoryGirl.create(:user))
         FactoryGirl.create(:opportunity, :user => FactoryGirl.create(:user, :first_name => nil, :last_name => nil), :assignee => FactoryGirl.create(:user, :first_name => nil, :last_name => nil))
       end
       it_should_behave_like("exportable") do
-        let(:exported) { Opportunity.all }
+        let(:exported) { FatFreeCrm::Opportunity.all }
       end
     end
 
     describe "unassigned opportunity" do
       before do
-        Opportunity.delete_all
+        FatFreeCrm::Opportunity.delete_all
         FactoryGirl.create(:opportunity, :user => FactoryGirl.create(:user), :assignee => nil)
         FactoryGirl.create(:opportunity, :user => FactoryGirl.create(:user, :first_name => nil, :last_name => nil), :assignee => nil)
       end
       it_should_behave_like("exportable") do
-        let(:exported) { Opportunity.all }
+        let(:exported) { FatFreeCrm::Opportunity.all }
       end
     end
   end
@@ -223,24 +223,24 @@ describe FatFreeCrm::Opportunity do
       end
 
       it "should show opportunities which have been created by the user and are unassigned" do
-        Opportunity.visible_on_dashboard(@user).should include(@o1)
+        FatFreeCrm::Opportunity.visible_on_dashboard(@user).should include(@o1)
       end
 
       it "should show opportunities which are assigned to the user" do
-        Opportunity.visible_on_dashboard(@user).should include(@o3, @o5)
+        FatFreeCrm::Opportunity.visible_on_dashboard(@user).should include(@o3, @o5)
       end
 
       it "should not show opportunities which are not assigned to the user" do
-        Opportunity.visible_on_dashboard(@user).should_not include(@o4)
+        FatFreeCrm::Opportunity.visible_on_dashboard(@user).should_not include(@o4)
       end
 
       it "should not show opportunities which are created by the user but assigned" do
-        Opportunity.visible_on_dashboard(@user).should_not include(@o2)
+        FatFreeCrm::Opportunity.visible_on_dashboard(@user).should_not include(@o2)
       end
 
       it "does not include won or lost opportunities" do
-        Opportunity.visible_on_dashboard(@user).should_not include(@o6)
-        Opportunity.visible_on_dashboard(@user).should_not include(@o7)
+        FatFreeCrm::Opportunity.visible_on_dashboard(@user).should_not include(@o6)
+        FatFreeCrm::Opportunity.visible_on_dashboard(@user).should_not include(@o7)
       end
     end
 
@@ -250,7 +250,7 @@ describe FatFreeCrm::Opportunity do
       let(:o3) { FactoryGirl.create(:opportunity, :closes_on => 5.days.from_now) }
 
       it "should show opportunities ordered by closes on" do
-        Opportunity.by_closes_on.should == [o1, o3, o2]
+        FatFreeCrm::Opportunity.by_closes_on.should == [o1, o3, o2]
       end
     end
 
@@ -260,7 +260,7 @@ describe FatFreeCrm::Opportunity do
       let(:o3) { FactoryGirl.create(:opportunity, :amount => 750000) }
 
       it "should show opportunities ordered by amount" do
-        Opportunity.by_amount.should == [o3, o1, o2]
+        FatFreeCrm::Opportunity.by_amount.should == [o3, o1, o2]
       end
     end
 
@@ -270,11 +270,11 @@ describe FatFreeCrm::Opportunity do
       let(:o3) { FactoryGirl.create(:opportunity, :stage => 'analysis') }
 
       it "should show opportunities which are not lost" do
-        Opportunity.not_lost.should include(o1, o3)
+        FatFreeCrm::Opportunity.not_lost.should include(o1, o3)
       end
 
       it "should not show opportunities which are lost" do
-        Opportunity.not_lost.should_not include(o2)
+        FatFreeCrm::Opportunity.not_lost.should_not include(o2)
       end
     end
   end

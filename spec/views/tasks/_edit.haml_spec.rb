@@ -28,14 +28,14 @@ describe "/tasks/_edit" do
   end
 
   it "should render background info if Settings request so" do
-    Setting.background_info = [ :task ]
+    FatFreeCrm::Setting.background_info = [ :task ]
     render
 
     rendered.should have_tag("textarea[id=task_background_info]")
   end
 
   it "should not render background info if Settings do not request so" do
-    Setting.background_info = []
+    FatFreeCrm::Setting.background_info = []
     render
 
     rendered.should_not have_tag("textarea[id=task_background_info]")

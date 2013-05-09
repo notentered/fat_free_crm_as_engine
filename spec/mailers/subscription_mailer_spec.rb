@@ -6,10 +6,10 @@ describe FatFreeCrm::SubscriptionMailer do
     let(:user) { FactoryGirl.create(:user, :email => 'notify_me@example.com') }
     let(:commentable) { FactoryGirl.create(:opportunity, :id => 47, :name => 'Opportunity name') }
     let(:comment) { FactoryGirl.create(:comment, :commentable => commentable) }
-    let(:mail) { SubscriptionMailer.comment_notification(user, comment) }
+    let(:mail) { FatFreeCrm::SubscriptionMailer.comment_notification(user, comment) }
 
     before :each do
-      Setting.email_comment_replies.stub(:[]).with(:address).and_return("email_comment_reply@example.com")
+      FatFreeCrm::Setting.email_comment_replies.stub(:[]).with(:address).and_return("email_comment_reply@example.com")
     end
 
     it "uses email defined in settings as the sender" do

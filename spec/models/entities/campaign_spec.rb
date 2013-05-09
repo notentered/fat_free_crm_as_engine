@@ -31,7 +31,7 @@ describe FatFreeCrm::Campaign do
   before { login }
 
   it "should create a new instance given valid attributes" do
-    Campaign.create!(:name => "Campaign", :user => FactoryGirl.create(:user))
+    FatFreeCrm::Campaign.create!(:name => "Campaign", :user => FactoryGirl.create(:user))
   end
 
   describe "Attach" do
@@ -111,23 +111,23 @@ describe FatFreeCrm::Campaign do
   describe "Exportable" do
     describe "assigned campaign" do
       before do
-        Campaign.delete_all
+        FatFreeCrm::Campaign.delete_all
         FactoryGirl.create(:campaign, :user => FactoryGirl.create(:user, :first_name => "John", :last_name => "Smith"), :assignee => FactoryGirl.create(:user))
         FactoryGirl.create(:campaign, :user => FactoryGirl.create(:user, :first_name => nil, :last_name => nil), :assignee => FactoryGirl.create(:user, :first_name => nil, :last_name => nil))
       end
       it_should_behave_like("exportable") do
-        let(:exported) { Campaign.all }
+        let(:exported) { FatFreeCrm::Campaign.all }
       end
     end
 
     describe "unassigned campaign" do
       before do
-        Campaign.delete_all
+        FatFreeCrm::Campaign.delete_all
         FactoryGirl.create(:campaign, :user => FactoryGirl.create(:user), :assignee => nil)
         FactoryGirl.create(:campaign, :user => FactoryGirl.create(:user, :first_name => nil, :last_name => nil), :assignee => nil)
       end
       it_should_behave_like("exportable") do
-        let(:exported) { Campaign.all }
+        let(:exported) { FatFreeCrm::Campaign.all }
       end
     end
   end

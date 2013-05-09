@@ -22,8 +22,8 @@ describe FatFreeCrm::CustomFieldDatePair do
   describe "render_value" do
   
     before(:each) do
-      @from = CustomFieldDatePair.new(:name => 'cf_event_from')
-      @to = CustomFieldDatePair.new(:name => 'cf_event_to')
+      @from = FatFreeCrm::CustomFieldDatePair.new(:name => 'cf_event_from')
+      @to = FatFreeCrm::CustomFieldDatePair.new(:name => 'cf_event_to')
       @from.stub!(:paired_with).and_return(@to)
       @today = Date.today
       @today_str = @today.strftime(I18n.t("date.formats.mmddyy"))
@@ -54,9 +54,9 @@ describe FatFreeCrm::CustomFieldDatePair do
   describe "custom_validator" do
 
     before(:each) do
-      @from = CustomFieldDatePair.new(:name => 'cf_event_from')
-      @to = CustomFieldDatePair.new(:name => 'cf_event_to', :pair_id => 1)
-      CustomFieldPair.stub!(:find).and_return(@from)
+      @from = FatFreeCrm::CustomFieldDatePair.new(:name => 'cf_event_from')
+      @to = FatFreeCrm::CustomFieldDatePair.new(:name => 'cf_event_to', :pair_id => 1)
+      FatFreeCrm::CustomFieldPair.stub!(:find).and_return(@from)
       @today = Date.today
       @today_str = @today.strftime(I18n.t("date.formats.mmddyy"))
     end
@@ -89,12 +89,12 @@ describe FatFreeCrm::CustomFieldDatePair do
     it "should ignore validation when called on from" do
       foo = mock(:cf_event_from => @today, :cf_event_to => @today - 1.day)
       foo.should_not_receive(:errors)
-      CustomFieldPair.should_not_receive(:find)
+      FatFreeCrm::CustomFieldPair.should_not_receive(:find)
       @from.custom_validator(foo)
     end
 
     it "should call custom field validation on super class" do
-      from = CustomFieldDatePair.new(:name => 'cf_event_from', :required => true)
+      from = FatFreeCrm::CustomFieldDatePair.new(:name => 'cf_event_from', :required => true)
       foo = mock(:cf_event_from => nil)
       err = mock(:errors); err.stub(:add)
       foo.should_receive(:errors).and_return(err)

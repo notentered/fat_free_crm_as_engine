@@ -6,7 +6,7 @@ describe "/leads/_sidebar_show" do
   before do
     login_and_assign
     assign(:users, [ current_user ])
-    assign(:comment, Comment.new)
+    assign(:comment, FatFreeCrm::Comment.new)
     assign(:lead, FactoryGirl.create(:lead,
                           :blog => 'http://www.blogger.com/home',
                           :linkedin => 'www.linkedin.com',
