@@ -82,7 +82,7 @@ describe FatFreeCrm::TasksController do
 
         hash.keys.each do |key|
           hash[key].each do |attr|
-            task = FatFreeCrm::Task.new(attr["task"])
+            task = FatFreeCrm::Task.new(attr)
             task.should be_instance_of(FatFreeCrm::Task)
             task.should be_valid
           end
@@ -168,7 +168,7 @@ describe FatFreeCrm::TasksController do
 
         xhr :get, :new, :related => "account_#{@account.id}"
         flash[:warning].should_not == nil
-        response.body.should == 'window.location.href = "/accounts";'
+        response.body.should == 'window.location.href = "' + Rails.application.routes.named_routes[:fat_free_crm].path.spec.to_s + '/accounts";'
       end
 
       it "should redirect to parent asset's index page with the message if parent asset got protected" do
@@ -176,7 +176,7 @@ describe FatFreeCrm::TasksController do
 
         xhr :get, :new, :related => "account_#{@account.id}"
         flash[:warning].should_not == nil
-        response.body.should == 'window.location.href = "/accounts";'
+        response.body.should == 'window.location.href = "' + Rails.application.routes.named_routes[:fat_free_crm].path.spec.to_s + '/accounts";'
       end
     end
   end
