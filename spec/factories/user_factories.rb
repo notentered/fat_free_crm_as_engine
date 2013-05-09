@@ -39,7 +39,7 @@ FactoryGirl.define do
   end
 
 
-  factory :permission, class: FatFreeCrm::Permissions do
+  factory :permission, class: FatFreeCrm::Permission do
     user
     asset               { raise "Please specify :asset for the permission" }
     updated_at          { FactoryGirl.generate(:time) }

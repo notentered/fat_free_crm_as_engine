@@ -22,7 +22,7 @@ describe FatFreeCrm::LeadsController do
 
     it "should collect the data for the leads sidebar" do
       @leads = [ FactoryGirl.create(:lead, :user => current_user) ]
-      @status = Setting.lead_status.dup
+      @status = FatFreeCrm::Setting.lead_status.dup
 
       get :index
       (assigns[:lead_status_total].keys.map(&:to_sym) - (@status << :all << :other)).should == []
@@ -119,7 +119,7 @@ describe FatFreeCrm::LeadsController do
     describe "with mime type of HTML" do
       before(:each) do
         @lead = FactoryGirl.create(:lead, :id => 42, :user => current_user)
-        @comment = Comment.new
+        @comment = FatFreeCrm::Comment.new
       end
 
       it "should expose the requested lead as @lead and render [show] template" do
@@ -138,7 +138,7 @@ describe FatFreeCrm::LeadsController do
     describe "with mime type of JSON" do
       it "should render the requested lead as JSON" do
         @lead = FactoryGirl.create(:lead, :id => 42, :user => current_user)
-        Lead.should_receive(:find).and_return(@lead)
+        FatFreeCrm::Lead.should_receive(:find).and_return(@lead)
         @lead.should_receive(:to_json).and_return("generated JSON")
 
         request.env["HTTP_ACCEPT"] = "application/json"
@@ -150,7 +150,7 @@ describe FatFreeCrm::LeadsController do
     describe "with mime type of XML" do
       it "should render the requested lead as xml" do
         @lead = FactoryGirl.create(:lead, :id => 42, :user => current_user)
-        Lead.should_receive(:find).and_return(@lead)
+        FatFreeCrm::Lead.should_receive(:find).and_return(@lead)
         @lead.should_receive(:to_xml).and_return("generated XML")
 
         request.env["HTTP_ACCEPT"] = "application/xml"
@@ -205,7 +205,7 @@ describe FatFreeCrm::LeadsController do
 
     it "should expose a new lead as @lead and render [new] template" do
       @lead = FactoryGirl.build(:lead, :user => current_user, :campaign => nil)
-      Lead.stub!(:new).and_return(@lead)
+      FatFreeCrm::Lead.stub!(:new).and_return(@lead)
       @campaigns = [ FactoryGirl.create(:campaign, :user => current_user) ]
 
       xhr :get, :new
@@ -228,7 +228,7 @@ describe FatFreeCrm::LeadsController do
 
         xhr :get, :new, :related => "campaign_#{@campaign.id}"
         flash[:warning].should_not == nil
-        response.body.should == 'window.location.href = "/campaigns";'
+        response.body.should == 'window.location.href = "' + Rails.application.routes.named_routes[:fat_free_crm].path.spec.to_s + '/campaigns";'
       end
 
       it "should redirect to parent asset's index page with the message if parent asset got protected" do
@@ -236,7 +236,7 @@ describe FatFreeCrm::LeadsController do
 
         xhr :get, :new, :related => "campaign_#{@campaign.id}"
         flash[:warning].should_not == nil
-        response.body.should == 'window.location.href = "/campaigns";'
+        response.body.should == 'window.location.href = "' + Rails.application.routes.named_routes[:fat_free_crm].path.spec.to_s + '/campaigns";'
       end
     end
   end
@@ -317,7 +317,7 @@ describe FatFreeCrm::LeadsController do
 
       it "should expose a newly created lead as @lead and render [create] template" do
         @lead = FactoryGirl.build(:lead, :user => current_user, :campaign => nil)
-        Lead.stub!(:new).and_return(@lead)
+        FatFreeCrm::Lead.stub!(:new).and_return(@lead)
         @campaigns = [ FactoryGirl.create(:campaign, :user => current_user) ]
 
         xhr :post, :create, :lead => { :first_name => "Billy", :last_name => "Bones" }
@@ -336,19 +336,19 @@ describe FatFreeCrm::LeadsController do
         @campaign.save
 
         @lead = FactoryGirl.build(:lead, :campaign => @campaign, :user => current_user, :access => "Shared")
-        Lead.stub!(:new).and_return(@lead)
+        FatFreeCrm::Lead.stub!(:new).and_return(@lead)
 
         xhr :post, :create, :lead => { :first_name => "Billy", :last_name => "Bones", :access => "Campaign", :user_ids => %w(7 8) }, :campaign => @campaign.id
         assigns(:lead).should == @lead
         @lead.reload.access.should == "Shared"
         @lead.permissions.map(&:user_id).sort.should == [ 7, 8 ]
         @lead.permissions.map(&:asset_id).should == [ @lead.id, @lead.id ]
-        @lead.permissions.map(&:asset_type).should == %w(Lead Lead)
+        @lead.permissions.map(&:asset_type).should == %w(FatFreeCrm::Lead FatFreeCrm::Lead)
       end
 
       it "should get the data to update leads sidebar if called from leads index" do
         @lead = FactoryGirl.build(:lead, :user => current_user, :campaign => nil)
-        Lead.stub!(:new).and_return(@lead)
+        FatFreeCrm::Lead.stub!(:new).and_return(@lead)
 
         request.env["HTTP_REFERER"] = "http://localhost/leads"
         xhr :post, :create, :lead => { :first_name => "Billy", :last_name => "Bones" }
@@ -357,7 +357,7 @@ describe FatFreeCrm::LeadsController do
 
       it "should reload leads to update pagination if called from leads index" do
         @lead = FactoryGirl.build(:lead, :user => current_user, :campaign => nil)
-        Lead.stub!(:new).and_return(@lead)
+        FatFreeCrm::Lead.stub!(:new).and_return(@lead)
 
         request.env["HTTP_REFERER"] = "http://localhost/leads"
         xhr :post, :create, :lead => { :first_name => "Billy", :last_name => "Bones" }
@@ -367,15 +367,16 @@ describe FatFreeCrm::LeadsController do
       it "should reload lead campaign if called from campaign landing page" do
         @campaign = FactoryGirl.create(:campaign)
         @lead = FactoryGirl.build(:lead, :user => current_user, :campaign => @campaign)
+        FatFreeCrm::Lead.stub!(:new).and_return(@lead)
 
         request.env["HTTP_REFERER"] = "http://localhost/campaigns/#{@campaign.id}"
         xhr :put, :create, :lead => { :first_name => "Billy", :last_name => "Bones"}, :campaign => @campaign.id
         assigns[:campaign].should == @campaign
       end
-      
+
       it "should add a new comment to the newly created lead when specified" do
         @lead = FactoryGirl.create(:lead)
-        Lead.stub!(:new).and_return(@lead)
+        FatFreeCrm::Lead.stub!(:new).and_return(@lead)
         xhr :post, :create, :lead => { :first_name => "Test", :last_name => "Lead" }, :comment_body => "This is an important lead."
         @lead.reload.comments.map(&:comment).should include("This is an important lead.")
       end
@@ -385,7 +386,7 @@ describe FatFreeCrm::LeadsController do
 
       it "should expose a newly created but unsaved lead as @lead and still render [create] template" do
         @lead = FactoryGirl.build(:lead, :user => current_user, :first_name => nil, :campaign => nil)
-        Lead.stub!(:new).and_return(@lead)
+        FatFreeCrm::Lead.stub!(:new).and_return(@lead)
         @campaigns = [ FactoryGirl.create(:campaign, :user => current_user) ]
 
         xhr :post, :create, :lead => { :first_name => nil }
@@ -546,7 +547,7 @@ describe FatFreeCrm::LeadsController do
         xhr :delete, :destroy, :id => @lead.id
 
         assigns[:leads].should == nil # @lead got deleted
-        lambda { Lead.find(@lead) }.should raise_error(ActiveRecord::RecordNotFound)
+        lambda { FatFreeCrm::Lead.find(@lead) }.should raise_error(ActiveRecord::RecordNotFound)
         response.should render_template("leads/destroy")
       end
 
@@ -658,8 +659,8 @@ describe FatFreeCrm::LeadsController do
       @campaign = FactoryGirl.create(:campaign, :user => current_user)
       @lead = FactoryGirl.create(:lead, :user => current_user, :campaign => @campaign, :source => "cold_call")
       @accounts = [ FactoryGirl.create(:account, :user => current_user) ]
-      @account = Account.new(:user => current_user, :name => @lead.company, :access => "Lead")
-      @opportunity = Opportunity.new(:user => current_user, :access => "Lead", :stage => "prospecting", :campaign => @lead.campaign, :source => @lead.source)
+      @account = FatFreeCrm::Account.new(:user => current_user, :name => @lead.company, :access => "Lead")
+      @opportunity = FatFreeCrm::Opportunity.new(:user => current_user, :access => "Lead", :stage => "prospecting", :campaign => @lead.campaign, :source => @lead.source)
 
       xhr :get, :convert, :id => @lead.id
       assigns[:lead].should == @lead
@@ -725,9 +726,9 @@ describe FatFreeCrm::LeadsController do
       @account = FactoryGirl.create(:account, :id => 123, :user => current_user)
       @opportunity = FactoryGirl.build(:opportunity, :user => current_user, :campaign => @lead.campaign,
                                    :account => @account)
-      Opportunity.stub!(:new).and_return(@opportunity)
+      FatFreeCrm::Opportunity.stub!(:new).and_return(@opportunity)
       @contact = FactoryGirl.build(:contact, :user => current_user, :lead => @lead)
-      Contact.stub!(:new).and_return(@contact)
+      FatFreeCrm::Contact.stub!(:new).and_return(@contact)
 
       xhr :put, :promote, :id => 42, :account => { :id => 123 }, :opportunity => { :name => "Hello" }
       @lead.reload.status.should == "converted"
@@ -760,11 +761,11 @@ describe FatFreeCrm::LeadsController do
       @account.access.should == "Shared"
       @account.permissions.map(&:user_id).sort.should == [ 7, 8 ]
       @account.permissions.map(&:asset_id).should == [ @account.id, @account.id ]
-      @account.permissions.map(&:asset_type).should == %w(Account Account)
+      @account.permissions.map(&:asset_type).should == %w(FatFreeCrm::Account FatFreeCrm::Account)
       @opportunity.access.should == "Shared"
       @opportunity.permissions.map(&:user_id).sort.should == [ 7, 8 ]
       @opportunity.permissions.map(&:asset_id).should == [ @opportunity.id, @opportunity.id ]
-      @opportunity.permissions.map(&:asset_type).should == %w(Opportunity Opportunity)
+      @opportunity.permissions.map(&:asset_type).should == %w(FatFreeCrm::Opportunity FatFreeCrm::Opportunity)
     end
 
     it "should assign lead's campaign to the newly created opportunity" do
@@ -804,7 +805,7 @@ describe FatFreeCrm::LeadsController do
       @lead = FactoryGirl.create(:lead, :id => 42, :user => current_user, :status => "new")
       @account = FactoryGirl.create(:account, :id => 123, :user => current_user)
       @contact = FactoryGirl.build(:contact, :first_name => nil) # make it fail
-      Contact.stub!(:new).and_return(@contact)
+      FatFreeCrm::Contact.stub!(:new).and_return(@contact)
 
       xhr :put, :promote, :id => 42, :account => { :id => 123 }
       @lead.reload.status.should == "new"
@@ -972,13 +973,13 @@ describe FatFreeCrm::LeadsController do
       xhr :post, :redraw, :per_page => 42, :view => "long", :sort_by => "first_name", :naming => "after"
       current_user.preference[:leads_per_page].should == "42"
       current_user.preference[:leads_index_view].should  == "long"
-      current_user.preference[:leads_sort_by].should  == "leads.first_name ASC"
+      current_user.preference[:leads_sort_by].should  == "fat_free_crm_leads.first_name ASC"
       current_user.preference[:leads_naming].should   == "after"
     end
 
     it "should set similar options for Contacts" do
       xhr :post, :redraw, :sort_by => "first_name", :naming => "after"
-      current_user.pref[:contacts_sort_by].should == "contacts.first_name ASC"
+      current_user.pref[:contacts_sort_by].should == "fat_free_crm_contacts.first_name ASC"
       current_user.pref[:contacts_naming].should == "after"
     end
 

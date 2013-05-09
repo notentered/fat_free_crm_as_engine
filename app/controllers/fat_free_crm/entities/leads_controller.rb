@@ -34,7 +34,7 @@ class FatFreeCrm::LeadsController < FatFreeCrm::EntitiesController
   # AJAX /leads/1
   #----------------------------------------------------------------------------
   def show
-    @comment = Comment.new
+    @comment = FatFreeCrm::Comment.new
     @timeline = timeline(@lead)
     respond_with(@lead)
   end
@@ -42,12 +42,12 @@ class FatFreeCrm::LeadsController < FatFreeCrm::EntitiesController
   # GET /leads/new
   #----------------------------------------------------------------------------
   def new
-    @lead.attributes = {:user => current_user, :access => Setting.default_access, :assigned_to => nil}
+    @lead.attributes = {:user => current_user, :access => FatFreeCrm::Setting.default_access, :assigned_to => nil}
     get_campaigns
 
     if params[:related]
       model, id = params[:related].split('_')
-      if related = model.classify.constantize.my.find_by_id(id)
+      if related = "FatFreeCrm::#{model.classify}".constantize.my.find_by_id(id)
         instance_variable_set("@#{model}", related)
       else
         respond_to_related_not_found(model) and return
@@ -63,7 +63,7 @@ class FatFreeCrm::LeadsController < FatFreeCrm::EntitiesController
     get_campaigns
 
     if params[:previous].to_s =~ /(\d+)\z/
-      @previous = Lead.my.find_by_id($1) || $1.to_i
+      @previous = FatFreeCrm::Lead.my.find_by_id($1) || $1.to_i
     end
 
     respond_with(@lead)
@@ -97,7 +97,7 @@ class FatFreeCrm::LeadsController < FatFreeCrm::EntitiesController
       if @lead.update_with_lead_counters(params[:lead])
         update_sidebar
       else
-        @campaigns = Campaign.my.order('name')
+        @campaigns = FatFreeCrm::Campaign.my.order('name')
       end
     end
   end
@@ -118,10 +118,10 @@ class FatFreeCrm::LeadsController < FatFreeCrm::EntitiesController
   def convert
     @account = FatFreeCrm::Account.new(:user => current_user, :name => @lead.company, :access => "Lead")
     @accounts = FatFreeCrm::Account.my.order('name')
-    @opportunity = Opportunity.new(:user => current_user, :access => "Lead", :stage => "prospecting", :campaign => @lead.campaign, :source => @lead.source)
+    @opportunity = FatFreeCrm::Opportunity.new(:user => current_user, :access => "Lead", :stage => "prospecting", :campaign => @lead.campaign, :source => @lead.source)
 
     if params[:previous].to_s =~ /(\d+)\z/
-      @previous = Lead.my.find_by_id($1) || $1.to_i
+      @previous = FatFreeCrm::Lead.my.find_by_id($1) || $1.to_i
     end
 
     respond_with(@lead)
@@ -131,8 +131,8 @@ class FatFreeCrm::LeadsController < FatFreeCrm::EntitiesController
   #----------------------------------------------------------------------------
   def promote
     @account, @opportunity, @contact = @lead.promote(params)
-    @accounts = Account.my.order('name')
-    @stage = Setting.unroll(:opportunity_stage)
+    @accounts = FatFreeCrm::Account.my.order('name')
+    @stage = FatFreeCrm::Setting.unroll(:opportunity_stage)
 
     respond_with(@lead) do |format|
       if @account.errors.empty? && @opportunity.errors.empty? && @contact.errors.empty?
@@ -176,9 +176,9 @@ class FatFreeCrm::LeadsController < FatFreeCrm::EntitiesController
 
     # Sorting and naming only: set the same option for Contacts if the hasn't been set yet.
     if params[:sort_by]
-      current_user.pref[:leads_sort_by] = Lead::sort_by_map[params[:sort_by]]
-      if Contact::sort_by_fields.include?(params[:sort_by])
-        current_user.pref[:contacts_sort_by] ||= Contact::sort_by_map[params[:sort_by]]
+      current_user.pref[:leads_sort_by] = FatFreeCrm::Lead::sort_by_map[params[:sort_by]]
+      if FatFreeCrm::Contact::sort_by_fields.include?(params[:sort_by])
+        current_user.pref[:contacts_sort_by] ||= FatFreeCrm::Contact::sort_by_map[params[:sort_by]]
       end
     end
     if params[:naming]
@@ -212,12 +212,12 @@ private
 
   #----------------------------------------------------------------------------
   def get_campaigns
-    @campaigns = Campaign.my.order('name')
+    @campaigns = FatFreeCrm::Campaign.my.order('name')
   end
 
   def set_options
     super
-    @naming = (current_user.pref[:leads_naming] || Lead.first_name_position) unless params[:cancel].true?
+    @naming = (current_user.pref[:leads_naming] || FatFreeCrm::Lead.first_name_position) unless params[:cancel].true?
   end
 
   #----------------------------------------------------------------------------
@@ -246,9 +246,9 @@ private
     if related
       instance_variable_set("@#{related}", @lead.send(related)) if called_from_landing_page?(related.to_s.pluralize)
     else
-      @lead_status_total = { :all => Lead.my.count, :other => 0 }
-      Setting.lead_status.each do |key|
-        @lead_status_total[key] = Lead.my.where(:status => key.to_s).count
+      @lead_status_total = { :all => FatFreeCrm::Lead.my.count, :other => 0 }
+      FatFreeCrm::Setting.lead_status.each do |key|
+        @lead_status_total[key] = FatFreeCrm::Lead.my.where(:status => key.to_s).count
         @lead_status_total[:other] -= @lead_status_total[key]
       end
       @lead_status_total[:other] += @lead_status_total[:all]
