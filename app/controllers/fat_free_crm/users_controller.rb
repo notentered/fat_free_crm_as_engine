@@ -58,7 +58,7 @@ class FatFreeCrm::UsersController < FatFreeCrm::ApplicationController
   #----------------------------------------------------------------------------
   def create
     if @user.save
-      if Setting.user_signup == :needs_approval
+      if FatFreeCrm::Setting.user_signup == :needs_approval
         flash[:notice] = t(:msg_account_created)
         redirect_to login_url
       else
@@ -103,7 +103,7 @@ class FatFreeCrm::UsersController < FatFreeCrm::ApplicationController
       render
     else
       if params[:avatar]
-        @user.avatar = Avatar.new(params[:avatar].merge(:entity => @user))
+        @user.avatar = FatFreeCrm::Avatar.new(params[:avatar].merge(:entity => @user))
         unless @user.save && @user.avatar.errors.blank?
           @user.avatar.errors.clear
           @user.avatar.errors.add(:image, t(:msg_bad_image_file))

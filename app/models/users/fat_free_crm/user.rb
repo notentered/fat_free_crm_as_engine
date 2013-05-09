@@ -86,9 +86,9 @@ class FatFreeCrm::User < ActiveRecord::Base
     accessible_by(FatFreeCrm::User.current_ability)
   }
 
-  scope :have_assigned_opportunities, joins("INNER JOIN opportunities ON users.id = opportunities.assigned_to").
-                                      where("opportunities.stage <> 'lost' AND opportunities.stage <> 'won'").
-                                      select('DISTINCT(users.id), users.*')
+  scope :have_assigned_opportunities, joins("INNER JOIN fat_free_crm_opportunities ON fat_free_crm_users.id = fat_free_crm_opportunities.assigned_to").
+                                      where("fat_free_crm_opportunities.stage <> 'lost' AND fat_free_crm_opportunities.stage <> 'won'").
+                                      select('DISTINCT(fat_free_crm_users.id), fat_free_crm_users.*')
 
   acts_as_authentic do |c|
     c.session_class = FatFreeCrm::Authentication

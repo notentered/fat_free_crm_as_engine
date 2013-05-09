@@ -132,7 +132,7 @@ describe FatFreeCrm::UsersController do
       end
 
       it "should redirect to login page if user signup needs approval" do
-        Setting.stub!(:user_signup).and_return(:needs_approval)
+        FatFreeCrm::Setting.stub!(:user_signup).and_return(:needs_approval)
 
         post :create, :user => { :username => @username, :email => @email, :password => @password, :password_confirmation => @password }
         assigns[:user].should == @user

@@ -29,7 +29,7 @@ RSpec.configure do |config|
 
   config.mock_with :rspec
 
-  config.fixture_path = "#{Rails.root}/spec/fixtures"
+  config.fixture_path = "#{FatFreeCrm.root}/spec/fixtures"
 
   # RSpec configuration options for Fat Free CRM.
   config.include RSpec::Rails::Matchers
