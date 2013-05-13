@@ -13,3 +13,16 @@ Ransack.configure do |config|
     :key  => 'auto_complete_query'
   }
 end
+
+# CODE SMELL: Monkey patch Ransack-UI to work with namespaces
+# ToDo: Consider fix it Ransack-UI
+module RansackUI
+  module ControllerHelpers
+    def load_ransack_search(klass = nil)
+      klass ||= controller_path.classify.constantize
+      @ransack_search = klass.search(params[:q])
+      @ransack_search.build_grouping if @ransack_search.groupings.empty?
+      @ransack_search
+    end
+  end
+end

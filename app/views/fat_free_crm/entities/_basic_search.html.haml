@@ -1,4 +1,4 @@
-- model = controller.controller_name.classify.constantize
+- model = controller.controller_path.classify.constantize
 - sort_by_menu_items = model.sort_by_fields.map { |field| options_menu_item(:sort_by, field) }
 - current_sort_by = t("option_" + model.sort_by_map.invert[@sort_by])
 
