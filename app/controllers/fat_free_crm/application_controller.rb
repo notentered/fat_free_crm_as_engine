@@ -22,6 +22,8 @@ class FatFreeCrm::ApplicationController < ActionController::Base
   before_filter "hook(:app_before_filter, self)"
   after_filter  "hook(:app_after_filter,  self)"
 
+  helper FatFreeCrm::Engine.helpers
+
   helper_method :current_user_session, :current_user, :can_signup?
   helper_method :called_from_index_page?, :called_from_landing_page?
   helper_method :klass

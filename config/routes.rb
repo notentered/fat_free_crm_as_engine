@@ -10,11 +10,11 @@ FatFreeCrm::Engine.routes.draw do
   match 'profile'    => 'users#show',              :as => :profile
   match 'signup'     => 'users#new',               :as => :signup
 
-  match '/home/options',  :as => :options
-  match '/home/toggle',   :as => :toggle
-  match '/home/timeline', :as => :timeline
-  match '/home/timezone', :as => :timezone
-  match '/home/redraw',   :as => :redraw
+  match '/home/options'  => 'home#options',  :as => :options
+  match '/home/toggle'   => 'home#toggle',   :as => :toggle
+  match '/home/timeline' => 'home#timeline', :as => :timeline
+  match '/home/timezone' => 'home#timezone', :as => :timezone
+  match '/home/redraw'   => 'home#redraw',   :as => :redraw
 
   resource  :authentication
   resources :comments
